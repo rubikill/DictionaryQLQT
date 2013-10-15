@@ -1,5 +1,10 @@
 package com.hcmus.dictionaryqlqt;
 
+import java.util.Locale;
+
+import manager.JSpeaker;
+import manager.Speaker;
+
 import com.hcmus.dictionaryqlqt.util.SystemUiHider;
 
 import android.annotation.TargetApi;
@@ -44,6 +49,8 @@ public class FullscreenActivity extends Activity {
      * The instance of the {@link SystemUiHider} for this activity.
      */
     private SystemUiHider mSystemUiHider;
+    
+    private JSpeaker speaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +119,8 @@ public class FullscreenActivity extends Activity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        
+        speaker = new Speaker(this, Locale.ENGLISH);
     }
 
     @Override
@@ -136,6 +145,7 @@ public class FullscreenActivity extends Activity {
             if (AUTO_HIDE) {
                 delayedHide(AUTO_HIDE_DELAY_MILLIS);
             }
+            speaker.speakOut("OK");
             return false;
         }
     };
@@ -155,5 +165,11 @@ public class FullscreenActivity extends Activity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+    
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+    	speaker.shutdown();
     }
 }
