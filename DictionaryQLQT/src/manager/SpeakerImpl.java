@@ -7,21 +7,43 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 
-public class Speaker implements JSpeaker, OnInitListener{
-
-	public static final float NORMAL = 1.0f;
-	public static final float LOW = 0.5f;
-	public static final float FAST = 2.0f;
+/**
+ * 
+ * Class Speaker dùng để phát âm implements từ Interface ISpeaker và OnInitListener
+ * 
+ * @author Thanh Toan
+ *
+ */
+public class SpeakerImpl implements ISpeaker, OnInitListener{
 	
+	/**
+	 * text to speech
+	 */
 	private TextToSpeech tts;
+	
+	/**
+	 * ngôn ngữ
+	 */
 	private Locale language;
+	
+	/**
+	 * tồn tại
+	 */
 	private boolean available = false;
 	
-	public Speaker(Context context, Locale language){
+	/**
+	 * Khởi tạo
+	 * @param context nội dung.
+	 * @param language ngôn ngữ.
+	 */
+	public SpeakerImpl(Context context, Locale language){
 		tts = new TextToSpeech(context, this);
 		this.language = language;
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void speakOut(String text) {
 		if (isAvailable()){
@@ -29,9 +51,11 @@ public class Speaker implements JSpeaker, OnInitListener{
 		}
 	}
 
+	/**
+	 * Khởi tạo ban đầu
+	 */
 	@Override
     public void onInit(int status) {
- 
         if (status == TextToSpeech.SUCCESS) { 
             setLanguage(language);
         } else {
@@ -40,16 +64,25 @@ public class Speaker implements JSpeaker, OnInitListener{
         } 
     }
 
+	/**
+	 * Có tồn tại không
+	 */
 	@Override
 	public boolean isAvailable(){
 		return available;
 	}
 	
+	/**
+	 * Set ngôn ngữ
+	 */
 	@Override
 	public Locale getLanguage() {
 		return language;
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public boolean setLanguage(Locale language){		
 		int result = tts.isLanguageAvailable(language);  		
@@ -65,11 +98,17 @@ public class Speaker implements JSpeaker, OnInitListener{
         return true;
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void setSpeechRate(float speechRate){
 		tts.setSpeechRate(speechRate);
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void shutdown(){
 		tts.shutdown();

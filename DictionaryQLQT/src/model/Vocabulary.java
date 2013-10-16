@@ -8,11 +8,32 @@ package model;
  * 
  */
 public class Vocabulary {
+	
+	/**
+	 * Từ khóa
+	 */
 	private String word;
+	
+	/**
+	 * Nghĩa thứ nhất
+	 */
 	private String stMean;
+	
+	/**
+	 * Nghĩa thứ hai
+	 */
 	private String ndMean;
+	
+	/**
+	 * Nghĩa thứ ba
+	 */
 	private String rdMean;
 
+	/**************************************
+	 * 
+	 * 			Getter and setter 
+	 * 
+	 **************************************/
 	public String getWord() {
 		return word;
 	}

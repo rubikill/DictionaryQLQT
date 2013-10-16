@@ -2,8 +2,8 @@ package com.hcmus.dictionaryqlqt;
 
 import java.util.Locale;
 
-import manager.JSpeaker;
-import manager.Speaker;
+import manager.ISpeaker;
+import manager.SpeakerImpl;
 
 import com.hcmus.dictionaryqlqt.util.SystemUiHider;
 
@@ -50,7 +50,7 @@ public class FullscreenActivity extends Activity {
      */
     private SystemUiHider mSystemUiHider;
     
-    private JSpeaker speaker;
+    private ISpeaker speaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +120,7 @@ public class FullscreenActivity extends Activity {
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
         
-        speaker = new Speaker(this, Locale.ENGLISH);
+        speaker = new SpeakerImpl(this, Locale.ENGLISH);
     }
 
     @Override

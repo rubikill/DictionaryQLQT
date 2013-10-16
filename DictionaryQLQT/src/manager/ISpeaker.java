@@ -2,7 +2,7 @@ package manager;
 
 import java.util.Locale;
 
-public interface JSpeaker {
+public interface ISpeaker {
 	void speakOut(String text);
 	boolean setLanguage(Locale language);
 	Locale getLanguage();
