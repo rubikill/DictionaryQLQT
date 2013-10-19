@@ -9,7 +9,7 @@ import android.util.Log;
 
 /**
  * 
- * Class Speaker dùng để phát âm implements từ Interface ISpeaker và OnInitListener
+ * Class Speaker dùng để phát âm implements  Interface ISpeaker và  OnInitListener
  * 
  * @author Thanh Toan
  *
@@ -22,19 +22,19 @@ public class SpeakerImpl implements ISpeaker, OnInitListener{
 	private TextToSpeech tts;
 	
 	/**
-	 * ngôn ngữ
+	 * ngôn ngữ
 	 */
 	private Locale language;
 	
 	/**
-	 * tồn tại
+	 * khả dụng
 	 */
 	private boolean available = false;
 	
 	/**
-	 * Khởi tạo
-	 * @param context nội dung.
-	 * @param language ngôn ngữ.
+	 * Khởi tạo
+	 * @param context context của App.
+	 * @param language ngôn ngữ¯.
 	 */
 	public SpeakerImpl(Context context, Locale language){
 		tts = new TextToSpeech(context, this);
@@ -42,7 +42,7 @@ public class SpeakerImpl implements ISpeaker, OnInitListener{
 	}
 	
 	/**
-	 * 
+	 * Phát âm chuỗi
 	 */
 	@Override
 	public void speakOut(String text) {
@@ -52,7 +52,7 @@ public class SpeakerImpl implements ISpeaker, OnInitListener{
 	}
 
 	/**
-	 * Khởi tạo ban đầu
+	 * Khởi tạo TTS
 	 */
 	@Override
     public void onInit(int status) {
@@ -65,7 +65,7 @@ public class SpeakerImpl implements ISpeaker, OnInitListener{
     }
 
 	/**
-	 * Có tồn tại không
+	 * Kiểm tra khả dụng của Speaker
 	 */
 	@Override
 	public boolean isAvailable(){
@@ -73,7 +73,7 @@ public class SpeakerImpl implements ISpeaker, OnInitListener{
 	}
 	
 	/**
-	 * Set ngôn ngữ
+	 * Lấy ngôn ngữ hiện tại
 	 */
 	@Override
 	public Locale getLanguage() {
@@ -81,7 +81,7 @@ public class SpeakerImpl implements ISpeaker, OnInitListener{
 	}
 	
 	/**
-	 * 
+	 * Thiết lập ngôn ngữ
 	 */
 	@Override
 	public boolean setLanguage(Locale language){		
@@ -99,7 +99,7 @@ public class SpeakerImpl implements ISpeaker, OnInitListener{
 	}
 	
 	/**
-	 * 
+	 * Thiết lập tốc độ phát âm
 	 */
 	@Override
 	public void setSpeechRate(float speechRate){
@@ -107,7 +107,7 @@ public class SpeakerImpl implements ISpeaker, OnInitListener{
 	}
 	
 	/**
-	 * 
+	 * Giải phóng tài nguyên
 	 */
 	@Override
 	public void shutdown(){
