@@ -15,15 +15,22 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.hcmus.dictionaryqlqt.FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="CopyrightsActivity"></activity>
+        <activity android:name="AboutActivity"></activity>
+        <activity android:name="RecommendedActivity"></activity>
+        <activity android:name="ShareThisAppActivity"></activity>
+        <activity android:name="TabDailyActivity"></activity>
+        <activity android:name="TabDictionaryActivity"></activity>
+        <activity android:name="TabFavoritesActivity"></activity>
+        <activity android:name="TabMoreActivity"></activity>
+        <activity android:name="TabRecentActivity"></activity>
     </application>
 
 </manifest>

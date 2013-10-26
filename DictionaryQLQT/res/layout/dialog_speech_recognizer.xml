@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lnlRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="right"
+        android:paddingBottom="20dp" >
+
+        <ImageView
+            android:id="@+id/btnEditrecent"
+            android:layout_width="34dp"
+            android:layout_height="42dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_voice_search" />
+
+        <TextView
+            android:id="@+id/tvedit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBaseline="@+id/btnEditrecent"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btnEditrecent"
+            android:gravity="bottom|right"
+            android:text="Recording...          "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="40px" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp" >
+
+        <ImageView
+            android:id="@+id/imgVol1"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume_bar_off" />
+
+        <ImageView
+            android:id="@+id/imgVol2"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume_bar_off" />
+
+        <ImageView
+            android:id="@+id/imgVol3"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume_bar_off" />
+
+        <ImageView
+            android:id="@+id/imgVol4"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume_bar_off" />
+
+        <ImageView
+            android:id="@+id/imgVol5"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume_bar_off" />
+
+        <ImageView
+            android:id="@+id/imgVol6"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume_bar_off" />
+
+        <ImageView
+            android:id="@+id/imgVol7"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume_bar_off" />
+
+        <ImageView
+            android:id="@+id/imgVol8"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume_bar_off" />
+
+        <ImageView
+            android:id="@+id/imgVol9"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume_bar_off" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp" >
+
+        <ImageView
+            android:id="@+id/btnDSCancel"
+            android:layout_width="144dp"
+            android:layout_height="57dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/button_cancel_normal" />
+
+    </LinearLayout>
+
+</LinearLayout>
