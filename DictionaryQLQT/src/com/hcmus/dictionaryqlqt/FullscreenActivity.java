@@ -20,7 +20,7 @@ public class FullscreenActivity extends TabActivity {
 		setContentView(R.layout.activity_fullscreen);
 		Instance = this;
 		
-		Resources ressources = getResources(); 
+		Resources ressources = getResources();
 		TabHost tabHost = getTabHost();
 		tabHost.setup();
 		
