@@ -1,20 +1,12 @@
 package com.hcmus.dictionaryqlqt;
 
 import java.util.ArrayList;
-import java.util.Locale;
-
-import com.memetix.mst.language.Language;
-
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.speech.SpeechRecognizer;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,34 +16,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+/**
+ * 
+ * @author Minh Khanh
+ * 
+ * Tab tra cứu từ điển
+ * 
+ * các thuộc tính và hàm ai làm thì comment vào nhé
+ *
+ */
+public class TabDictionaryActivity extends Activity implements OnClickListener, OnEditorActionListener {
 
-public class TabDictionaryActivity extends Activity implements OnClickListener, OnInitListener{
-
+	/*
+	 * RequestCode gọi và nhận kết quả từ màn hình nhận diện giọng nói
+	 */
+	private static final int SPEECH_RECOGNIZER_CODE = 1;	
+	
 	private int statusSearchTab = 0; // status = 0: trang thai cancel search  // status = 1: sau khi click vao search box
 	private EditText edWord;
-	private ImageView btnVoiceSearch, btnAudio, btnCancelSearch, btnResetSearch;
-	private TextView tvWord, tvResult;
-	
-	public static final int REQUEST_CODE = 0;
-	private TextToSpeech tts;
-	private String word;
-	
-	private Handler handler = new Handler(){
-		public void handleMessage(android.os.Message msg) {
-			String result = (String) msg.obj;
-			TabDictionaryActivity.this.tvResult.setText(result);
-		};
-	};
-	
-	private Runnable translateRunable = new Runnable() {		
-		@Override
-		public void run() {			
-			Translater tl = new Translater();
-			String result = tl.Translate(word, Language.ENGLISH, Language.VIETNAMESE);
-			Message msg = handler.obtainMessage(0, result);
-			handler.sendMessage(msg);
-		}
-	};
+	private ImageView btnVoiceSearch, btnCancelSearch, btnResetSearch;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +42,6 @@ public class TabDictionaryActivity extends Activity implements OnClickListener, 
 		setContentView(R.layout.activity_tab_dictionary);
 		initComponents();
 		setDictionaryTabScreen(statusSearchTab);
-		checkSpeechRecognizerAvailable();
 	}
 	
 	private void initComponents(){
@@ -68,30 +50,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener, 
 		btnVoiceSearch = (ImageView)findViewById(R.id.btnVoiceSearch);
 		btnCancelSearch = (ImageView)findViewById(R.id.btnCancelSearch);
 		btnResetSearch = (ImageView)findViewById(R.id.btnResetsearch);
-		tvWord = (TextView)findViewById(R.id.tvWord);
-		btnAudio = (ImageView)findViewById(R.id.btnAudio);
-		tvResult = (TextView)findViewById(R.id.tvResult);
 		
 		btnVoiceSearch.setOnClickListener(this);
-		btnAudio.setOnClickListener(this);
-		btnAudio.setVisibility(View.INVISIBLE);
 		btnCancelSearch.setOnClickListener(this);
-		edWord.setOnClickListener(this);
-		
-		edWord.setOnEditorActionListener(new OnEditorActionListener() {
-			
-			@Override
-			public boolean onEditorAction(TextView arg0, int actionId, KeyEvent arg2) {
-				
-				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-		            onWordSelected(TabDictionaryActivity.this.edWord.getText().toString());
-		            return true;
-		        }
-		        return false;
-			}
-		});
-		
-		tts = new TextToSpeech(FullscreenActivity.getInstance(), this);
+		edWord.setOnClickListener(this);		
+		edWord.setOnEditorActionListener(this);
 	}
 
 	@Override
@@ -106,7 +69,8 @@ public class TabDictionaryActivity extends Activity implements OnClickListener, 
 			}
 			break;
 		case R.id.btnVoiceSearch:
-			startSpeechToText();
+			// mở màn hình nhận diện giọng nói
+			startSpeechRecognizer();
 			break;
 		case R.id.btnCancelSearch:
 			statusSearchTab = 0;
@@ -116,84 +80,61 @@ public class TabDictionaryActivity extends Activity implements OnClickListener, 
 			edWord.setText("");
 			btnResetSearch.setVisibility(View.INVISIBLE);
 			break;
-		case R.id.btnAudio:
-			String text = this.tvWord.getText().toString().trim();
-			if (text != null && !text.equals("")){
-				textToSpeech(text);
-			}
-			break;
 		}
-	}
-	
-	private void checkSpeechRecognizerAvailable(){
-		if (SpeechRecognizer.isRecognitionAvailable(this)){
-			Toast.makeText(this, "Recognition Available", 500).show();
-		}
-		else {
-			Toast.makeText(this, "Recognition Unavailable", 500).show();
-		}
-	}
-	
-	private void startSpeechToText(){
-		SpeechRecognizerDialog dialog = new SpeechRecognizerDialog(this);
-		dialog.show();
-	}
-	
-	private void textToSpeech(String text){ 
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-    }
-	
-	public void onResultFromSR(ArrayList<String> words){
-		if (words.size() > 1){
-			showResultDialog(words.toArray(new String[words.size()]));
-		} else{
-			onWordSelected(words.get(0));
-		}
-	}
-	
-	public void onWordSelected(String word){
-		this.tvWord.setText(word);
-		this.word = word;
-		this.btnAudio.setVisibility(View.VISIBLE);
-		this.tvResult.setText("");
-		Thread thread = new Thread(translateRunable);
-		thread.start();
 	}	
-
+	
+	/*
+	 * mở màn hình nhận diện giọng nói
+	 */
+	private void startSpeechRecognizer(){
+		Intent intent = new Intent(this, SpeechRecognizerActivity.class);
+		startActivityForResult(intent, SPEECH_RECOGNIZER_CODE);
+	}	
+	
+	/*
+	 * lấy kết quả trả về của màn hình nhận diện giọng nói
+	 */
 	@Override
-	public void onInit(int status) {
-		if (status == TextToSpeech.SUCCESS) {
-			 
-            int result = tts.setLanguage(Locale.US);            
- 
-            if (result == TextToSpeech.LANG_MISSING_DATA
-                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e("TTS", "This Language is not supported");
-            }
-        } else {
-            Log.e("TTS", "Initilization Failed!");
-        }		
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == SPEECH_RECOGNIZER_CODE){
+			if (resultCode == RESULT_OK && data != null){
+				// lấy kết quả
+				ArrayList<String> listText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+				
+				// nếu chỉ có 1 từ gọi hàm tìm
+				if (listText.size() == 1){
+					lookUp(listText.get(0));
+				}
+				// hiển thị danh sách kết quả lên dialog
+				else {				
+					String[] arrText = convertArrayListToArray(listText);
+					showResultDialog(arrText);
+				}
+			}
+		}
 	}
 	
-	@Override
-    public void onDestroy() {
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
-        }
-        super.onDestroy();
-    }
-	
-	private void showResultDialog(final String[] words){
+	/*
+	 * hàm tra từ
+	 */
+	private void lookUp(String text){
+		Toast.makeText(this, "Looking up " + text, Toast.LENGTH_SHORT).show();
+	}
+		
+	/*
+	 * hiển thị dialog danh sách các từ
+	 */
+	private void showResultDialog(final String[] arrText){
 		AlertDialog.Builder builder =  
 	            new AlertDialog.Builder(this);
-		builder.setTitle(words.length + " possible words");
-		builder.setItems(words,
+		builder.setTitle(arrText.length + " possible words");
+		builder.setItems(arrText,
 	            new DialogInterface.OnClickListener() {
-
 	        @Override
 	        public void onClick(DialogInterface dialog, int pos) {
-	           onWordSelected(words[pos]);
+	        	//gọi hàm tra từ khi từ được chọn
+	        	lookUp(arrText[pos]);
 	        }
 	    });
 		builder.show();
@@ -216,5 +157,28 @@ public class TabDictionaryActivity extends Activity implements OnClickListener, 
 			//btnCancelSearch.setImageResource(R.drawable.button_cancelsearch_normal);
 			
 		}
+	}
+	
+	/*
+	 * chuyển Arraylist sang String[]
+	 */
+	private String[] convertArrayListToArray(ArrayList<String> source){
+		String[] result = new String[source.size()];
+		source.toArray(result);
+		
+		return result;
+	}
+
+	/*
+	 * sự kiện khi người dùng nhấn nút search trên bàn phím khi đang nhập từ	 * 
+	 */
+	@Override
+	public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+			// gọi hàm tra từ
+            lookUp(this.edWord.getText().toString());
+            return true;
+        }
+        return false;
 	}
 }

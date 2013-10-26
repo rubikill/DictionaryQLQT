@@ -5,20 +5,18 @@ import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.view.Menu;
+import android.view.Window;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
+@SuppressWarnings("deprecation")
 public class FullscreenActivity extends TabActivity {
-
-	private static FullscreenActivity Instance;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);		
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_fullscreen);
-		Instance = this;
 		
 		Resources ressources = getResources();
 		TabHost tabHost = getTabHost();
@@ -63,17 +61,5 @@ public class FullscreenActivity extends TabActivity {
  
 		tabHost.setCurrentTab(0);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-	
-	public static FullscreenActivity getInstance(){
-		return Instance;
-	}
-	
 
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="rectangle"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient 
+        android:startColor="@color/prb_volume_start_color" 
+        android:endColor="@color/prb_volume_end_color" 
+        android:angle="270" 
+        android:type="linear" />
+    
+    <corners 
+        android:topLeftRadius="@dimen/prb_volume_radius_corner"
+        android:topRightRadius="@dimen/prb_volume_radius_corner" 
+        android:bottomLeftRadius="@dimen/prb_volume_radius_corner" 
+        android:bottomRightRadius="@dimen/prb_volume_radius_corner" />
+</shape>

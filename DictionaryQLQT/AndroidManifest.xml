@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="16" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
         android:allowBackup="true"
@@ -22,15 +24,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="CopyrightsActivity"></activity>
-        <activity android:name="AboutActivity"></activity>
-        <activity android:name="RecommendedActivity"></activity>
-        <activity android:name="ShareThisAppActivity"></activity>
-        <activity android:name="TabDailyActivity"></activity>
-        <activity android:name="TabDictionaryActivity"></activity>
-        <activity android:name="TabFavoritesActivity"></activity>
-        <activity android:name="TabMoreActivity"></activity>
-        <activity android:name="TabRecentActivity"></activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.CopyrightsActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.AboutActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.RecommendedActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.ShareThisAppActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabDailyActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabDictionaryActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabFavoritesActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabMoreActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabRecentActivity" >
+        </activity>
+        <activity
+            android:name="com.hcmus.dictionaryqlqt.SpeechRecognizerActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
     </application>
 
 </manifest>

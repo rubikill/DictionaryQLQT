@@ -98,6 +98,7 @@
             android:layout_toRightOf="@+id/btnSearchbox"
             android:ems="10"
             android:gravity="bottom"
+            android:imeOptions="actionSearch"
             android:text="MultiAutoCompleteTextView" />
 
     </RelativeLayout>

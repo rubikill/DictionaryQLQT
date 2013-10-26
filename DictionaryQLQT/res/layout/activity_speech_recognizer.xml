@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal" 
+    android:orientation="vertical" 
+    android:background="@drawable/voice_search_background" 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" 
+    android:layout_margin="@dimen/voice_search_layout_margin">
+    
+    <LinearLayout 
+        android:gravity="center" 
+        android:orientation="horizontal" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="20dip">
+        
+        <ImageView 
+            android:id="@+id/icon_voice_search"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:src="@drawable/ic_voice_search" />
+        
+        <TextView 
+            android:textSize="26dp" 
+            android:textColor="@color/tv_status_voice_search_color" 
+            android:id="@+id/activity_speech_recognizer_title" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"  />
+        
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="240dip" 
+        android:layout_height="wrap_content" 
+        android:layout_marginLeft="30dip" 
+        android:layout_marginTop="10dip" 
+        android:layout_marginRight="30dip" 
+        android:layout_marginBottom="10dip">
+        
+        <ProgressBar 
+            android:id="@+id/activity_speech_recognizer_progressbar" 
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content" 
+            android:max="100" android:progress="0" 
+            android:progressDrawable="@drawable/progressbar_volume_type" 
+            android:minHeight="60dip" 
+            style="?android:attr/progressBarStyleHorizontal" />
+        
+    </LinearLayout>
+    
+    <Button 
+        android:id="@+id/activity_activity_speech_recognizer_button_cancel" 
+        android:background="@drawable/btn_cancel" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" 
+        android:layout_marginBottom="20dip" />
+    
+</LinearLayout>
