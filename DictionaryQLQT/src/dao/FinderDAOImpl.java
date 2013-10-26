@@ -1,5 +1,6 @@
 package dao;
 
+
 import model.Vocabulary;
 
 public class FinderDAOImpl implements IFinderDAO{
@@ -9,4 +10,6 @@ public class FinderDAOImpl implements IFinderDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 }
