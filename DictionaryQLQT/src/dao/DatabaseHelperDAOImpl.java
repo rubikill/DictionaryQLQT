@@ -124,7 +124,7 @@ public class DatabaseHelperDAOImpl extends SQLiteOpenHelper  implements IDataHel
 				tableName = "WordVWY";
 			else
 				tableName = "WordOther";
-			String condition = (type == GET_ONE) ? "= " + word : "like '"
+			String condition = (type == GET_ONE) ? "= '" + word+"'" : "like '"
 					+ word + "%' limit 12";
 			String sql = "select ID,Word,Idx,Length from " + tableName + " where Word "
 					+ condition;
