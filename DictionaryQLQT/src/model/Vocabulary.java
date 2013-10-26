@@ -28,7 +28,12 @@ public class Vocabulary {
 	 * Nghĩa thứ ba
 	 */
 	private String rdMean;
-
+	
+	//Chi so byte trong file mean
+	private String index;
+	
+	//Do dai nghia cua tu trong file mean
+	private String length;
 	/**************************************
 	 * 
 	 * 			Getter and setter 
@@ -74,8 +79,25 @@ public class Vocabulary {
 		this.rdMean = rdMean;
 	}
 
+	public String getLength() {
+		return length;
+	}
+
+	public void setLength(String length) {
+		this.length = length;
+	}
+
+	public String getIndex() {
+		return index;
+	}
+
+	public void setIndex(String index) {
+		this.index = index;
+	}
 	public Vocabulary() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	
 }
