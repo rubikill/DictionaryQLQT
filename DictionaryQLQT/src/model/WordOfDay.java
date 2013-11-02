@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-
 /**
  * Model Class WordOfDay
  * 
@@ -11,34 +9,34 @@ import java.util.ArrayList;
 public class WordOfDay {
 	
 	/**
-	 * Từ của ngày
+	 * TÆ°Ì€ cuÌ‰a ngaÌ€y
 	 */
 	private String word;
 	
 	/**
-	 * Phiên âm
+	 * PhiÃªn Ã¢m
 	 */
 	private String phonetic;
 	
 	/**
-	 * Loại từ
+	 * LoaÌ£i tÆ°Ì€
 	 */
 	private String wordFunction;
 	
 	/**
-	 * Nghĩa của từ
+	 * NghiÌƒa cuÌ‰a tÆ°Ì€
 	 */
 	private String mean;
 	
 	/**
-	 * Các đoan ví dụ
+	 * CaÌ�c Ä‘oan viÌ� duÌ£
 	 */
-	private ArrayList<String> examples;
+	private String examples;
 	
 	/**
-	 * Các đoạn do you know?
+	 * CaÌ�c Ä‘oaÌ£n do you know?
 	 */
-	private ArrayList<String> didYouKnow;
+	private String didYouKnow;
 	
 	/**
 	 * Ngay
@@ -50,8 +48,8 @@ public class WordOfDay {
 	}	
 	
 	public WordOfDay(String word, String phonetic, String wordFunction,
-			String mean, ArrayList<String> examples,
-			ArrayList<String> didYouKnow, String date) {
+			String mean, String examples,
+			String didYouKnow, String date) {
 		super();
 		this.word = word;
 		this.phonetic = phonetic;
@@ -86,18 +84,22 @@ public class WordOfDay {
 	public void setMean(String mean) {
 		this.mean = mean;
 	}
-	public ArrayList<String> getExamples() {
+	public String getExamples() {
 		return examples;
 	}
-	public void setExamples(ArrayList<String> examples) {
+
+	public void setExamples(String examples) {
 		this.examples = examples;
 	}
-	public ArrayList<String> getDidYouKnow() {
+
+	public String getDidYouKnow() {
 		return didYouKnow;
 	}
-	public void setDidYouKnow(ArrayList<String> doYouKnow) {
-		this.didYouKnow = doYouKnow;
+
+	public void setDidYouKnow(String didYouKnow) {
+		this.didYouKnow = didYouKnow;
 	}
+
 	public String getDate() {
 		return date;
 	}

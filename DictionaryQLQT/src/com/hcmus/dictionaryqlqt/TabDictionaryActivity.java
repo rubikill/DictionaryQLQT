@@ -35,9 +35,9 @@ import dao.IOHelperDAOImpl;
  * 
  * @author Minh Khanh
  * 
- * Tab tra cứu từ điển
+ * Tab tra cÆ°Ì�u tÆ°Ì€ Ä‘iÃªÌ‰n
  * 
- * các thuộc tính và hàm ai làm thì comment vào nhé
+ * caÌ�c thuÃ´Ì£c tiÌ�nh vaÌ€ haÌ€m ai laÌ€m thiÌ€ comment vaÌ€o nheÌ�
  *
  */
 
@@ -45,7 +45,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 				TextWatcher, OnItemClickListener, OnEditorActionListener {
 
 	/*
-	 * RequestCode gọi và nhận kết quả từ màn hình nhận diện giọng nói
+	 * RequestCode goÌ£i vaÌ€ nhÃ¢Ì£n kÃªÌ�t quaÌ‰ tÆ°Ì€ maÌ€n hiÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 	 */
 	private static final int SPEECH_RECOGNIZER_CODE = 1;	
 	private int statusSearchTab = 0; // status = 0: trang thai cancel search //
@@ -129,7 +129,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			}
 			break;
 		case R.id.btnVoiceSearch:
-			// mở màn hình nhận diện giọng nói
+			// mÆ¡Ì‰ maÌ€n hiÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 			startSpeechRecognizer();
 			break;
 		case R.id.btnCancelSearch:
@@ -147,7 +147,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}
 	
 	/*
-	 * mở màn hình nhận diện giọng nói
+	 * mÆ¡Ì‰ maÌ€n hiÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 	 */
 	private void startSpeechRecognizer(){
 		Intent intent = new Intent(this, SpeechRecognizerActivity.class);
@@ -155,21 +155,21 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	}	
 	
 	/*
-	 * lấy kết quả trả về của màn hình nhận diện giọng nói
+	 * lÃ¢Ì�y kÃªÌ�t quaÌ‰ traÌ‰ vÃªÌ€ cuÌ‰a maÌ€n hiÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == SPEECH_RECOGNIZER_CODE){
 			if (resultCode == RESULT_OK && data != null){
-				// lấy kết quả
+				// lÃ¢Ì�y kÃªÌ�t quaÌ‰
 				ArrayList<String> listText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 				
-				// nếu chỉ có 1 từ gọi hàm tìm
+				// nÃªÌ�u chiÌ‰ coÌ� 1 tÆ°Ì€ goÌ£i haÌ€m tiÌ€m
 				if (listText.size() == 1){
 					lookUp(listText.get(0));
 				}
-				// hiển thị danh sách kết quả lên dialog
+				// hiÃªÌ‰n thiÌ£ danh saÌ�ch kÃªÌ�t quaÌ‰ lÃªn dialog
 				else {				
 					String[] arrText = convertArrayListToArray(listText);
 					showResultDialog(arrText);
@@ -179,7 +179,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	}
 	
 	/*
-	 * hàm tra từ
+	 * haÌ€m tra tÆ°Ì€
 	 */
 	private void lookUp(String text){
 		Toast.makeText(this, "Looking up " + text, Toast.LENGTH_SHORT).show();
@@ -187,7 +187,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	}
 		
 	/*
-	 * hiển thị dialog danh sách các từ
+	 * hiÃªÌ‰n thiÌ£ dialog danh saÌ�ch caÌ�c tÆ°Ì€
 	 */
 	private void showResultDialog(final String[] arrText){
 		AlertDialog.Builder builder =  
@@ -197,11 +197,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	            new DialogInterface.OnClickListener() {
 	        @Override
 	        public void onClick(DialogInterface dialog, int pos) {
-	        	//gọi hàm tra từ khi từ được chọn
+	        	//goÌ£i haÌ€m tra tÆ°Ì€ khi tÆ°Ì€ Ä‘Æ°Æ¡Ì£c choÌ£n
 	        	lookUp(arrText[pos]);
 	        }
 	    });
-		
+		builder.show();
 	}
 
 	private void Search(String word) {
@@ -289,7 +289,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	}
 	
 	/*
-	 * chuyển Arraylist sang String[]
+	 * chuyÃªÌ‰n Arraylist sang String[]
 	 */
 	private String[] convertArrayListToArray(ArrayList<String> source){
 		String[] result = new String[source.size()];
@@ -299,12 +299,12 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	}
 
 	/*
-	 * sự kiện khi người dùng nhấn nút search trên bàn phím khi đang nhập từ	 * 
+	 * sÆ°Ì£ kiÃªÌ£n khi ngÆ°Æ¡Ì€i duÌ€ng nhÃ¢Ì�n nuÌ�t search trÃªn baÌ€n phiÌ�m khi Ä‘ang nhÃ¢Ì£p tÆ°Ì€	 * 
 	 */
 	@Override
 	public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
 		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-			// gọi hàm tra từ
+			// goÌ£i haÌ€m tra tÆ°Ì€
             lookUp(this.edWord.getText().toString());
             return true;
         }

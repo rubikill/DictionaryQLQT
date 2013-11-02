@@ -9,5 +9,21 @@
 	<string name="recording_status">Recording...</string>
 	<string name="preparing_status">Preparing...</string>
 	<string name="analyzing_status">Analyzing...</string>
-
+	
+	<!-- word of day parser -->
+	<string name="wod_service_url">http://khanhminh.somee.com/WordOfDay</string>
+	<string name="wod_url">http://www.merriam-webster.com/word-of-the-day/</string>
+	<string name="word_class_name">main_entry_word</string>
+	<string name="date_class_name">normal</string>
+	<string name="phonetic_class_name">pron</string>
+	<string name="mean_class_name">ssens</string>
+	<string name="examples_class_name">word_example_didu</string>
+	<string name="didyouknow_class_name">word_example_didu</string>
+	<string name="word_function_class_name">word_function</string>	
+	<!-- word of day parser -->
+	
+	<!-- tab daily -->
+	<string name="wod_message_loading_dialog">Loading Word of the Day</string>
+	<string name="wod_title_check_network_dialog">Word of the day</string>
+	<string name="wod_message_check_network_dialog">You need network access to view the Word of the day</string>
 </resources>
