@@ -1,6 +1,8 @@
 package com.hcmus.dictionaryqlqt;
 
 import java.util.ArrayList;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,7 +10,9 @@ import android.content.Intent;
 
 import model.Vocabulary;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -16,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -64,6 +69,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	private ArrayList<String> index;
 	private ArrayList<String> length;
 	
+	// webview chua nghia ca tu can tra
+	private WebView wvMean;
+	private String word;
+	private String mean;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,6 +82,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		initComponents();
 		setDictionaryTabScreen(statusSearchTab);
 		initData();
+		
+		mean = "Dự án từ điển Android";
+		//String word = edWord.getText().toString();
+		
+		
 	}
 
 	private void initData() {
@@ -115,6 +130,12 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		edWord.setOnClickListener(this);		
 		edWord.setOnEditorActionListener(this);
 		btnSearch.setOnClickListener(this);
+		
+		wvMean = (WebView) findViewById(R.id.wvMean);
+		wvMean.setVisibility(View.INVISIBLE);
+		
+		
+		// 
 	}
 
 	@Override
@@ -126,6 +147,10 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			if (statusSearchTab == 0) {
 				statusSearchTab = 1;
 				setDictionaryTabScreen(statusSearchTab);
+				
+				/*isEnter = true;
+				wvMean.setVisibility(View.VISIBLE);
+				touchMeanning(word, mean);*/
 			}
 			break;
 		case R.id.btnVoiceSearch:
@@ -201,7 +226,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	        	lookUp(arrText[pos]);
 	        }
 	    });
-		builder.show();
+		
 	}
 
 	private void Search(String word) {
@@ -234,6 +259,12 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			btnVoiceSearch.setVisibility(View.VISIBLE);
 			btnCancelSearch.setVisibility(View.VISIBLE);
 			// btnCancelSearch.setImageResource(R.drawable.button_cancelsearch_normal);
+			
+			// Nghia 
+			// hiện thi webview
+			wvMean.setVisibility(View.VISIBLE);
+			word = edWord.getText().toString();
+			touchMeanning(word, mean);
 
 		}
 	}
@@ -310,4 +341,89 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
         }
         return false;
 	}
+	
+	private final Handler handler1 = new Handler();
+	
+	// Thủ chuỗi hai -- Nghĩa của từ chúng ta touch vào
+	String mean2 = "Nhóm Phát triển: nhóm 2";
+	
+	private class AndroidBridge{
+		public void callAndroid(final String msg){
+			handler1.post(new Runnable() {
+				
+				@Override
+				public void run() {
+					TabDictionaryActivity.this.edWord.setText(msg.toString());	
+					String word = TabDictionaryActivity.this.edWord.getText().toString(); 
+					touchMeanning(word, mean2);
+				}
+			});
+		}
+		
+		public void callEventAddFavorite(final String msg){
+			handler1.post(new Runnable() {					
+				@Override
+				public void run() {
+					
+					// Viet su kien them vao danh sach yeu thich
+					Toast.makeText(TabDictionaryActivity.this, msg + "add favorite", Toast.LENGTH_SHORT).show();
+				
+				}
+			});
+		}
+		public void callEventAAudio(final String msg){
+			handler1.post(new Runnable() {					
+				@Override
+				public void run() {
+					
+					// Viet su kien nut audio
+					Toast.makeText(TabDictionaryActivity.this, msg + "audio", Toast.LENGTH_SHORT).show();
+				}
+			});
+		}		
+	}
+
+@SuppressLint("JavascriptInterface")
+public void touchMeanning(String wordText, String meanText){
+			
+	String html = "<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>"
+			+ "<head>" + "<meta charset='utf-8' />"
+				+ "<title>Title</title>"
+				+ "<link href='file:///android_asset/demo.css' type='text/css' rel='stylesheet' />"
+				+ "<script src='file:///android_asset/jquery-1.9.1.js' type='text/javascript'></script>"
+			+ "</head>" 
+			+ "<body>" 
+				+ "<div class='word'>"+wordText
+				+	"<img class = 'audio' src = 'file:///android_asset/definition-icon-audio.png'/>"
+				+	"<img class = 'favorite' src = 'file:///android_asset/definition-favorite-star-off.png'/>"
+				+"</div>"
+				+"&nbsp;&nbsp;"
+				+ "<div class='wotd'>" 
+				+ getXMLStr(meanText)
+				+ "</div>"
+				+ "<script src='file:///android_asset/callandroid.js' type='text/javascript'></script>"
+			+ "</body>" + "</html>";
+	
+	
+	wvMean.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "UTF-8", null);
+	
+	wvMean.getSettings().setJavaScriptEnabled(true);
+	wvMean.addJavascriptInterface(new AndroidBridge(), "android");
+}
+
+public String getXMLStr(String mean){
+	
+	String[] submean = mean.split(" ");
+	String meanXML = "";
+	for (int i = 0; i < submean.length; i ++){
+		boolean isSpan = true;			
+		if (isSpan)
+			meanXML +=  "<span class='mean'>"+submean[i].toString()+"</span>&nbsp;";
+		else
+			meanXML += submean[i].toString() +"&nbsp;";
+	}
+	
+	
+	return meanXML;
+}
 }

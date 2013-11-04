@@ -4,10 +4,13 @@
     android:layout_height="match_parent"
     tools:context=".TabDailyActivity" >
 
-    <WebView
-        android:id="@+id/wbvContent"
+    <TextView
+        android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="TextView" />
 
     <RelativeLayout
         android:layout_width="match_parent"
