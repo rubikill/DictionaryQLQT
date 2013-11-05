@@ -33,12 +33,12 @@ public class WordOfDay {
 	/**
 	 * Các đoan ví dụ
 	 */
-	private ArrayList<String> examples;
+	private String examples;
 	
 	/**
 	 * Các đoạn do you know?
 	 */
-	private ArrayList<String> didYouKnow;
+	private String didYouKnow;
 	
 	/**
 	 * Ngay
@@ -50,8 +50,8 @@ public class WordOfDay {
 	}	
 	
 	public WordOfDay(String word, String phonetic, String wordFunction,
-			String mean, ArrayList<String> examples,
-			ArrayList<String> didYouKnow, String date) {
+			String mean, String examples,
+			String didYouKnow, String date) {
 		super();
 		this.word = word;
 		this.phonetic = phonetic;
@@ -86,16 +86,16 @@ public class WordOfDay {
 	public void setMean(String mean) {
 		this.mean = mean;
 	}
-	public ArrayList<String> getExamples() {
+	public String getExamples() {
 		return examples;
 	}
-	public void setExamples(ArrayList<String> examples) {
+	public void setExamples(String examples) {
 		this.examples = examples;
 	}
-	public ArrayList<String> getDidYouKnow() {
+	public String getDidYouKnow() {
 		return didYouKnow;
 	}
-	public void setDidYouKnow(ArrayList<String> doYouKnow) {
+	public void setDidYouKnow(String doYouKnow) {
 		this.didYouKnow = doYouKnow;
 	}
 	public String getDate() {

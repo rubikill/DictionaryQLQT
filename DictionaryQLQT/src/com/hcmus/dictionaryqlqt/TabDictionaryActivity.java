@@ -231,7 +231,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	        	lookUp(arrText[pos]);
 	        }
 	    });
-		
+		builder.show();
 	}
 
 	public String Search(String word) {

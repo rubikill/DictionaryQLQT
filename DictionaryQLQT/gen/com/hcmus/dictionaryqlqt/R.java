@@ -182,7 +182,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int btnSearchbox=0x7f090018;
         public static final int btnVoiceSearch=0x7f090014;
         public static final int btnZoom=0x7f09000f;
-        public static final int fullscreen_content=0x7f09000e;
         public static final int icon_voice_search=0x7f09000a;
         public static final int imageView1=0x7f090017;
         public static final int imageView3=0x7f09001c;
@@ -201,6 +200,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tvResult=0x7f09001d;
         public static final int tvWord=0x7f09001b;
         public static final int tvedit=0x7f090001;
+        public static final int wbvContent=0x7f09000e;
         public static final int wvMean=0x7f09001e;
     }
     public static final class layout {
@@ -224,10 +224,27 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int action_settings=0x7f060001;
         public static final int analyzing_status=0x7f060006;
         public static final int app_name=0x7f060000;
+        public static final int date_class_name=0x7f06000a;
+        public static final int didyouknow_class_name=0x7f06000e;
+        public static final int examples_class_name=0x7f06000d;
         public static final int hello_world=0x7f060002;
+        public static final int mean_class_name=0x7f06000c;
+        public static final int phonetic_class_name=0x7f06000b;
         public static final int preparing_status=0x7f060005;
         public static final int recording_status=0x7f060004;
         public static final int title_activity_recording=0x7f060003;
+        public static final int wod_message_check_network_dialog=0x7f060012;
+        /**  word of day parser 
+ tab daily 
+         */
+        public static final int wod_message_loading_dialog=0x7f060010;
+        /**  word of day parser 
+         */
+        public static final int wod_service_url=0x7f060007;
+        public static final int wod_title_check_network_dialog=0x7f060011;
+        public static final int wod_url=0x7f060008;
+        public static final int word_class_name=0x7f060009;
+        public static final int word_function_class_name=0x7f06000f;
     }
     public static final class style {
         /** 
