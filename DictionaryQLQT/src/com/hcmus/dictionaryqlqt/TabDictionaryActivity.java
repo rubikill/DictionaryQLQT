@@ -105,7 +105,12 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		// Kiem tra file nghia ton tai chua, neu chua thi coppy tu asset
 		if (!fileHelper.checkFileExists())
 			fileHelper.coppyFile(this);
-
+		if(!ioHelper.checkDataFileExists("History.txt")){
+			ioHelper.coppyDataFile(this, "History.txt");
+		}
+		if(!ioHelper.checkDataFileExists("Favorite.txt")){
+			ioHelper.coppyDataFile(this, "Favorite.txt");
+		}
 		finder = new FinderDAOImpl(databaseHelper, fileHelper);
 		words = new ArrayList<String>();
 		index = new ArrayList<String>();
