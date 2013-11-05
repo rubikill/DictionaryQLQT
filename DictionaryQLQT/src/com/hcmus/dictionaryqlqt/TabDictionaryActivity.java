@@ -234,19 +234,20 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		
 	}
 
-	private void Search(String word) {
+	public String Search(String word) {
 		tvWord.setText(word);
 		Vocabulary vocabulary = finder.find(word);
+		String meaning = "";
 		if(vocabulary != null)
 		{
-			String mean = finder.getMean(vocabulary);
-			tvResult.setText(mean);
+			meaning = finder.getMean(vocabulary);
 		}
 		else
 		{
-			tvResult.setText("Word not found !");
+			meaning = "Word not found!";
 		}
-		
+		tvResult.setText(meaning);
+		return meaning;
 	}
 
 	private void setDictionaryTabScreen(int status) {
