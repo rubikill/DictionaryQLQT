@@ -17,32 +17,32 @@ public class TestTabDictionaryActivity extends AndroidTestCase {
 		super.tearDown();
 	}
 
-//	protected void testSearch(){
-//		String wordkey = "love";
-//		String meaning = dictionary.Search(wordkey);
-//		String expectMeaning = "tình yêu";
-//		int exMeaningLen = 8;
-//		String ouputMeaning = meaning.substring(0, exMeaningLen);
-//		assertEquals(expectMeaning, ouputMeaning);
-//	}
-//	
-//	protected void testSearch2(){
-//		String wordkey = "supermarket";
-//		String meaning = dictionary.Search(wordkey);
-//		String expectMeaning = "siêu thị";
-//		int exMeaningLen = 8;
-//		String ouputMeaning = meaning.substring(0, exMeaningLen);
-//		assertEquals(expectMeaning, ouputMeaning);
-//	}
-//	
-//	protected void testSearch3(){
-//		String wordkey = "volcano";
-//		String meaning = dictionary.Search(wordkey);
-//		String expectMeaning = "núi lửa";
-//		int exMeaningLen = 7;
-//		String ouputMeaning = meaning.substring(0, exMeaningLen);
-//		assertEquals(expectMeaning, ouputMeaning);
-//	}
+	protected void testSearch(){
+		String wordkey = "love";
+		String meaning = dictionary.Search(wordkey);
+		String expectMeaning = "tình yêu";
+		int exMeaningLen = 8;
+		String ouputMeaning = meaning.substring(0, exMeaningLen);
+		assertEquals(expectMeaning, ouputMeaning);
+	}
+	
+	protected void testSearch2(){
+		String wordkey = "supermarket";
+		String meaning = dictionary.Search(wordkey);
+		String expectMeaning = "siêu thị";
+		int exMeaningLen = 8;
+		String ouputMeaning = meaning.substring(0, exMeaningLen);
+		assertEquals(expectMeaning, ouputMeaning);
+	}
+	
+	protected void testSearch3(){
+		String wordkey = "volcano";
+		String meaning = dictionary.Search(wordkey);
+		String expectMeaning = "núi lửa";
+		int exMeaningLen = 7;
+		String ouputMeaning = meaning.substring(0, exMeaningLen);
+		assertEquals(expectMeaning, ouputMeaning);
+	}
 	
 	protected void testSearchNotFound(){
 		String wordkey = "00day";
