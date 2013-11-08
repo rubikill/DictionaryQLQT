@@ -89,7 +89,7 @@
             android:layout_marginLeft="15dp"
             android:src="@drawable/ic_searchbox" />
 
-        <MultiAutoCompleteTextView
+        <AutoCompleteTextView
             android:id="@+id/mactSearchText"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
@@ -99,7 +99,7 @@
             android:ems="10"
             android:gravity="bottom"
             android:imeOptions="actionSearch"
-            android:text="MultiAutoCompleteTextView" />
+            android:text="AutoCompleteTextView" />
 
     </RelativeLayout>
 

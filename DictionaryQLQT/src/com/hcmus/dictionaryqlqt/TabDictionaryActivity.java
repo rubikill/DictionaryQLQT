@@ -1,6 +1,9 @@
 package com.hcmus.dictionaryqlqt;
 
+import java.io.Console;
 import java.util.ArrayList;
+
+import org.apache.commons.logging.Log;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,6 +27,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
@@ -60,7 +64,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	private ImageView btnVoiceSearch, btnCancelSearch,
 			btnResetSearch, btnSearch;
 	private TextView tvWord, tvResult;
-	private MultiAutoCompleteTextView matchSearchText;
+	private AutoCompleteTextView matchSearchText;
 	public static final int REQUEST_CODE = 0;
 	private DatabaseHelperDAOImpl databaseHelper;
 	private FileHelperDAOImpl fileHelper;
@@ -126,7 +130,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		tvWord = (TextView) findViewById(R.id.tvWord);
 		tvResult = (TextView) findViewById(R.id.tvResult);
 		btnSearch = (ImageView) findViewById(R.id.btnSearchbox);
-		matchSearchText = (MultiAutoCompleteTextView) findViewById(R.id.mactSearchText);
+		matchSearchText = (AutoCompleteTextView) findViewById(R.id.mactSearchText);
 		matchSearchText.setThreshold(1);
 		matchSearchText.addTextChangedListener(TabDictionaryActivity.this);
 		matchSearchText.setOnItemClickListener(TabDictionaryActivity.this);
@@ -246,7 +250,8 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		{
 			meaning = "Word not found!";
 		}
-		tvResult.setText(meaning);
+		tvResult.setText("ok");
+		System.out.println(meaning);
 		return meaning;
 	}
 
