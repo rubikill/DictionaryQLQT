@@ -42,6 +42,7 @@
             android:layout_width="7dp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/btnVoiceSearch"
+            android:layout_marginTop="1dp"
             android:layout_toLeftOf="@+id/btnVoiceSearch"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_reset_search"
@@ -52,6 +53,7 @@
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgBranding"
+            android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/imageView4"
             android:src="@drawable/ic_reset_search" />
 
@@ -95,11 +97,15 @@
             android:layout_height="32dp"
             android:layout_alignBottom="@+id/btnResetsearch"
             android:layout_toLeftOf="@+id/btnResetsearch"
-            android:layout_toRightOf="@+id/btnSearchbox"
+            android:layout_toRightOf="@id/btnSearchbox"
             android:ems="10"
             android:gravity="bottom"
             android:imeOptions="actionSearch"
-            android:text="AutoCompleteTextView" />
+            android:text="AutoCompleteTextView"
+            android:textColorHighlight="@android:color/transparent"
+            android:textColorLink="@android:color/transparent"
+            android:background="@android:color/transparent"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
