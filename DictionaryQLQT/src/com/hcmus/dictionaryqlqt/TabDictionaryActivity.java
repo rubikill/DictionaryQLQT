@@ -1,28 +1,26 @@
 package com.hcmus.dictionaryqlqt;
 
-import java.io.Console;
 import java.util.ArrayList;
+import java.util.Locale;
 
-import org.apache.commons.logging.Log;
-
-import android.annotation.SuppressLint;
+import bridge.AndroidBridge;
+import bridge.AndroidBridgeListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import manager.SpeakerImpl;
+import manager.WebviewHelper;
 import model.Vocabulary;
 import android.os.Bundle;
-import android.os.Handler;
 import android.speech.RecognizerIntent;
-import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -30,10 +28,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 
 import dao.DatabaseHelperDAOImpl;
@@ -43,18 +37,14 @@ import dao.IOHelperDAOImpl;
 /**
  * 
  * @author Minh Khanh
- * 
- * Tab tra cÆ°Ì�u tÆ°Ì€ Ä‘iÃªÌ‰n
- * 
- * caÌ�c thuÃ´Ì£c tiÌ�nh vaÌ€ haÌ€m ai laÌ€m thiÌ€ comment vaÌ€o nheÌ�
  *
  */
 
 public class TabDictionaryActivity extends Activity implements OnClickListener,
-				TextWatcher, OnItemClickListener, OnEditorActionListener {
+				TextWatcher, OnItemClickListener, AndroidBridgeListener {
 
 	/*
-	 * RequestCode goÌ£i vaÌ€ nhÃ¢Ì£n kÃªÌ�t quaÌ‰ tÆ°Ì€ maÌ€n hiÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+	 * 
 	 */
 	private static final int SPEECH_RECOGNIZER_CODE = 1;	
 	private int statusSearchTab = 0; // status = 0: trang thai cancel search //
@@ -63,7 +53,6 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	private EditText edWord;
 	private ImageView btnVoiceSearch, btnCancelSearch,
 			btnResetSearch, btnSearch;
-	private TextView tvWord, tvResult;
 	private AutoCompleteTextView matchSearchText;
 	public static final int REQUEST_CODE = 0;
 	private DatabaseHelperDAOImpl databaseHelper;
@@ -75,8 +64,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	
 	// webview chua nghia ca tu can tra
 	private WebView wvMean;
-	private String word;
-	private String mean;
+	private AndroidBridge bridge;
+	
+	private SpeakerImpl speaker;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +75,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		setContentView(R.layout.activity_tab_dictionary);
 		initComponents();
 		setDictionaryTabScreen(statusSearchTab);
-		initData();
-		
-		mean = "Dự án từ điển Android";
-		//String word = edWord.getText().toString();
-		
-		
+		initData();	
 	}
 
 	private void initData() {
@@ -127,8 +112,6 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		btnVoiceSearch = (ImageView) findViewById(R.id.btnVoiceSearch);
 		btnCancelSearch = (ImageView) findViewById(R.id.btnCancelSearch);
 		btnResetSearch = (ImageView) findViewById(R.id.btnResetsearch);
-		tvWord = (TextView) findViewById(R.id.tvWord);
-		tvResult = (TextView) findViewById(R.id.tvResult);
 		btnSearch = (ImageView) findViewById(R.id.btnSearchbox);
 		matchSearchText = (AutoCompleteTextView) findViewById(R.id.mactSearchText);
 		matchSearchText.setThreshold(1);
@@ -137,14 +120,13 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		btnVoiceSearch.setOnClickListener(this);
 		btnCancelSearch.setOnClickListener(this);
 		edWord.setOnClickListener(this);		
-		edWord.setOnEditorActionListener(this);
 		btnSearch.setOnClickListener(this);
 		
-		wvMean = (WebView) findViewById(R.id.wvMean);
-		wvMean.setVisibility(View.INVISIBLE);
+		wvMean = (WebView) findViewById(R.id.wvMeaning);
+		bridge = new AndroidBridge();
+		bridge.setListener(this);
 		
-		
-		// 
+		speaker = new SpeakerImpl(getApplicationContext(), Locale.ENGLISH);
 	}
 
 	@Override
@@ -156,14 +138,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			if (statusSearchTab == 0) {
 				statusSearchTab = 1;
 				setDictionaryTabScreen(statusSearchTab);
-				
-				/*isEnter = true;
-				wvMean.setVisibility(View.VISIBLE);
-				touchMeanning(word, mean);*/
 			}
 			break;
 		case R.id.btnVoiceSearch:
-			// mÆ¡Ì‰ maÌ€n hiÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 			startSpeechRecognizer();
 			break;
 		case R.id.btnCancelSearch:
@@ -181,7 +158,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}
 	
 	/*
-	 * mÆ¡Ì‰ maÌ€n hiÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+	 * 
 	 */
 	private void startSpeechRecognizer(){
 		Intent intent = new Intent(this, SpeechRecognizerActivity.class);
@@ -189,21 +166,21 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	}	
 	
 	/*
-	 * lÃ¢Ì�y kÃªÌ�t quaÌ‰ traÌ‰ vÃªÌ€ cuÌ‰a maÌ€n hiÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+	 * 
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == SPEECH_RECOGNIZER_CODE){
 			if (resultCode == RESULT_OK && data != null){
-				// lÃ¢Ì�y kÃªÌ�t quaÌ‰
+				// 
 				ArrayList<String> listText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 				
-				// nÃªÌ�u chiÌ‰ coÌ� 1 tÆ°Ì€ goÌ£i haÌ€m tiÌ€m
+				// 
 				if (listText.size() == 1){
-					lookUp(listText.get(0));
+					Search(listText.get(0));
 				}
-				// hiÃªÌ‰n thiÌ£ danh saÌ�ch kÃªÌ�t quaÌ‰ lÃªn dialog
+				// 
 				else {				
 					String[] arrText = convertArrayListToArray(listText);
 					showResultDialog(arrText);
@@ -211,17 +188,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			}
 		}
 	}
-	
+			
 	/*
-	 * haÌ€m tra tÆ°Ì€
-	 */
-	private void lookUp(String text){
-		Toast.makeText(this, "Looking up " + text, Toast.LENGTH_SHORT).show();
-		Search(text);
-	}
-		
-	/*
-	 * hiÃªÌ‰n thiÌ£ dialog danh saÌ�ch caÌ�c tÆ°Ì€
+	 * 
 	 */
 	private void showResultDialog(final String[] arrText){
 		AlertDialog.Builder builder =  
@@ -231,16 +200,16 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	            new DialogInterface.OnClickListener() {
 	        @Override
 	        public void onClick(DialogInterface dialog, int pos) {
-	        	//goÌ£i haÌ€m tra tÆ°Ì€ khi tÆ°Ì€ Ä‘Æ°Æ¡Ì£c choÌ£n
-	        	lookUp(arrText[pos]);
+	        	//
+	        	Search(arrText[pos]);
 	        }
 	    });
 		builder.show();
 	}
 
-	public String Search(String word) {
-		tvWord.setText(word);
-		Vocabulary vocabulary = finder.find(word);
+	public void Search(String word) {
+		edWord.setText(word);
+		Vocabulary vocabulary = finder.find(word.trim());
 		String meaning = "";
 		if(vocabulary != null)
 		{
@@ -250,9 +219,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		{
 			meaning = "Word not found!";
 		}
-		tvResult.setText("ok");
-		System.out.println(meaning);
-		return meaning;
+		showMeaning(meaning);
+	}
+	
+	private void showMeaning(String meaning){
+		WebviewHelper.ShowMeaning(wvMean, meaning, bridge);
 	}
 
 	private void setDictionaryTabScreen(int status) {
@@ -269,14 +240,6 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			findViewById(R.id.imgSearchbarClick).setVisibility(View.VISIBLE);
 			btnVoiceSearch.setVisibility(View.VISIBLE);
 			btnCancelSearch.setVisibility(View.VISIBLE);
-			// btnCancelSearch.setImageResource(R.drawable.button_cancelsearch_normal);
-			
-			// Nghia 
-			// hiện thi webview
-			wvMean.setVisibility(View.VISIBLE);
-			word = edWord.getText().toString();
-			touchMeanning(word, mean);
-
 		}
 	}
 
@@ -322,16 +285,15 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		String word = words.get(arg2);
+		//String word = words.get(arg2);
 		String idx = index.get(arg2);
 		String l = length.get(arg2);
 		String mean = finder.getMean(idx,l);
-		tvWord.setText(word);
-		tvResult.setText(mean);
+		showMeaning(mean);
 	}
 	
 	/*
-	 * chuyÃªÌ‰n Arraylist sang String[]
+	 * 
 	 */
 	private String[] convertArrayListToArray(ArrayList<String> source){
 		String[] result = new String[source.size()];
@@ -340,101 +302,20 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		return result;
 	}
 
-	/*
-	 * sÆ°Ì£ kiÃªÌ£n khi ngÆ°Æ¡Ì€i duÌ€ng nhÃ¢Ì�n nuÌ�t search trÃªn baÌ€n phiÌ�m khi Ä‘ang nhÃ¢Ì£p tÆ°Ì€	 * 
-	 */
 	@Override
-	public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-			// goÌ£i haÌ€m tra tÆ°Ì€
-            lookUp(this.edWord.getText().toString());
-            return true;
-        }
-        return false;
-	}
-	
-	private final Handler handler1 = new Handler();
-	
-	// Thủ chuỗi hai -- Nghĩa của từ chúng ta touch vào
-	String mean2 = "Nhóm Phát triển: nhóm 2";
-	
-	private class AndroidBridge{
-		public void callAndroid(final String msg){
-			handler1.post(new Runnable() {
-				
-				@Override
-				public void run() {
-					TabDictionaryActivity.this.edWord.setText(msg.toString());	
-					String word = TabDictionaryActivity.this.edWord.getText().toString(); 
-					touchMeanning(word, mean2);
-				}
-			});
-		}
-		
-		public void callEventAddFavorite(final String msg){
-			handler1.post(new Runnable() {					
-				@Override
-				public void run() {
-					
-					// Viet su kien them vao danh sach yeu thich
-					Toast.makeText(TabDictionaryActivity.this, msg + "add favorite", Toast.LENGTH_SHORT).show();
-				
-				}
-			});
-		}
-		public void callEventAAudio(final String msg){
-			handler1.post(new Runnable() {					
-				@Override
-				public void run() {
-					
-					// Viet su kien nut audio
-					Toast.makeText(TabDictionaryActivity.this, msg + "audio", Toast.LENGTH_SHORT).show();
-				}
-			});
-		}		
+	public void speakOut(String text) {
+		speaker.speakOut(text);
+		Log.i("Dictionary - Speakout: ", text);
 	}
 
-@SuppressLint("JavascriptInterface")
-public void touchMeanning(String wordText, String meanText){
-			
-	String html = "<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>"
-			+ "<head>" + "<meta charset='utf-8' />"
-				+ "<title>Title</title>"
-				+ "<link href='file:///android_asset/demo.css' type='text/css' rel='stylesheet' />"
-				+ "<script src='file:///android_asset/jquery-1.9.1.js' type='text/javascript'></script>"
-			+ "</head>" 
-			+ "<body>" 
-				+ "<div class='word'>"+wordText
-				+	"<img class = 'audio' src = 'file:///android_asset/definition-icon-audio.png'/>"
-				+	"<img class = 'favorite' src = 'file:///android_asset/definition-favorite-star-off.png'/>"
-				+"</div>"
-				+"&nbsp;&nbsp;"
-				+ "<div class='wotd'>" 
-				+ getXMLStr(meanText)
-				+ "</div>"
-				+ "<script src='file:///android_asset/callandroid.js' type='text/javascript'></script>"
-			+ "</body>" + "</html>";
-	
-	
-	wvMean.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "UTF-8", null);
-	
-	wvMean.getSettings().setJavaScriptEnabled(true);
-	wvMean.addJavascriptInterface(new AndroidBridge(), "android");
-}
-
-public String getXMLStr(String mean){
-	
-	String[] submean = mean.split(" ");
-	String meanXML = "";
-	for (int i = 0; i < submean.length; i ++){
-		boolean isSpan = true;			
-		if (isSpan)
-			meanXML +=  "<span class='mean'>"+submean[i].toString()+"</span>&nbsp;";
-		else
-			meanXML += submean[i].toString() +"&nbsp;";
+	@Override
+	public void lookup(String text) {
+		Search(text);
 	}
 	
-	
-	return meanXML;
-}
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		speaker.shutdown();
+	}
 }
