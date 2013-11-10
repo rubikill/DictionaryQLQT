@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import model.WordOfDay;
+
 import bridge.AndroidBridge;
 
 import android.annotation.SuppressLint;
@@ -21,6 +23,22 @@ public class WebviewHelper {
 		webview.loadDataWithBaseURL("file:///android_asset/web/",
 				html.replace("@REPLACEHERE", meaning), "text/html", "UTF-8", null);
 		webview.addJavascriptInterface(bridge, "android");
+	}
+	
+	public static void ShowWOD(WebView webview, WordOfDay wod, AndroidBridge bridge){
+		Context context = webview.getContext();
+		String html = readHtml(context, "web/wod.html");
+		html = html.replace("@DATE", wod.getDate())
+				.replace("@WORD", wod.getWord())
+				.replace("@PRON", wod.getPhonetic())
+				.replace("@FUNC", wod.getWordFunction())
+				.replace("@MEAN", wod.getMean())
+				.replace("@EXAM", wod.getExamples())
+				.replace("@DYK", wod.getDidYouKnow());
+		webview.getSettings().setJavaScriptEnabled(true);
+		webview.loadDataWithBaseURL("file:///android_asset/web/",
+				html, "text/html", "UTF-8", null);
+		//webview.addJavascriptInterface(bridge, "android");
 	}
 	
 	private static String readHtml(Context context, String filename){

@@ -50,8 +50,16 @@ $(document).ready(function () {
 
 
     $('.example').click(function () {
-        alert($(this).text());
+		$(this).addClass("selected");		
+		// call android search word
         window.android.search($(this).text());
+		
+		//delay select
+		$(this).delay(800);
+		$(this).queue( function() {
+		  $(this).removeClass("selected");
+		  $(this).dequeue();
+		});
     });
 
     $('#audio').click(function () {

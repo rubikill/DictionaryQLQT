@@ -21,49 +21,49 @@ import android.content.Intent;
  * 
  * @author Minh Khanh
  *
- * Actitvity nhận diện giọng nói
+ * Actitvity nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
  * 
  */
 
 public class SpeechRecognizerActivity extends Activity implements OnClickListener, RecognitionListener {
 
 	/*
-	 * enum các trạng thái
+	 * enum caÌ�c traÌ£ng thaÌ�i
 	 */
 	enum State{
 		/*
-		 * khởi tạo nhận diện giọng nói
+		 * khÆ¡Ì‰i taÌ£o nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 		 */
 		Preparing,
 		
 		/*
-		 * đang ghi âm giọng nói
+		 * Ä‘ang ghi Ã¢m gioÌ£ng noÌ�i
 		 */		
 		Recording,
 		
 		/*
-		 * phân tích giọng nói
+		 * phÃ¢n tiÌ�ch gioÌ£ng noÌ�i
 		 */
 		Analyzing,
 	}
 	
 	/*
-	 * trình nhận diện giọng nói
+	 * triÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 	 */
 	private SpeechRecognizer recognizer;
 	
 	/*
-	 * textview trạng thái
+	 * textview traÌ£ng thaÌ�i
 	 */
 	private TextView tvTitle;
 	
 	/*
-	 * progressBar âm lượng
+	 * progressBar Ã¢m lÆ°Æ¡Ì£ng
 	 */
 	private ProgressBar pgbVolume;
 	
 	/*
-	 * button hủy 
+	 * button huÌ‰y 
 	 */
 	private Button btCancel;
 	
@@ -79,7 +79,7 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	}
 	
 	/*
-	 * khỏi tạo các thành phần giao diện và trình nhận diện giọng nói
+	 * khoÌ‰i taÌ£o caÌ�c thaÌ€nh phÃ¢Ì€n giao diÃªÌ£n vaÌ€ triÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 	 */
 	private void initComponents(){
 		tvTitle = (TextView) findViewById(R.id.activity_speech_recognizer_title);
@@ -92,10 +92,10 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	}
 	
 	/*
-	 * khởi động nhận diện giọng nói
+	 * khÆ¡Ì‰i Ä‘Ã´Ì£ng nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 	 */
 	private void startSpeechRecognizer(){
-		// set trạng thái là chuẩn bị
+		// set traÌ£ng thaÌ�i laÌ€ chuÃ¢Ì‰n biÌ£
 		setState(State.Preparing);
 		
 		Intent localIntent = new Intent(RecognizerIntent.ACTION_WEB_SEARCH);
@@ -106,7 +106,7 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	}	
 
 	/*
-	 * bắt sự sự kiện bấm hủy
+	 * bÄƒÌ�t sÆ°Ì£ sÆ°Ì£ kiÃªÌ£n bÃ¢Ì�m huÌ‰y
 	 */
 	@Override
 	public void onClick(View v) {
@@ -117,7 +117,7 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	}
 	
 	/*
-	 * hủy và trả về kết quả RESULT_CANCELED
+	 * huÌ‰y vaÌ€ traÌ‰ vÃªÌ€ kÃªÌ�t quaÌ‰ RESULT_CANCELED
 	 */
 	private void cancel(){
 		recognizer.cancel();
@@ -126,7 +126,7 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	}
 	
 	/*
-	 * thiết lập trạng thái
+	 * thiÃªÌ�t lÃ¢Ì£p traÌ£ng thaÌ�i
 	 */
 	private void setState(State state){
 		switch (state) {		
@@ -146,22 +146,22 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	}
 	
 	/*
-	 * hiển thị dialog lỗi
+	 * hiÃªÌ‰n thiÌ£ dialog lÃ´Ìƒi
 	 */
-	private void showDialog(){
+	private void showDialog(String msg){
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);		 
-        alertDialog.setTitle("Error");
-        alertDialog.setMessage("da co loi xay ra");
+        alertDialog.setTitle(R.string.speechrecognizer_title_dialog);
+        alertDialog.setMessage(msg);
         alertDialog.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
-            	// khởi động lại nhận diện giọng nói
+            	// khÆ¡Ì‰i Ä‘Ã´Ì£ng laÌ£i nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
             	startSpeechRecognizer();
             } 
         });
  
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-            	// hủy
+            	// huÌ‰y
             	cancel();
             }
         });
@@ -169,58 +169,67 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	}
 	
 	/*
-	 * sự kiện khi trình nhận diện giọng nói khỏi động xong
+	 * sÆ°Ì£ kiÃªÌ£n khi triÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i khoÌ‰i Ä‘Ã´Ì£ng xong
 	 */
 	@Override
 	public void onReadyForSpeech(Bundle params) {
-		// thay đổi trạng thái là ghi âm
+		// thay Ä‘Ã´Ì‰i traÌ£ng thaÌ�i laÌ€ ghi Ã¢m
 		setState(State.Recording);
 	}
 	
 	/*
-	 * sự kiện người dùng ngưng nói
+	 * sÆ°Ì£ kiÃªÌ£n ngÆ°Æ¡Ì€i duÌ€ng ngÆ°ng noÌ�i
 	 */
 	@Override
 	public void onEndOfSpeech() {
-		// chuyển sang trạng thái phân tích giọng nói
+		// chuyÃªÌ‰n sang traÌ£ng thaÌ�i phÃ¢n tiÌ�ch gioÌ£ng noÌ�i
 		setState(State.Analyzing);		
 	}	
 	
 	/*
-	 * sự kiện có lỗi xảy ra
+	 * sÆ°Ì£ kiÃªÌ£n coÌ� lÃ´Ìƒi xaÌ‰y ra
 	 */
 	@Override
 	public void onError(int error) {
-		// hiển thị thông báo
-		showDialog();
+		String msg = "";
+		switch (error) {
+		case SpeechRecognizer.ERROR_NETWORK:
+		case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+			msg = getString(R.string.speechrecognizer_network_error);
+			break;
+		default:
+			msg = getString(R.string.speechrecognizer_understand_error);
+			break;
+		}
+		showDialog(msg);
 	}
 	
 	/*
-	 * sự kiện khi có kết quả nhận diện giọng nói
+	 * sÆ°Ì£ kiÃªÌ£n khi coÌ� kÃªÌ�t quaÌ‰ nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 	 */
 	@Override
 	public void onResults(Bundle results) {
-		// lấy danh sách text nhận được
+		// lÃ¢Ì�y danh saÌ�ch text nhÃ¢Ì£n Ä‘Æ°Æ¡Ì£c
 		ArrayList<String> listTexts = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 		Intent resultIntent = new Intent();
 		resultIntent.putExtra(RecognizerIntent.EXTRA_RESULTS, listTexts);
-		// set trạng thái OK và trả về kết quả
+		// set traÌ£ng thaÌ�i OK vaÌ€ traÌ‰ vÃªÌ€ kÃªÌ�t quaÌ‰
 		setResult(RESULT_OK, resultIntent);
 		finish();				
 	}
 	
 	/*
-	 * sự kiện khi âm lượng thay đổi
+	 * sÆ°Ì£ kiÃªÌ£n khi Ã¢m lÆ°Æ¡Ì£ng thay Ä‘Ã´Ì‰i
 	 */
 	@Override
 	public void onRmsChanged(float rmsdB) {
-		// thiết lập trạng thái âm lượng lên progressbar
+		// thiÃªÌ�t lÃ¢Ì£p traÌ£ng thaÌ�i Ã¢m lÆ°Æ¡Ì£ng lÃªn progressbar
 		int value = (int)Math.max(0, 3 * rmsdB);
 		pgbVolume.setProgress(value);
 	}	
 	
 	/*
-	 * Hủy tài nguyên
+	 * HuÌ‰y taÌ€i nguyÃªn
 	 */
 	@Override
 	protected void onDestroy() {
@@ -229,7 +238,7 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	}
 
 	/*
-	 * Các sự kiện của trình nhận diện giọng nói không xử lý 
+	 * CaÌ�c sÆ°Ì£ kiÃªÌ£n cuÌ‰a triÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i khÃ´ng xÆ°Ì‰ lyÌ� 
 	 */
 	@Override
 	public void onBeginningOfSpeech() {}

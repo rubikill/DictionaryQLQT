@@ -1,0 +1,32 @@
+﻿.date {
+    font-size: 1em;
+    color: gray;
+    font-weight: bold;
+ 	margin-bottom: 15px;
+}
+
+.word {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.dot {
+    display: inline-block;
+    margin-bottom: 2px;
+    margin-left: 5px;
+    border-radius: 50%;
+    background-color: Black;
+    width: 5px;
+    height: 5px;
+}
+
+.func {
+    color: rgb(183,129,50);
+    font-style: italic;
+}
+
+.header {
+    font-weight: bold;
+    margin-top: 15px;
+	font-size: 1.2em;
+}

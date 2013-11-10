@@ -1,5 +1,6 @@
 package com.hcmus.dictionaryqlqt;
 
+import manager.WebviewHelper;
 import manager.WordOfDayHandler;
 import model.WordOfDay;
 import android.net.ConnectivityManager;
@@ -20,49 +21,59 @@ import android.content.DialogInterface;
  * 
  * @author Minh Khanh
  * 
- * Tab xem từ của ngày
+ * Tab xem tÆ°Ì€ cuÌ‰a ngaÌ€y
  */
 
 public class TabDailyActivity extends Activity {
 
 	/*
-	 * webview hiển thị nội dung
+	 * webview hiÃªÌ‰n thiÌ£ nÃ´Ì£i dung
 	 */
 	private WebView wbvContent;
 	
 	/*
-	 * progress dialog khi load dư liệu
+	 * progress dialog khi load dÆ° liÃªÌ£u
 	 */
 	private ProgressDialog pgbLoading;
+	
+	private final int WOD = 0;
+	private final int ERROR = 1;
+	private boolean isLoaded = false;
 
 	/*
-	 * xử lý cập nhật giao diện từ thread load dữ liệu
+	 * xÆ°Ì‰ lyÌ� cÃ¢Ì£p nhÃ¢Ì£t giao diÃªÌ£n tÆ°Ì€ thread load dÆ°Ìƒ liÃªÌ£u
 	 */
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
-			WordOfDay wod = (WordOfDay) msg.obj;
-			showContent(wod);
-			if (pgbLoading.isShowing()){
-				pgbLoading.dismiss();
+			if (msg.what == WOD){
+				WordOfDay wod = (WordOfDay) msg.obj;
+				showContent(wod);
+				isLoaded = true;
+			}
+			else if (msg.what == ERROR){
+				if (pgbLoading.isShowing()){
+					pgbLoading.dismiss();
+				}
+				showDialogCheckNetwork();				
 			}
 		};
 	};
 
 	/*
-	 * runnable lấy dữ liệu từ web
+	 * runnable lÃ¢Ì�y dÆ°Ìƒ liÃªÌ£u tÆ°Ì€ web
 	 */
 	private Runnable getWod = new Runnable() {
 
 		@Override
 		public void run() {
 			try {			
-				// lấy wod từ internet
+				// lÃ¢Ì�y wod tÆ°Ì€ internet
 				WordOfDayHandler wodHandler = new WordOfDayHandler(TabDailyActivity.this);
 				WordOfDay wod = wodHandler.getWod();
 				
-				// gọi handler cập nhật giao diện
-				Message msg = handler.obtainMessage(0, wod);
+				// goÌ£i handler cÃ¢Ì£p nhÃ¢Ì£t giao diÃªÌ£n
+				Message msg = handler.obtainMessage(WOD, wod);
 				handler.sendMessage(msg);
 
 			} catch (Exception e) {
@@ -78,28 +89,33 @@ public class TabDailyActivity extends Activity {
 
 		wbvContent = (WebView) findViewById(R.id.wbvContent);
 		pgbLoading = new ProgressDialog(this);
-		
-		// gọi load dữ liệu
-		loadData();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (!isLoaded){
+			loadData();
+		}
+	}
+	
 	/*
-	 * load dữ liệu
+	 * load dÆ°Ìƒ liÃªÌ£u
 	 */
 	private void loadData() {
 		if (isOnline()) {
-			// load dữ liệu nếu có kết nối mạng
+			// load dÆ°Ìƒ liÃªÌ£u nÃªÌ�u coÌ� kÃªÌ�t nÃ´Ì�i maÌ£ng
 			showLoadingDialog();
 			Thread thrLoadData = new Thread(getWod);
 			thrLoadData.start();
 		} else {
-			// thông báo kiểm tra kết nối
+			// thÃ´ng baÌ�o kiÃªÌ‰m tra kÃªÌ�t nÃ´Ì�i
 			showDialogCheckNetwork();
 		}
 	}
 
 	/*
-	 * kiểm tra kết nối mạng
+	 * kiÃªÌ‰m tra kÃªÌ�t nÃ´Ì�i maÌ£ng
 	 */
 	public boolean isOnline() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -120,7 +136,7 @@ public class TabDailyActivity extends Activity {
 	}
 
 	/*
-	 * show dialog báo lỗi truy cập mạng
+	 * show dialog baÌ�o lÃ´Ìƒi truy cÃ¢Ì£p maÌ£ng
 	 */
 	private void showDialogCheckNetwork() {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);		 
@@ -141,22 +157,12 @@ public class TabDailyActivity extends Activity {
 	}
 	
 	/*
-	 * show nội dung lên webview
+	 * show nÃ´Ì£i dung lÃªn webview
 	 */
 	private void showContent(WordOfDay wod) {
-		StringBuilder body = new StringBuilder();
-		body.append("<h3>" + wod.getDate() + "</h3>");
-		body.append("<h1>" + wod.getWord() + "</h1>");
-		body.append("<strong>" + wod.getPhonetic() + "</strong>");
-		body.append("<br/><em>" + wod.getWordFunction() + "</em>");
-		body.append("<br/><span>" + wod.getMean() + "</span>");
-		body.append("<h2>Examples:</h2>");
-		body.append("<p>" + wod.getExamples() + "</p>");
-		body.append("<h2>Did you know?</h2>");
-		body.append("<p>" + wod.getDidYouKnow() + "</p>");
-
-		String html = "<html><body>" + body.toString() + "</body></html>";
-		wbvContent.loadDataWithBaseURL("file:///android_asset/", html,
-				"text/html", "UTF-8", null);
+		WebviewHelper.ShowWOD(wbvContent, wod, null);
+		if (pgbLoading.isShowing()){
+			pgbLoading.dismiss();
+		}
 	}
 }

@@ -230,6 +230,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int phonetic_class_name=0x7f06000b;
         public static final int preparing_status=0x7f060005;
         public static final int recording_status=0x7f060004;
+        public static final int speechrecognizer_network_error=0x7f060014;
+        /**  speech recognizer 
+         */
+        public static final int speechrecognizer_title_dialog=0x7f060013;
+        public static final int speechrecognizer_understand_error=0x7f060015;
         public static final int title_activity_recording=0x7f060003;
         public static final int wod_message_check_network_dialog=0x7f060012;
         /**  word of day parser 
