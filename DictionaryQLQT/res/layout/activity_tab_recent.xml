@@ -1,15 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LinearLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
     tools:context=".TabRecentActivity" >
 
     <RelativeLayout
         android:id="@+id/RelativeLayout1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/bg_recent_bar"
         android:orientation="vertical" >
@@ -17,7 +18,7 @@
         <ImageView
             android:id="@+id/btnEditrecent"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical|center_horizontal"
@@ -32,28 +33,34 @@
 
             <ImageView
                 android:id="@+id/btnRecentDelete"
-                android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:src="@drawable/button_delete_normal" />
 
             <ImageView
                 android:id="@+id/btnRecentDeleteAll"
-                android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:src="@drawable/button_deleteall_normal" />
 
             <ImageView
                 android:id="@+id/btnRecentCancel"
-                android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:src="@drawable/button_cancel_normal" />
+
         </LinearLayout>
     </RelativeLayout>
 
     <ListView
         android:id="@+id/listRecentSearch"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="9" >
+
     </ListView>
 
 </LinearLayout>
