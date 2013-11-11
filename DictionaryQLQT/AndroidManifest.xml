@@ -7,6 +7,11 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="16" />
+                
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -15,14 +20,34 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.hcmus.dictionaryqlqt.FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.CopyrightsActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.AboutActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.RecommendedActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.ShareThisAppActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabDailyActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabDictionaryActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabFavoritesActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabMoreActivity" >
+        </activity>
+        <activity android:name="com.hcmus.dictionaryqlqt.TabRecentActivity" >
+        </activity>
+        <activity
+            android:name="com.hcmus.dictionaryqlqt.SpeechRecognizerActivity"
+            android:theme="@android:style/Theme.Dialog">
         </activity>
     </application>
 

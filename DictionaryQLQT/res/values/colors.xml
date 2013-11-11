@@ -1,5 +1,8 @@
 <resources>
-
     <color name="black_overlay">#66000000</color>
-
+    
+	<color name="prb_volume_start_color">#ffeaeef1</color>
+    <color name="prb_volume_end_color">#ffb2bbc4</color>
+    <color name="tv_status_voice_search_color">#ff545662</color>
+    <color name="bg_dialog">#00000000</color>
 </resources>
