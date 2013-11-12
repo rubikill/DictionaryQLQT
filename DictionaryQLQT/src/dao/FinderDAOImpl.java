@@ -25,6 +25,7 @@ public class FinderDAOImpl implements IFinderDAO{
 			vocabulary.setIndex(cur.getString(2));
 			vocabulary.setLength(cur.getString(3));
 		}
+		System.out.println(vocabulary.getWord()+"/"+vocabulary.getIndex()+"/"+vocabulary.getLength());
 		return vocabulary;
 	}
 
@@ -39,6 +40,7 @@ public class FinderDAOImpl implements IFinderDAO{
 					newVocabulary.setWord(cur.getString(1));
 					newVocabulary.setIndex(cur.getString(2));
 					newVocabulary.setLength(cur.getString(3));
+					//System.out.println(newVocabulary.getWord() + "/" + newVocabulary.getIndex() + "/" + newVocabulary.getLength());
 					vocabularies.add(newVocabulary);
 				} while (cur.moveToNext());
 			}

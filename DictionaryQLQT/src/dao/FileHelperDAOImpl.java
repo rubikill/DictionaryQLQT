@@ -36,20 +36,21 @@ public class FileHelperDAOImpl implements IFileHelper {
 			// TODO Auto-generated catch block
 			System.out.print(e.getMessage());
 		}
-		return new String(buff);
+		String result = new String(buff);
+		System.out.println(result);
+		return result;
 	}
 	
 	@Override
 	public int getDemicalValue (String str){
-		   String base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-		    int decValue = 0;
-		    int len = str.length();
-		    for (int i = 0; i<len; i++){		    		
-		          int pos = base64.indexOf(str.charAt(i),0);
-		          decValue += (int)Math.pow(64,len-i-1)*pos;
-		 }
-		   
-		return decValue;
-
+		String base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		int decValue = 0;
+		int len = str.length();
+		for (int i = 0; i<len; i++){
+			int pos = base64.indexOf(str.charAt(i),0);
+		    decValue += (int)Math.pow(64,len-i-1)*pos;
 		}
+		System.out.println(str+"/"+decValue);
+		return decValue;
+	}
 }
