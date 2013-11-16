@@ -37,7 +37,6 @@ public class FileHelperDAOImpl implements IFileHelper {
 			System.out.print(e.getMessage());
 		}
 		String result = new String(buff);
-		System.out.println(result);
 		return result;
 	}
 	
@@ -50,7 +49,6 @@ public class FileHelperDAOImpl implements IFileHelper {
 			int pos = base64.indexOf(str.charAt(i),0);
 		    decValue += (int)Math.pow(64,len-i-1)*pos;
 		}
-		System.out.println(str+"/"+decValue);
 		return decValue;
 	}
 }
