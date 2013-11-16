@@ -5,116 +5,94 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingRight="0dp"
+    android:weightSum="10"
     tools:context=".DictionaryActivity" >
 
-    <RelativeLayout
-        android:id="@+id/RelativeLayout1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="74dp"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:background="@drawable/bg_search_bar"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:weightSum="2" >
 
         <ImageView
             android:id="@+id/imgBranding"
-            android:layout_width="match_parent"
-            android:layout_height="31dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:scaleType="fitXY"
             android:src="@drawable/branding"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/imgSearchbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/searchbar1" />
+        <LinearLayout
+            android:id="@+id/LinearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.2"
+            android:orientation="horizontal"
+            android:weightSum="10" >
 
-        <ImageView
-            android:id="@+id/imgSearchbarClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/searchbar2" />
+            <ImageView
+                android:id="@+id/btnSearchbox"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_searchbox" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="7dp"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/btnVoiceSearch"
-            android:layout_marginTop="1dp"
-            android:layout_toLeftOf="@+id/btnVoiceSearch"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_reset_search"
-            android:visibility="invisible" />
+            <AutoCompleteTextView
+                android:id="@+id/mactSearchText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="6"
+                android:background="@drawable/searchbar1"
+                android:gravity="center"
+                android:imeOptions="actionSearch"
+                android:text="AutoCompleteTextView"
+                android:textColorHighlight="@android:color/transparent"
+                android:textColorLink="@android:color/transparent"
+                android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/btnResetsearch"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imgBranding"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/imageView4"
-            android:src="@drawable/ic_reset_search" />
+            <ImageView
+                android:id="@+id/btnResetsearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_reset_search" />
 
-        <ImageView
-            android:id="@+id/btnVoiceSearch"
-            android:layout_width="41dp"
-            android:layout_height="34dp"
-            android:layout_alignTop="@+id/btnResetsearch"
-            android:layout_toLeftOf="@+id/btnCancelSearch"
-            android:src="@drawable/button_audio_normal" />
+            <ImageView
+                android:id="@+id/btnCancelSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/button_cancelsearch_normal" />
 
-        <ImageView
-            android:id="@+id/btnCancelSearch"
-            android:layout_width="38dp"
-            android:layout_height="34dp"
-            android:layout_alignTop="@+id/btnVoiceSearch"
-            android:layout_toLeftOf="@+id/imageView1"
-            android:src="@drawable/button_cancelsearch_normal" />
+            <ImageView
+                android:id="@+id/btnVoiceSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/button_audio_normal" />
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/btnCancelSearch"
-            android:src="@drawable/tab_focus_bar_right"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/btnSearchbox"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/btnResetsearch"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/ic_searchbox" />
-
-        <AutoCompleteTextView
-            android:id="@+id/mactSearchText"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_alignBottom="@+id/btnResetsearch"
-            android:layout_toLeftOf="@+id/btnResetsearch"
-            android:layout_toRightOf="@id/btnSearchbox"
-            android:ems="10"
-            android:gravity="bottom"
-            android:imeOptions="actionSearch"
-            android:text="AutoCompleteTextView"
-            android:textColorHighlight="@android:color/transparent"
-            android:textColorLink="@android:color/transparent"
-            android:background="@android:color/transparent"
-            android:textSize="16sp" />
-
-    </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="0dp"
         android:layout_marginTop="0dp"
+        android:layout_weight="8"
         android:background="#FF0000" >
 
         <ImageView
@@ -129,7 +107,6 @@
             android:id="@+id/wvMeaning"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
     </RelativeLayout>
 
 </LinearLayout>

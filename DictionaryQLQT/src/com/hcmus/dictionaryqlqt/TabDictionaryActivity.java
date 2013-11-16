@@ -29,30 +29,30 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-
 import dao.DatabaseHelperDAOImpl;
 import dao.FileHelperDAOImpl;
 import dao.FinderDAOImpl;
 import dao.IOHelperDAOImpl;
+
 /**
  * 
  * @author Minh Khanh
- *
+ * 
  */
 
 public class TabDictionaryActivity extends Activity implements OnClickListener,
-				TextWatcher, OnItemClickListener, AndroidBridgeListener {
+		TextWatcher, OnItemClickListener, AndroidBridgeListener {
 
 	/*
 	 * 
 	 */
-	private static final int SPEECH_RECOGNIZER_CODE = 1;	
+	private static final int SPEECH_RECOGNIZER_CODE = 1;
 	private int statusSearchTab = 0; // status = 0: trang thai cancel search //
 										// status = 1: sau khi click vao search
 										// box
 	private EditText edWord;
-	private ImageView btnVoiceSearch, btnCancelSearch,
-			btnResetSearch, btnSearch;
+	private ImageView btnVoiceSearch, btnCancelSearch, btnResetSearch,
+			btnSearch;
 	private AutoCompleteTextView matchSearchText;
 	public static final int REQUEST_CODE = 0;
 	private DatabaseHelperDAOImpl databaseHelper;
@@ -61,13 +61,13 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	private ArrayList<String> words;
 	private ArrayList<String> index;
 	private ArrayList<String> length;
-	
+
 	// webview chua nghia ca tu can tra
 	private WebView wvMean;
 	private AndroidBridge bridge;
-	
+
 	private SpeakerImpl speaker;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,10 +94,10 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		// Kiem tra file nghia ton tai chua, neu chua thi coppy tu asset
 		if (!fileHelper.checkFileExists())
 			fileHelper.coppyFile(this);
-		if(!ioHelper.checkDataFileExists("History.txt")){
+		if (!ioHelper.checkDataFileExists("History.txt")) {
 			ioHelper.coppyDataFile(this, "History.txt");
 		}
-		if(!ioHelper.checkDataFileExists("Favorite.txt")){
+		if (!ioHelper.checkDataFileExists("Favorite.txt")) {
 			ioHelper.coppyDataFile(this, "Favorite.txt");
 		}
 		finder = new FinderDAOImpl(databaseHelper, fileHelper);
@@ -119,13 +119,13 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		matchSearchText.setOnItemClickListener(TabDictionaryActivity.this);
 		btnVoiceSearch.setOnClickListener(this);
 		btnCancelSearch.setOnClickListener(this);
-		edWord.setOnClickListener(this);		
+		edWord.setOnClickListener(this);
 		btnSearch.setOnClickListener(this);
-		
+
 		wvMean = (WebView) findViewById(R.id.wvMeaning);
 		bridge = new AndroidBridge();
 		bridge.setListener(this);
-		
+
 		speaker = new SpeakerImpl(getApplicationContext(), Locale.ENGLISH);
 	}
 
@@ -152,58 +152,57 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			btnResetSearch.setVisibility(View.INVISIBLE);
 			break;
 		case R.id.btnSearchbox:
-				Search(matchSearchText.getText().toString());
-				break;
-			}
+			Search(matchSearchText.getText().toString());
+			break;
 		}
-	
+	}
+
 	/*
 	 * 
 	 */
-	private void startSpeechRecognizer(){
+	private void startSpeechRecognizer() {
 		Intent intent = new Intent(this, SpeechRecognizerActivity.class);
 		startActivityForResult(intent, SPEECH_RECOGNIZER_CODE);
-	}	
-	
+	}
+
 	/*
 	 * 
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == SPEECH_RECOGNIZER_CODE){
-			if (resultCode == RESULT_OK && data != null){
-				// 
-				ArrayList<String> listText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-				
-				// 
-				if (listText.size() == 1){
+		if (requestCode == SPEECH_RECOGNIZER_CODE) {
+			if (resultCode == RESULT_OK && data != null) {
+				//
+				ArrayList<String> listText = data
+						.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+				//
+				if (listText.size() == 1) {
 					Search(listText.get(0));
 				}
-				// 
-				else {				
+				//
+				else {
 					String[] arrText = convertArrayListToArray(listText);
 					showResultDialog(arrText);
 				}
 			}
 		}
 	}
-			
+
 	/*
 	 * 
 	 */
-	private void showResultDialog(final String[] arrText){
-		AlertDialog.Builder builder =  
-	            new AlertDialog.Builder(this);
+	private void showResultDialog(final String[] arrText) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(arrText.length + " possible words");
-		builder.setItems(arrText,
-	            new DialogInterface.OnClickListener() {
-	        @Override
-	        public void onClick(DialogInterface dialog, int pos) {
-	        	//
-	        	Search(arrText[pos]);
-	        }
-	    });
+		builder.setItems(arrText, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int pos) {
+				//
+				Search(arrText[pos]);
+			}
+		});
 		builder.show();
 	}
 
@@ -211,33 +210,30 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		edWord.setText(word);
 		Vocabulary vocabulary = finder.find(word.trim());
 		String meaning = "";
-		if(vocabulary != null)
-		{
+		if (vocabulary != null) {
 			meaning = finder.getMean(vocabulary);
-		}
-		else
-		{
+		} else {
 			meaning = "Word not found!";
 		}
 		showMeaning(meaning);
 	}
-	
-	private void showMeaning(String meaning){
+
+	private void showMeaning(String meaning) {
 		WebviewHelper.ShowMeaning(wvMean, meaning, bridge);
 	}
 
 	private void setDictionaryTabScreen(int status) {
 		btnResetSearch.setVisibility(View.INVISIBLE);
 		if (status == 0) {
-			findViewById(R.id.imgSearchbar).setVisibility(View.VISIBLE);
-			findViewById(R.id.imgSearchbarClick).setVisibility(View.INVISIBLE);
+//			findViewById(R.id.imgSearchbar).setVisibility(View.VISIBLE);
+//			findViewById(R.id.imgSearchbarClick).setVisibility(View.INVISIBLE);
 			btnVoiceSearch.setVisibility(View.VISIBLE);
 			btnCancelSearch.setVisibility(View.GONE);
 			edWord.setText("");
 
 		} else if (status == 1) {
-			findViewById(R.id.imgSearchbar).setVisibility(View.INVISIBLE);
-			findViewById(R.id.imgSearchbarClick).setVisibility(View.VISIBLE);
+//			findViewById(R.id.imgSearchbar).setVisibility(View.INVISIBLE);
+//			findViewById(R.id.imgSearchbarClick).setVisibility(View.VISIBLE);
 			btnVoiceSearch.setVisibility(View.VISIBLE);
 			btnCancelSearch.setVisibility(View.VISIBLE);
 		}
@@ -285,20 +281,20 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		//String word = words.get(arg2);
+		// String word = words.get(arg2);
 		String idx = index.get(arg2);
 		String l = length.get(arg2);
-		String mean = finder.getMean(idx,l);
+		String mean = finder.getMean(idx, l);
 		showMeaning(mean);
 	}
-	
+
 	/*
 	 * 
 	 */
-	private String[] convertArrayListToArray(ArrayList<String> source){
+	private String[] convertArrayListToArray(ArrayList<String> source) {
 		String[] result = new String[source.size()];
 		source.toArray(result);
-		
+
 		return result;
 	}
 
@@ -312,7 +308,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	public void lookup(String text) {
 		Search(text);
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
