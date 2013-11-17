@@ -39,7 +39,7 @@ public class FavoriteHistoryDAO {
 	
 		//						idaction : file can doc
 		//						context 
-	public ArrayList<String> ReadFile(int idAction , Context ctx)throws IOException{
+	public ArrayList<String> ReadFile(int idAction)throws IOException{
 		ArrayList<String> _ResultReadFile = new ArrayList<String>();
 		String fileOpen =Environment.getExternalStorageDirectory()+"/"+FileOpen(idAction);
 		
@@ -76,8 +76,8 @@ public class FavoriteHistoryDAO {
 	//						keyword: tu can ghi ra file
 	//						idaction : file can luu
 	//						context 
-	public void WriteFile(String keyWord , int idAction, Context ctx) throws IOException{
-		ArrayList<String> _result = ReadFile(1,ctx);
+	public void WriteFile(String keyWord , int idAction) throws IOException{
+		ArrayList<String> _result = ReadFile(idAction);
 		String _tempText ="";
 		for (String string : _result) {
 			_tempText += string + "\n";
@@ -106,5 +106,62 @@ public class FavoriteHistoryDAO {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void DeleteAll(int idAction)
+	{
+		String fileOpen =Environment.getExternalStorageDirectory()+"/"+ FileOpen(idAction);
+
+		try {
+			File f = new File(fileOpen);
+			FileOutputStream fos = new FileOutputStream(f);
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+					fos));
+
+			writer.write("");
+			// commit
+			writer.flush();
+
+			writer.close();
+			fos.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void DeleteItem(String word , int idAction) throws IOException{
+		ArrayList<String> _result = ReadFile(idAction);
+		String _tempText ="";
+		for (String string : _result) {
+			if(!string.equals(word)){
+				_tempText += string + "\n";
+			}
+		}
+		String fileOpen =Environment.getExternalStorageDirectory()+"/"+ FileOpen(idAction);
+		
+		try {
+			File f = new File(fileOpen);
+			FileOutputStream fos = new FileOutputStream(f);
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+					fos));
+
+			writer.write(_tempText);
+			// commit
+			writer.flush();
+
+			writer.close();
+			fos.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
