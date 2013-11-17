@@ -78,6 +78,12 @@ public class Vocabulary {
 		this.ndMean = ndMean;
 		this.rdMean = rdMean;
 	}
+	
+	public Vocabulary(String word, String stMean) {
+		super();
+		this.word = word;
+		this.stMean = stMean;
+	}
 
 	public String getLength() {
 		return length;

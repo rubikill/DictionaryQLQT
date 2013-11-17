@@ -162,44 +162,40 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class id {
         public static final int LinearLayout=0x7f090007;
         public static final int LinearLayout1=0x7f090000;
-        public static final int LinearLayout2=0x7f090022;
+        public static final int LinearLayout2=0x7f09001e;
         public static final int RelativeLayout1=0x7f090006;
-        public static final int action_settings=0x7f090027;
+        public static final int action_settings=0x7f090023;
         public static final int activity_activity_speech_recognizer_button_cancel=0x7f09000d;
         public static final int activity_speech_recognizer_progressbar=0x7f09000c;
         public static final int activity_speech_recognizer_title=0x7f09000b;
-        public static final int btnCancelSearch=0x7f090016;
+        public static final int btnCancelSearch=0x7f090014;
         public static final int btnEditDelete=0x7f090003;
-        public static final int btnEditFavorites=0x7f09001c;
-        public static final int btnEditrecent=0x7f090021;
-        public static final int btnFavCancel=0x7f09001f;
-        public static final int btnFavDelete=0x7f09001d;
-        public static final int btnFavDeleteAll=0x7f09001e;
-        public static final int btnRecentCancel=0x7f090025;
-        public static final int btnRecentDelete=0x7f090023;
-        public static final int btnRecentDeleteAll=0x7f090024;
-        public static final int btnResetsearch=0x7f090015;
-        public static final int btnSearchbox=0x7f090018;
-        public static final int btnVoiceSearch=0x7f090014;
+        public static final int btnEditFavorites=0x7f090018;
+        public static final int btnEditrecent=0x7f09001d;
+        public static final int btnFavCancel=0x7f09001b;
+        public static final int btnFavDelete=0x7f090019;
+        public static final int btnFavDeleteAll=0x7f09001a;
+        public static final int btnRecentCancel=0x7f090021;
+        public static final int btnRecentDelete=0x7f09001f;
+        public static final int btnRecentDeleteAll=0x7f090020;
+        public static final int btnResetsearch=0x7f090013;
+        public static final int btnSearchbox=0x7f090011;
+        public static final int btnVoiceSearch=0x7f090015;
         public static final int btnZoom=0x7f09000f;
         public static final int icon_voice_search=0x7f09000a;
-        public static final int imageView1=0x7f090017;
-        public static final int imageView3=0x7f09001a;
-        public static final int imageView4=0x7f090013;
+        public static final int imageView3=0x7f090016;
         public static final int imgBranding=0x7f090010;
-        public static final int imgSearchbar=0x7f090011;
-        public static final int imgSearchbarClick=0x7f090012;
         public static final int imgViewLogo=0x7f090008;
-        public static final int listFavorites=0x7f090020;
-        public static final int listRecentSearch=0x7f090026;
-        public static final int mactSearchText=0x7f090019;
+        public static final int listFavorites=0x7f09001c;
+        public static final int listRecentSearch=0x7f090022;
+        public static final int mactSearchText=0x7f090012;
         public static final int tvAbout=0x7f090002;
         public static final int tvAbout1=0x7f090004;
         public static final int tvCopyrights=0x7f090005;
         public static final int tvLabel=0x7f090009;
         public static final int tvedit=0x7f090001;
         public static final int wbvContent=0x7f09000e;
-        public static final int wvMeaning=0x7f09001b;
+        public static final int wvMeaning=0x7f090017;
     }
     public static final class layout {
         public static final int activity_about=0x7f030000;
@@ -223,6 +219,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int analyzing_status=0x7f060006;
         public static final int app_name=0x7f060000;
         public static final int date_class_name=0x7f06000a;
+        /**  tab dictonary 
+         */
+        public static final int dict_message_loading_dialog=0x7f060013;
         public static final int didyouknow_class_name=0x7f06000e;
         public static final int examples_class_name=0x7f06000d;
         public static final int hello_world=0x7f060002;
@@ -230,11 +229,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int phonetic_class_name=0x7f06000b;
         public static final int preparing_status=0x7f060005;
         public static final int recording_status=0x7f060004;
-        public static final int speechrecognizer_network_error=0x7f060014;
+        public static final int speechrecognizer_network_error=0x7f060015;
         /**  speech recognizer 
          */
-        public static final int speechrecognizer_title_dialog=0x7f060013;
-        public static final int speechrecognizer_understand_error=0x7f060015;
+        public static final int speechrecognizer_title_dialog=0x7f060014;
+        public static final int speechrecognizer_understand_error=0x7f060016;
         public static final int title_activity_recording=0x7f060003;
         public static final int wod_message_check_network_dialog=0x7f060012;
         /**  word of day parser 

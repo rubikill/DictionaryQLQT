@@ -21,27 +21,31 @@ import android.content.DialogInterface;
  * 
  * @author Minh Khanh
  * 
- * Tab xem tÆ°Ì€ cuÌ‰a ngaÌ€y
+ * Tab xem word of day
  */
 
 public class TabDailyActivity extends Activity {
 
 	/*
-	 * webview hiÃªÌ‰n thiÌ£ nÃ´Ì£i dung
+	 * webview hien thi noi dung
 	 */
 	private WebView wbvContent;
 	
 	/*
-	 * progress dialog khi load dÆ° liÃªÌ£u
+	 * progress dialog khi load noi dung
 	 */
 	private ProgressDialog pgbLoading;
 	
 	private final int WOD = 0;
 	private final int ERROR = 1;
+	
+	/*
+	 * luu trang thai da load hay chua
+	 */
 	private boolean isLoaded = false;
 
-	/*
-	 * xÆ°Ì‰ lyÌ� cÃ¢Ì£p nhÃ¢Ì£t giao diÃªÌ£n tÆ°Ì€ thread load dÆ°Ìƒ liÃªÌ£u
+	/**
+	 * xu ly cap nhat giao dien tu thread load du lieu
 	 */
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
@@ -60,19 +64,17 @@ public class TabDailyActivity extends Activity {
 		};
 	};
 
-	/*
-	 * runnable lÃ¢Ì�y dÆ°Ìƒ liÃªÌ£u tÆ°Ì€ web
+	/**
+	 * load wod tu internet
 	 */
 	private Runnable getWod = new Runnable() {
 
 		@Override
 		public void run() {
-			try {			
-				// lÃ¢Ì�y wod tÆ°Ì€ internet
+			try {
 				WordOfDayHandler wodHandler = new WordOfDayHandler(TabDailyActivity.this);
 				WordOfDay wod = wodHandler.getWod();
 				
-				// goÌ£i handler cÃ¢Ì£p nhÃ¢Ì£t giao diÃªÌ£n
 				Message msg = handler.obtainMessage(WOD, wod);
 				handler.sendMessage(msg);
 
@@ -90,32 +92,34 @@ public class TabDailyActivity extends Activity {
 		wbvContent = (WebView) findViewById(R.id.wbvContent);
 		pgbLoading = new ProgressDialog(this);
 	}
-
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
+		// kiem da load hay chua
 		if (!isLoaded){
 			loadData();
 		}
 	}
 	
-	/*
-	 * load dÆ°Ìƒ liÃªÌ£u
+	/**
+	 * load du lieu
 	 */
 	private void loadData() {
 		if (isOnline()) {
-			// load dÆ°Ìƒ liÃªÌ£u nÃªÌ�u coÌ� kÃªÌ�t nÃ´Ì�i maÌ£ng
+			// neu mang kha dun thi load du lieu
 			showLoadingDialog();
 			Thread thrLoadData = new Thread(getWod);
 			thrLoadData.start();
 		} else {
-			// thÃ´ng baÌ�o kiÃªÌ‰m tra kÃªÌ�t nÃ´Ì�i
+			// hien thi thong bao mang khong kha dung
 			showDialogCheckNetwork();
 		}
 	}
 
-	/*
-	 * kiÃªÌ‰m tra kÃªÌ�t nÃ´Ì�i maÌ£ng
+	/**
+	 * kiem tra ket noi mang
+	 * @return true neu co ket noi, false neu nguoc lai
 	 */
 	public boolean isOnline() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -127,7 +131,7 @@ public class TabDailyActivity extends Activity {
 	}
 	
 	/*
-	 * show dialog loading
+	 * hien thi dialog loading khi lay du lieu
 	 */
 	private void showLoadingDialog(){
 		String msg = getResources().getString(R.string.wod_message_loading_dialog);
@@ -136,7 +140,7 @@ public class TabDailyActivity extends Activity {
 	}
 
 	/*
-	 * show dialog baÌ�o lÃ´Ìƒi truy cÃ¢Ì£p maÌ£ng
+	 * show dialog kiem tra ket noi
 	 */
 	private void showDialogCheckNetwork() {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);		 
@@ -157,7 +161,7 @@ public class TabDailyActivity extends Activity {
 	}
 	
 	/*
-	 * show nÃ´Ì£i dung lÃªn webview
+	 * show wod day len webview
 	 */
 	private void showContent(WordOfDay wod) {
 		WebviewHelper.ShowWOD(wbvContent, wod, null);
