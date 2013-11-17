@@ -1,6 +1,7 @@
 package dao;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import model.Vocabulary;
@@ -48,9 +49,16 @@ public class FinderDAOImpl implements IFinderDAO{
 		}
 		return vocabularies;
 	}
-
+	FavoriteHistoryDAO favoriteHistoryDao = new FavoriteHistoryDAO();
 	@Override
 	public String getMean(Vocabulary vocabulary) {
+		
+		try {
+			favoriteHistoryDao.WriteFile(vocabulary.getWord(), 1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return myFileHelper.getMean(vocabulary.getIndex(), vocabulary.getLength());
 	}
 	@Override

@@ -1,5 +1,6 @@
 package com.hcmus.dictionaryqlqt;
 
+import dao.FavoriteHistoryDAO;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -31,7 +32,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener{
 		btnFavDeleteAll.setOnClickListener(this);
 		btnFavCancel.setOnClickListener(this);
 	}
-
+	FavoriteHistoryDAO favoriteHistory = new FavoriteHistoryDAO();
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
@@ -43,10 +44,11 @@ public class TabFavoritesActivity extends Activity implements OnClickListener{
 			btnFavCancel.setVisibility(0);
 			break;
 		case R.id.btnFavDelete:
-			
+			//lay tu can xoa roi them vao thay cho keyword
+			//favoriteHistory.DeleteItem(Keyword, 2);
 			break;
 		case R.id.btnFavDeleteAll:
-	
+			favoriteHistory.DeleteAll(2);
 			break;
 		case R.id.btnFavCancel:
 			btnEditFavorites.setVisibility(0);
