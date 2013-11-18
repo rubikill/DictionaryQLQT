@@ -54,7 +54,7 @@ $(document).ready(function () {
 		// call android search word
         window.android.search($(this).text());
 		
-		//delay select
+		//delay selected
 		$(this).delay(800);
 		$(this).queue( function() {
 		  $(this).removeClass("selected");
@@ -66,16 +66,34 @@ $(document).ready(function () {
         window.android.speakOut($('.word').text());
     });
 
-    $('#favorite').click(function () {
-        var starred = $(this).attr('data-starred') == 'true' ? true : false;
-        if (starred) {
-            $(this).removeClass('starred');
-        } else {
-            $(this).addClass('starred');
-        }
-        $(this).attr('data-starred', !starred);
-    });
+    $('#favorite').click(favoriteClick);
+	window.android.onLoadComplete();
 });
+
+function setFavorite(isFavorite){
+	var starred = $('#favorite').attr('data-starred') == 'true' ? true : false;
+	if (starred == isFavorite) return;
+	if (isFavorite){
+		$('#favorite').addClass('starred');
+		$('#favorite').attr('data-starred', true);
+	} else {
+		$(this).removeClass('starred');
+		$('#favorite').attr('data-starred', false);
+	}
+}
+
+function favoriteClick(){
+	var word = $('.word').text();
+    var starred = $(this).attr('data-starred') == 'true' ? true : false;
+    if (starred) {
+        $(this).removeClass('starred');
+		window.android.removeFavorite(word);
+    } else {
+        $(this).addClass('starred');
+		window.android.setFavorite(word);
+    }
+    $(this).attr('data-starred', !starred);
+}
 
 function createHeader(text) {
     var index = text.indexOf('/', 0);

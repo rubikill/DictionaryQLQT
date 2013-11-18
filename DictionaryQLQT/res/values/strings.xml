@@ -27,6 +27,9 @@
 	<string name="wod_title_check_network_dialog">Word of the day</string>
 	<string name="wod_message_check_network_dialog">You need network access to view the Word of the Day.</string>
 	
+	<!-- tab dictonary -->
+	<string name="dict_message_loading_dialog">Loading definition...</string>
+	
 	<!-- speech recognizer -->
 	<string name="speechrecognizer_title_dialog">Voice search</string>
 	<string name="speechrecognizer_network_error">You need network access to do a voice search.</string>
