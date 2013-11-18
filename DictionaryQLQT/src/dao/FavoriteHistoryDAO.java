@@ -107,7 +107,7 @@ public class FavoriteHistoryDAO {
 		}
 
 	}
-	
+	//xoa toan bo 
 	public void DeleteAll(int idAction)
 	{
 		String fileOpen =Environment.getExternalStorageDirectory()+"/"+ FileOpen(idAction);
@@ -133,6 +133,7 @@ public class FavoriteHistoryDAO {
 			e.printStackTrace();
 		}
 	}
+	//xoa 1 phan tu
 	public void DeleteItem(String word , int idAction) throws IOException{
 		ArrayList<String> _result = ReadFile(idAction);
 		String _tempText ="";
@@ -163,5 +164,16 @@ public class FavoriteHistoryDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	//kiem tra da ton tai hay chua
+	public Boolean Isexists(String word,int idAction) throws IOException{
+		ArrayList<String> _result = ReadFile(idAction);
+		String _tempText ="";
+		for (String string : _result) {
+			if(string.equals(word)){
+				return true;
+			}
+		}
+		return false;
 	}
 }

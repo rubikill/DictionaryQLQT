@@ -1,7 +1,9 @@
 package com.hcmus.dictionaryqlqt;
 
+import dao.FavoriteHistoryDAO;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.LauncherActivity.ListItem;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,7 +22,7 @@ public class TabRecentActivity extends Activity implements OnClickListener{
 		btnRecentDelete = (ImageView)findViewById(R.id.btnRecentDelete);
 		btnRecentDeleteAll = (ImageView)findViewById(R.id.btnRecentDeleteAll);
 		btnRecentCancel = (ImageView)findViewById(R.id.btnRecentCancel);
-		
+	
 		btnEditrecent.setVisibility(0);
 		btnRecentDelete.setVisibility(-1);
 		btnRecentDeleteAll.setVisibility(-1);
@@ -30,8 +32,9 @@ public class TabRecentActivity extends Activity implements OnClickListener{
 		btnRecentDelete.setOnClickListener(this);
 		btnRecentDeleteAll.setOnClickListener(this);
 		btnRecentCancel.setOnClickListener(this);
+		
 	}
-
+	FavoriteHistoryDAO favoriteHistory = new FavoriteHistoryDAO();
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
@@ -43,10 +46,11 @@ public class TabRecentActivity extends Activity implements OnClickListener{
 			btnRecentCancel.setVisibility(0);
 			break;
 		case R.id.btnRecentDelete:
-			
+			//lay tu can xoa roi them vao thay cho keyword
+			//favoriteHistory.DeleteItem(Keyword, 1);
 			break;
 		case R.id.btnRecentDeleteAll:
-	
+			favoriteHistory.DeleteAll(1);
 			break;
 		case R.id.btnRecentCancel:
 			btnEditrecent.setVisibility(0);
