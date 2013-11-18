@@ -1,5 +1,6 @@
 package com.hcmus.dictionaryqlqt;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
@@ -35,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import dao.DatabaseHelperDAOImpl;
+import dao.FavoriteHistoryDAO;
 import dao.FileHelperDAOImpl;
 import dao.FinderDAOImpl;
 import dao.IOHelperDAOImpl;
@@ -73,7 +75,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	private ArrayList<String> words;
 	private ArrayList<String> index;
 	private ArrayList<String> length;
-	
+	private FavoriteHistoryDAO favoriteHistory = new FavoriteHistoryDAO();
 	/*
 	 * tu hien tai duoc hien thi
 	 */
@@ -430,10 +432,23 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	/**
 	 * su kien tu webview khi nhan them favorite
 	 */
+	
 	@Override
+	
 	public void setFavorite(String word) {
 		// them tu yeu thich
-		Toast.makeText(this, "set favorite: " + word, Toast.LENGTH_SHORT).show();
+		try {
+			if(favoriteHistory.Isexists(word, 2)){
+				Toast.makeText(this, "Word is Exist in your favorites", Toast.LENGTH_SHORT).show();
+			}
+			else{
+				favoriteHistory.WriteFile(word,2);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//Toast.makeText(this, "set favorite: " + word, Toast.LENGTH_SHORT).show();
 	}
 
 	/**
@@ -442,6 +457,12 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	@Override
 	public void removeFavorite(String word) {
 		// xoa tu yeu thich
+		try {
+			favoriteHistory.DeleteItem(word, 2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Toast.makeText(this, "delete favorite: " + word, Toast.LENGTH_SHORT).show();
 	}
 	
