@@ -13,9 +13,22 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.webkit.WebView;
 
+/***
+ * 
+ * @author Minh Khanh
+ *
+ * class ho tro hien thi noi dung len webview
+ */
+
 @SuppressLint("SetJavaScriptEnabled")
 public class WebviewHelper {
 	
+	/***
+	 * hien thi nghia tu len webview
+	 * @param webview: webview hien thi
+	 * @param meaning chuoi nghia can hien thi
+	 * @param bridge doi tuong cau noi giua android va js
+	 */
 	public static void ShowMeaning(WebView webview, String meaning, AndroidBridge bridge){
 		Context context = webview.getContext();
 		String html = readHtml(context, "web/template.html");
@@ -25,6 +38,12 @@ public class WebviewHelper {
 		webview.addJavascriptInterface(bridge, "android");
 	}
 	
+	/***
+	 * hien thi noi dung wod
+	 * @param webview: webview hien thi
+	 * @param wod: tu can hien thi
+	 * @param bridge: doi tuong cau noi giua android va js
+	 */
 	public static void ShowWOD(WebView webview, WordOfDay wod, AndroidBridge bridge){
 		Context context = webview.getContext();
 		String html = readHtml(context, "web/wod.html");
@@ -41,6 +60,12 @@ public class WebviewHelper {
 		//webview.addJavascriptInterface(bridge, "android");
 	}
 	
+	/***
+	 * ham doc file html template
+	 * @param context: context cua ung dung
+	 * @param filename: ten file
+	 * @return chuoi html template trong file
+	 */
 	private static String readHtml(Context context, String filename){
 		StringBuilder buider = new StringBuilder();		
 		AssetManager manager = context.getAssets();

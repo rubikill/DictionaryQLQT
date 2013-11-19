@@ -14,7 +14,7 @@ import android.util.Log;
 import model.WordOfDay;
 
 /**
- * Class WordOfDayParserImpl dùng để lấy thông tin Wod từ web implements interface IWordOfDayPaser
+ * Class WordOfDayParserImpl parse wod tu web implements interface IWordOfDayPaser
  * 
  * @author Minh Khanh
  *
@@ -22,15 +22,21 @@ import model.WordOfDay;
 
 public class WordOfDayParserImpl implements IWordOfDayPaser{
 	
-	/* content của để truy suất resource */
+	/* content de truy xuat resource */
 	private Context context;
 	
+	/***
+	 * ham khoi tao
+	 * @param context: context cua ung dung
+	 */
 	public WordOfDayParserImpl(Context context){
 		this.context = context;
 	}
 	
-	/*
-	 * hàm phân tích và lấy Wod từ url
+	/***
+	 * parse wod tu trang web
+	 * @param url: link toi dia chi trang web
+	 * @return wod cua ngay
 	 */
 	@Override
 	public WordOfDay parser(String url) throws IOException {
@@ -48,8 +54,11 @@ public class WordOfDayParserImpl implements IWordOfDayPaser{
 		return wod;
 	}
 	
-	/*
-	 * lấy dom của trang html
+	/***
+	 * ham lay ve tai lieu html
+	 * @param url
+	 * @return
+	 * @throws IOException
 	 */
 	private Document getDocument(String url) throws IOException{
 		Document doc = null;
@@ -58,8 +67,10 @@ public class WordOfDayParserImpl implements IWordOfDayPaser{
 		return doc;
 	}
 	
-	/*
-	 * lấy chuỗi từ resource
+	/***
+	 * lay string tu resource
+	 * @param id: id cua string	 * 
+	 * @return string
 	 */
 	private String getStringClassName(int id){
 		String className = context.getResources()
@@ -68,48 +79,60 @@ public class WordOfDayParserImpl implements IWordOfDayPaser{
 		return className;
 	}
 	
-	/*
-	 * lấy thông tin về ngày trong html
+	/***
+	 * lay ngay thang
+	 * @param doc
+	 * @return
 	 */
 	private String getDate(Document doc){			
 		return getValueTagByClass(doc,
 				getStringClassName(R.string.date_class_name));
 	}
 	
-	/*
-	 * lấy từ trong html
+	/***
+	 * lay tu
+	 * @param doc
+	 * @return
 	 */
 	private String getWord(Document doc){
 		return getValueTagByClass(doc,
 				getStringClassName(R.string.word_class_name));
 	}
 	
-	/*
-	 * lấy phiên âm
+	/**
+	 * lay phien am
+	 * @param doc
+	 * @return
 	 */
 	private String getPhonetic(Document doc){
 		return getValueTagByClass(doc,
 				getStringClassName(R.string.phonetic_class_name));
 	}
 	
-	/*
-	 * lấy loại từ
+	/**
+	 * lay loai tu
+	 * @param doc
+	 * @return
 	 */
 	private String getWordFunction(Document doc){
 		return getValueTagByClass(doc,
 				getStringClassName(R.string.word_function_class_name));
 	}
 	
-	/*
-	 * lấy nghĩa của từ
+	/***
+	 * lay nghia tu
+	 * @param doc
+	 * @return
 	 */
 	private String getMean(Document doc){
 		return getValueTagByClass(doc,
 				getStringClassName(R.string.mean_class_name));
 	}
 	
-	/*
-	 * lấy ví dụ
+	/**
+	 * lay example
+	 * @param doc
+	 * @return
 	 */
 	private String getExamples(Document doc){
 		String result = "";
@@ -121,8 +144,10 @@ public class WordOfDayParserImpl implements IWordOfDayPaser{
 		return result;
 	}
 	
-	/*
-	 * lấy phần did you know
+	/**
+	 * lay didyouknow
+	 * @param doc
+	 * @return
 	 */
 	private String getDidYouKnow(Document doc){
 		String result = "";
@@ -138,8 +163,11 @@ public class WordOfDayParserImpl implements IWordOfDayPaser{
 		return result;
 	}
 	
-	/*
-	 * lấy text của một thẻ html theo tên class
+	/**
+	 * lay noi dung the html dua vao class
+	 * @param doc
+	 * @param className
+	 * @return
 	 */
 	private String getValueTagByClass(Document doc, String className){
 		String result = "";

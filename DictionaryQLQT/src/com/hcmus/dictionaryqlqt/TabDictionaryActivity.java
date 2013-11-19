@@ -448,7 +448,6 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//Toast.makeText(this, "set favorite: " + word, Toast.LENGTH_SHORT).show();
 	}
 
 	/**
@@ -463,7 +462,6 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Toast.makeText(this, "delete favorite: " + word, Toast.LENGTH_SHORT).show();
 	}
 	
 	/**
@@ -481,13 +479,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 */
 	private void checkFavoriteWord(){
 		if (currentWord != null){
-			// kiem tra tu hien tai co phai la tu yeu thich
-			//.....
-			// demo
-			if (currentWord.getWord().equals("school")){
-				// goi qua webview hien thi favorite
-				wvMean.loadUrl("javascript:setFavorite(true)");
-				Toast.makeText(this, "set favorite: school", Toast.LENGTH_SHORT).show();
+			try {
+				boolean isFavorite = favoriteHistory.isFavorite(currentWord.getWord());
+				wvMean.loadUrl("javascript:setFavorite(" + isFavorite + ")");
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}

@@ -18,18 +18,20 @@ import org.json.JSONObject;
  * 
  * @author Minh Khanh
  *	
- *	Class lấy wod từ service
+ *	Class lay wod tu service http://khanhminh.somee.com/wordofday
  */
 
 public class WordOfDayService implements IWordOfDayService{
 	
-	/*
-	 * lấy wod từ url
+	/***
+	 * lay wod tu service
+	 * @param url: duong dan toi service
+	 * @return wod cua ngay
 	 */
 	@Override
 	public WordOfDay getWod(String url) throws ClientProtocolException, IOException,
 			ParseException, JSONException {
-		// kết nối đến server để lấy dữ liệu
+		// tao request ket noi den service
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		HttpGet get = new HttpGet(url);
 		HttpResponse response = httpClient.execute(get);
@@ -37,12 +39,11 @@ public class WordOfDayService implements IWordOfDayService{
 
 		WordOfDay word = null;					
 		if (entity != null) {			
-			// nếu lấy dữ liệu thành công
+			// lay du lieu tra ve tu response voi dinh dang json
 			JSONObject respObject = new JSONObject(EntityUtils.toString(entity));
 			boolean isSuccess = respObject.getBoolean("success");
-			// kiểm tra kết quả trả về từ server
-			if (isSuccess){
-				// nếu thành công, lấy từ trong dữ liệu nhận về
+			// kiem tra trang thai la success hay fail
+			if (isSuccess){				
 				JSONObject wod = respObject.getJSONObject("word");
 				word = new WordOfDay();
 				word.setWord(wod.getString("word"));

@@ -176,4 +176,9 @@ public class FavoriteHistoryDAO {
 		}
 		return false;
 	}
+	
+	public Boolean isFavorite(String word) throws IOException{
+		
+		return Isexists(word, 2);
+	}
 }
