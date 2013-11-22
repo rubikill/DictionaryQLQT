@@ -33,9 +33,9 @@ public class WebviewHelper {
 		Context context = webview.getContext();
 		String html = readHtml(context, "web/template.html");
 		webview.getSettings().setJavaScriptEnabled(true);
+		webview.addJavascriptInterface(bridge, "android");
 		webview.loadDataWithBaseURL("file:///android_asset/web/",
 				html.replace("@REPLACEHERE", meaning), "text/html", "UTF-8", null);
-		webview.addJavascriptInterface(bridge, "android");
 	}
 	
 	/***
@@ -55,9 +55,9 @@ public class WebviewHelper {
 				.replace("@EXAM", wod.getExamples())
 				.replace("@DYK", wod.getDidYouKnow());
 		webview.getSettings().setJavaScriptEnabled(true);
+		webview.addJavascriptInterface(bridge, "android");
 		webview.loadDataWithBaseURL("file:///android_asset/web/",
 				html, "text/html", "UTF-8", null);
-		//webview.addJavascriptInterface(bridge, "android");
 	}
 	
 	/***

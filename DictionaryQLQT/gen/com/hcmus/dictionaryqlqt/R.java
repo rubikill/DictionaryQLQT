@@ -138,33 +138,34 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tab_focus=0x7f020061;
         public static final int tab_focus_bar_left=0x7f020062;
         public static final int tab_focus_bar_right=0x7f020063;
-        public static final int tab_more=0x7f020064;
-        public static final int tab_press=0x7f020065;
-        public static final int tab_press_bar_left=0x7f020066;
-        public static final int tab_press_bar_right=0x7f020067;
-        public static final int tab_recent=0x7f020068;
-        public static final int tab_recent_gray=0x7f020069;
-        public static final int tab_recent_white=0x7f02006a;
-        public static final int tab_selected=0x7f02006b;
-        public static final int tab_selected_bar_left=0x7f02006c;
-        public static final int tab_selected_bar_right=0x7f02006d;
-        public static final int tab_star=0x7f02006e;
-        public static final int tab_unselected=0x7f02006f;
-        public static final int tab_wotd=0x7f020070;
-        public static final int tab_wotd_gray=0x7f020071;
-        public static final int tab_wotd_white=0x7f020072;
-        public static final int tooltip=0x7f020073;
-        public static final int twitter=0x7f020074;
-        public static final int voice_search_background=0x7f020075;
-        public static final int volume_bar_off=0x7f020076;
-        public static final int volume_bar_on=0x7f020077;
+        public static final int tab_indicator=0x7f020064;
+        public static final int tab_more=0x7f020065;
+        public static final int tab_press=0x7f020066;
+        public static final int tab_press_bar_left=0x7f020067;
+        public static final int tab_press_bar_right=0x7f020068;
+        public static final int tab_recent=0x7f020069;
+        public static final int tab_recent_gray=0x7f02006a;
+        public static final int tab_recent_white=0x7f02006b;
+        public static final int tab_selected=0x7f02006c;
+        public static final int tab_selected_bar_left=0x7f02006d;
+        public static final int tab_selected_bar_right=0x7f02006e;
+        public static final int tab_star=0x7f02006f;
+        public static final int tab_unselected=0x7f020070;
+        public static final int tab_wotd=0x7f020071;
+        public static final int tab_wotd_gray=0x7f020072;
+        public static final int tab_wotd_white=0x7f020073;
+        public static final int tooltip=0x7f020074;
+        public static final int twitter=0x7f020075;
+        public static final int voice_search_background=0x7f020076;
+        public static final int volume_bar_off=0x7f020077;
+        public static final int volume_bar_on=0x7f020078;
     }
     public static final class id {
         public static final int LinearLayout=0x7f090007;
         public static final int LinearLayout1=0x7f090000;
         public static final int LinearLayout2=0x7f09001e;
         public static final int RelativeLayout1=0x7f090006;
-        public static final int action_settings=0x7f090023;
+        public static final int action_settings=0x7f090025;
         public static final int activity_activity_speech_recognizer_button_cancel=0x7f09000d;
         public static final int activity_speech_recognizer_progressbar=0x7f09000c;
         public static final int activity_speech_recognizer_title=0x7f09000b;
@@ -189,6 +190,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int listFavorites=0x7f09001c;
         public static final int listRecentSearch=0x7f090022;
         public static final int mactSearchText=0x7f090012;
+        public static final int tab_icon=0x7f090024;
+        public static final int tab_title=0x7f090023;
         public static final int tvAbout=0x7f090002;
         public static final int tvAbout1=0x7f090004;
         public static final int tvCopyrights=0x7f090005;
@@ -209,6 +212,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_tab_favorites=0x7f030008;
         public static final int activity_tab_more=0x7f030009;
         public static final int activity_tab_recent=0x7f03000a;
+        public static final int tab_indicator_layout=0x7f03000b;
     }
     public static final class menu {
         public static final int main=0x7f080000;

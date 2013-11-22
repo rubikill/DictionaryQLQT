@@ -1,5 +1,7 @@
 package com.hcmus.dictionaryqlqt;
 
+import bridge.AndroidBridge;
+import bridge.AndroidBridgeListener;
 import manager.WebviewHelper;
 import manager.WordOfDayHandler;
 import model.WordOfDay;
@@ -10,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.webkit.WebView;
+import android.widget.Toast;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,7 +27,7 @@ import android.content.DialogInterface;
  * Tab xem word of day
  */
 
-public class TabDailyActivity extends Activity {
+public class TabDailyActivity extends Activity implements AndroidBridgeListener {
 
 	/*
 	 * webview hien thi noi dung
@@ -43,6 +46,8 @@ public class TabDailyActivity extends Activity {
 	 * luu trang thai da load hay chua
 	 */
 	private boolean isLoaded = false;
+	
+	private AndroidBridge bridge;
 
 	/**
 	 * xu ly cap nhat giao dien tu thread load du lieu
@@ -164,9 +169,37 @@ public class TabDailyActivity extends Activity {
 	 * show wod day len webview
 	 */
 	private void showContent(WordOfDay wod) {
-		WebviewHelper.ShowWOD(wbvContent, wod, null);
+		bridge = new AndroidBridge();
+		bridge.setListener(this);
+		WebviewHelper.ShowWOD(wbvContent, wod, bridge);
+	}
+
+	@Override
+	public void lookup(final String word) {
+		Toast.makeText(this, word, Toast.LENGTH_SHORT).show();	
+	}
+	
+	
+
+	@Override
+	public void speakOut(String text) {
+		
+	}
+
+	@Override
+	public void setFavorite(String word) {
+		
+	}
+
+	@Override
+	public void removeFavorite(String word) {
+		
+	}
+
+	@Override
+	public void onLoadComplete() {
 		if (pgbLoading.isShowing()){
 			pgbLoading.dismiss();
-		}
+		}		
 	}
 }

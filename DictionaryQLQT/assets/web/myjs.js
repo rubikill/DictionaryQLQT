@@ -49,48 +49,53 @@ $(document).ready(function () {
     }
 
 
-    $('.example').click(function () {
-		$(this).addClass("selected");		
-		// call android search word
-        window.android.search($(this).text());
-		
-		//delay selected
-		$(this).delay(800);
-		$(this).queue( function() {
-		  $(this).removeClass("selected");
-		  $(this).dequeue();
-		});
-    });
+    $('.example').click(exampleClick);
 
     $('#audio').click(function () {
         window.android.speakOut($('.word').text());
     });
 
     $('#favorite').click(favoriteClick);
-	window.android.onLoadComplete();
+    window.android.onLoadComplete();
 });
 
-function setFavorite(isFavorite){
-	var starred = $('#favorite').attr('data-starred') == 'true' ? true : false;
-	if (starred == isFavorite) return;
-	if (isFavorite){
-		$('#favorite').addClass('starred');
-		$('#favorite').attr('data-starred', true);
-	} else {
-		$(this).removeClass('starred');
-		$('#favorite').attr('data-starred', false);
-	}
+function exampleClick() {
+    var text = $(this).text().match(/[a-zA-Z\-]{1,}/);
+    if (text != null) {
+        $(this).addClass("selected");
+        // call android search word
+        window.android.search(text[0]);
+
+        //delay selected
+        $(this).delay(800);
+        $(this).queue(function () {
+            $(this).removeClass("selected");
+            $(this).dequeue();
+        });
+    }
 }
 
-function favoriteClick(){
-	var word = $('.word').text();
+function setFavorite(isFavorite) {
+    var starred = $('#favorite').attr('data-starred') == 'true' ? true : false;
+    if (starred == isFavorite) return;
+    if (isFavorite) {
+        $('#favorite').addClass('starred');
+        $('#favorite').attr('data-starred', true);
+    } else {
+        $(this).removeClass('starred');
+        $('#favorite').attr('data-starred', false);
+    }
+}
+
+function favoriteClick() {
+    var word = $('.word').text();
     var starred = $(this).attr('data-starred') == 'true' ? true : false;
     if (starred) {
         $(this).removeClass('starred');
-		window.android.removeFavorite(word);
+        window.android.removeFavorite(word);
     } else {
         $(this).addClass('starred');
-		window.android.setFavorite(word);
+        window.android.setFavorite(word);
     }
     $(this).attr('data-starred', !starred);
 }
@@ -117,9 +122,7 @@ function createExam(text) {
     var exText = text.substring(1, index).trim();
     var words = exText.split(' ');
     for (var i = 0; i < words.length; i++) {
-        var word = words[i];
-        if (word == '') continue;
-        ex += "<span class='example'>" + word + " </span>";
+        ex += "<span class='example'>" + words[i] + "</span> ";
     }
 
     var trans = text.substring(index + 1, text.length).trim();

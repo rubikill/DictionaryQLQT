@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+    android:background="@drawable/tab_indicator" 
+    android:duplicateParentState="true" 
+    android:layout_width="0.0dip" 
+    android:layout_height="66.0dip" 
+    android:layout_marginLeft="-3.0dip" 
+    android:layout_marginRight="-3.0dip" 
+    android:layout_weight="1.0">
+    
+    <LinearLayout 
+        android:gravity="center" 
+        android:duplicateParentState="true" 
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent" 
+        android:layout_above="@+id/tab_title">
+        
+        <TextView 
+            android:id="@+id/tab_icon" 
+            android:duplicateParentState="true" 
+            android:layout_width="32.0dip" 
+            android:layout_height="32.0dip" 
+            android:layout_centerHorizontal="true" />
+    </LinearLayout>
+    
+    <TextView android:textSize="12.0sp" 
+        android:id="@+id/tab_title" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" 
+        android:layout_alignParentBottom="true" 
+        android:layout_centerHorizontal="true" 
+        style="?android:attr/tabWidgetStyle" />
+    
+</RelativeLayout>
