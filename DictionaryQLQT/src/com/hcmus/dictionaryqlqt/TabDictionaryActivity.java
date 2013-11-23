@@ -46,6 +46,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import dao.DatabaseHelperDAOImpl;
 import dao.FavoriteHistoryDAO;
@@ -65,6 +66,11 @@ import dao.IndexerDAO;
 public class TabDictionaryActivity extends Activity implements OnClickListener,
 		TextWatcher, OnItemClickListener, AndroidBridgeListener {
 
+	enum Screen{
+		Start,
+		Meaning
+	}
+	
 	/*
 	 * ma Code de nhan ket qua tra ve tu voice search
 	 */
@@ -75,7 +81,10 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	private EditText edWord;
 	private ImageView btnVoiceSearch, btnCancelSearch, btnResetSearch,
 			btnSearch;
-
+	private ImageView imgLogo;
+	private RelativeLayout rlContent;
+	private Screen currentScreen;
+	
 	/*
 	 * progressbar load nghia tu
 	 */
@@ -118,7 +127,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_tab_dictionary);
+		setContentView(R.layout.new_activity_tab_dictionary);
 		initComponents();
 		setDictionaryTabScreen(statusSearchTab);
 		initData();
@@ -180,12 +189,16 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		edWord.setOnClickListener(this);
 		// btnSearch.setOnClickListener(this);
 
+		rlContent = (RelativeLayout) findViewById(R.id.rlContent);
+		imgLogo = (ImageView) findViewById(R.id.imgLogo);
 		wvMean = (WebView) findViewById(R.id.wvMeaning);
 		bridge = new AndroidBridge();
 		bridge.setListener(this);
 		speaker = new SpeakerImpl(getApplicationContext(), Locale.ENGLISH);
 		history = new Stack<Vocabulary>();
 		pgbLoading = new ProgressDialog(this);
+		
+		changeScreen(Screen.Start);
 	}
 
 	@Override
@@ -290,6 +303,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 */
 	private void showMeaning(String meaning) {
 		// show dialog loading
+		if (currentScreen == Screen.Start){
+			changeScreen(Screen.Meaning);
+		}
 		showLoadingDialog();
 		WebviewHelper.ShowMeaning(wvMean, meaning, bridge);
 	}
@@ -369,7 +385,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 				matchSearchText
 						.setAdapter(new ArrayAdapter<String>(
 								TabDictionaryActivity.this,
-								android.R.layout.simple_list_item_single_choice,
+								android.R.layout.simple_list_item_1,
 								words));
 				matchSearchText.showDropDown();
 			}
@@ -505,14 +521,20 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 * @return false neu lich su tra tu hien tai trong, true neu nguoc lai
 	 */
 	private boolean handleKeyBack() {
-		if (history.isEmpty()) {
+		if (currentScreen == Screen.Start){
 			return false;
+		} 
+		
+		if (history.isEmpty()) {
+			changeScreen(Screen.Start);
 		}
-		// lay tu tren cung cua lich su ra va xoa bo
-		Vocabulary word = history.pop();
-		currentWord = word;
-		// hien thi nghia cua tu
-		showMeaning(word.getStMean());
+		else {
+			// lay tu tren cung cua lich su ra va xoa bo
+			Vocabulary word = history.pop();
+			currentWord = word;
+			// hien thi nghia cua tu
+			showMeaning(word.getStMean());
+		}
 
 		return true;
 	}
@@ -593,7 +615,26 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	public void onLoadComplete() {
 		if (pgbLoading.isShowing()) {
 			pgbLoading.dismiss();
+			wvMean.requestFocus();
 			checkFavoriteWord();
 		}
+	}
+	
+	private void changeScreen(Screen screen){
+		switch (screen) {
+		case Start:
+			wvMean.setVisibility(View.INVISIBLE);
+			imgLogo.setVisibility(View.VISIBLE);
+			rlContent.setBackgroundColor(getResources().
+					getColor(R.color.bg_content_start));
+			break;
+		case Meaning:
+			wvMean.setVisibility(View.VISIBLE);
+			imgLogo.setVisibility(View.INVISIBLE);
+			rlContent.setBackgroundColor(getResources().
+					getColor(R.color.bg_content_meaning));
+			break;
+		}		
+		currentScreen = screen;
 	}
 }

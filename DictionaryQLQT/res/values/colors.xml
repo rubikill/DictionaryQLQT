@@ -5,4 +5,6 @@
     <color name="prb_volume_end_color">#ffb2bbc4</color>
     <color name="tv_status_voice_search_color">#ff545662</color>
     <color name="bg_dialog">#00000000</color>
+    <color name="bg_content_meaning">#ffffff</color>
+    <color name="bg_content_start">#e71717</color>
 </resources>
