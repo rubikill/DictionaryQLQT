@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_search_bar"
+    android:gravity="top|center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imgBranding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4.0dip"
+        android:layout_marginTop="8.0dip"
+        android:src="@drawable/mybranding" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5.0dip" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/search_bar_input_frame"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8.0dip"
+                android:layout_marginRight="8.0dip"
+                android:layout_toLeftOf="@+id/search_button"
+                android:addStatesFromChildren="true"
+                android:background="@drawable/rounded_edittext"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="2.0dip"
+                android:paddingLeft="8.0dip"
+                android:paddingRight="8.0dip"
+                android:paddingTop="2.0dip" >
+
+                <ImageView
+                    android:id="@+id/btnSearchbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="2.0dip"
+                    android:paddingRight="4.0dip"
+                    android:paddingTop="3.0dip"
+                    android:src="@drawable/ic_searchbox" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/mactSearchText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:background="@null"
+                    android:completionThreshold="1"
+                    android:dropDownVerticalOffset="@dimen/dropDownVerticalOffset"
+                    android:dropDownHorizontalOffset="-35.0dp"
+                    android:dropDownWidth="match_parent"
+                    android:paddingTop="-2.0dip"
+                    android:singleLine="true"
+                    android:textColor="#ff000000" />
+
+                <ImageButton
+                    android:id="@+id/btnResetsearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:paddingBottom="2.0dip"
+                    android:paddingTop="3.0dip"
+                    android:src="@drawable/ic_reset_search" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="0.0dip"
+                android:layout_marginLeft="-3.0dip"
+                android:layout_marginRight="2.0dip"
+                android:orientation="horizontal"
+                android:paddingBottom="4.0dip" >
+
+                <ImageButton
+                    android:id="@+id/btnVoiceSearch"
+                    android:layout_width="44.0dip"
+                    android:layout_height="44.0dip"
+                    android:background="@null"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/btn_audio"
+                    android:visibility="visible" />
+
+                <ImageButton
+                    android:id="@+id/btnCancelSearch"
+                    android:layout_width="44.0dip"
+                    android:layout_height="44.0dip"
+                    android:background="@null"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/btn_cancelsearch"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
