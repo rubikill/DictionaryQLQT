@@ -47,6 +47,14 @@ public class FinderDAOImpl implements IFinderDAO{
 		} catch (SQLiteException e) {
 			e.printStackTrace();
 		}
+		if (vocabularies.size() == 0) { //kiem tra size cua vocabularies recommend
+			//rong thi tao ra similar de fuzzy search
+			Vocabulary vocSimilar = new Vocabulary();
+			vocSimilar.setWord(keyWord + "---Not found, you can try similar");
+			vocSimilar.setIndex("A");
+			vocSimilar.setLength("A");
+			vocabularies.add(vocSimilar);
+		}
 		return vocabularies;
 	}
 	FavoriteHistoryDAO favoriteHistoryDao = new FavoriteHistoryDAO();

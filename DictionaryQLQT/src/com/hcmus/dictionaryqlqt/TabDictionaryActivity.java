@@ -1,10 +1,23 @@
 package com.hcmus.dictionaryqlqt;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Stack;
+
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 
 import bridge.AndroidBridge;
 import bridge.AndroidBridgeListener;
@@ -13,11 +26,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import manager.SpeakerImpl;
 import manager.WebviewHelper;
 import model.Vocabulary;
 import android.os.Bundle;
+import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,18 +51,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import dao.DatabaseHelperDAOImpl;
 import dao.FavoriteHistoryDAO;
 import dao.FileHelperDAOImpl;
 import dao.FinderDAOImpl;
 import dao.IOHelperDAOImpl;
+import dao.IndexerDAO;
 
 /**
  * 
  * @author Minh Khanh
  * 
- * ham nao ai lam thi comment them nhe
+ *         ham nao ai lam thi comment them nhe
  * 
  */
 
@@ -78,7 +91,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 * progressbar load nghia tu
 	 */
 	private ProgressDialog pgbLoading;
-	
+
 	private AutoCompleteTextView matchSearchText;
 	private DatabaseHelperDAOImpl databaseHelper;
 	private FileHelperDAOImpl fileHelper;
@@ -96,7 +109,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 * webview hien thi nghia tu
 	 */
 	private WebView wvMean;
-	
+
 	/*
 	 * doi tuong de goi qua javascript trong wbMean
 	 */
@@ -106,7 +119,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 * bo phat am
 	 */
 	private SpeakerImpl speaker;
-	
+
 	/*
 	 * luu lich su tra tu hien tai
 	 */
@@ -150,6 +163,15 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		words = new ArrayList<String>();
 		index = new ArrayList<String>();
 		length = new ArrayList<String>();
+		// kiem tra xem indexdata fuzzy da ton tai hay chua
+		// neu chua thi tao indexdata
+		File file = new File(Environment.getExternalStorageDirectory()
+				.getPath() + "/fuzzydata");
+		if (!file.exists()) {
+			IndexerDAO indexer = new IndexerDAO(this.getBaseContext());
+			indexer.createIndexWriter();
+			indexer.indexData();
+		}
 	}
 
 	/**
@@ -248,7 +270,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 
 	/**
 	 * hien thi danh sach ca tu voice search
-	 * @param arrText: mang String
+	 * 
+	 * @param arrText
+	 *            : mang String
 	 */
 	private void showResultDialog(final String[] arrText) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -263,7 +287,6 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		builder.show();
 	}
 
-	
 	public void Search(String word) {
 		edWord.setText(word);
 		Vocabulary vocabulary = finder.find(word.trim());
@@ -279,7 +302,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 
 	/**
 	 * hien thi nghia tu len webview
-	 * @param meaning: chuoi nghia cua tu
+	 * 
+	 * @param meaning
+	 *            : chuoi nghia cua tu
 	 */
 	private void showMeaning(String meaning) {
 		// show dialog loading
@@ -292,20 +317,22 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 
 	/**
 	 * lua lai tu tra cuu hien tai
-	 * @param word: tu hien tai
+	 * 
+	 * @param word
+	 *            : tu hien tai
 	 */
 	private void saveHistory(Vocabulary word) {
 		// neu tu da ton tai trong lich su, xoa bo
 		Iterator<Vocabulary> iterator = history.iterator();
-		while (iterator.hasNext()){
+		while (iterator.hasNext()) {
 			Vocabulary vocab = iterator.next();
-			if (vocab.getWord().equals(word.getWord())){
+			if (vocab.getWord().equals(word.getWord())) {
 				history.remove(vocab);
 				break;
 			}
 		}
 		// dua tu vua tra truoc do vao lich su
-		if (currentWord != null){			
+		if (currentWord != null) {
 			history.push(currentWord);
 		}
 		// gan lai tu hien tai
@@ -345,7 +372,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		if (matchSearchText.getText().toString().length() > 0) {
 			ArrayList<Vocabulary> arr = finder.getRecommendWord(matchSearchText
 					.getText().toString());
-			if (arr != null) {
+			if (arr != null) { // kiem tra danh sach goi y co rong hay khong,
+								// neu khac null thi hien sach sach
+								// recommendWord
 				words.clear();
 				index.clear();
 				length.clear();
@@ -361,6 +390,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 								words));
 				matchSearchText.showDropDown();
 			}
+
 		}
 
 	}
@@ -368,16 +398,68 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		String word = words.get(arg2);
-		String idx = index.get(arg2);
-		String l = length.get(arg2);
-		String mean = finder.getMean(idx, l);
-		saveHistory(new Vocabulary(word, mean));
-		showMeaning(mean);
+		boolean flagSimilar = word.contains("---");
+		// kiem tra xem co phai la lua chon similar hay khong
+		if (flagSimilar == false) {
+			String idx = index.get(arg2);
+			String l = length.get(arg2);
+			String mean = finder.getMean(idx, l);
+			saveHistory(new Vocabulary(word, mean));
+			showMeaning(mean);
+		} else // tien hanh fuzzy search
+		{
+			// tien hanh tach chuoi
+			String[] listTemp = word.split("---");
+			String strText = listTemp[0];
+
+			File file = new File(Environment.getExternalStorageDirectory()
+					.getPath() + "/fuzzydata");
+			Directory fsDirectory;
+			try {
+				fsDirectory = FSDirectory.open(file);
+				IndexReader indexReader = IndexReader.open(fsDirectory);
+				Searcher indexSearcher = new IndexSearcher(indexReader);
+
+				// tao query
+				Query query = new FuzzyQuery(new Term("word", strText));
+				
+				// tien hanh truy van
+				TopDocs topDocs = indexSearcher.search(query, 5);
+				ScoreDoc[] scoreDosArray = topDocs.scoreDocs;
+				
+				//kiem tra xem ket qua tim duoc
+				if (scoreDosArray.length != 0) {
+					ArrayList<String> listText = new ArrayList<String>();
+					// lay word
+					for (ScoreDoc scoredoc : scoreDosArray) {
+						Document doc = indexSearcher.doc(scoredoc.doc);
+						String strWord = doc.getField("word").stringValue();
+						listText.add(strWord);
+					}
+					
+					String[] arrText = convertArrayListToArray(listText);
+					showResultDialog(arrText);
+				}
+				else
+				{
+					matchSearchText.setText("");
+					String meaning = "Word not found!";
+					Toast.makeText(TabDictionaryActivity.this, meaning, Toast.LENGTH_LONG);
+					showMeaning(meaning);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 	}
 
 	/**
 	 * chuyen tu arraylist String sang mang String
-	 * @param source: arraylist can chuyen
+	 * 
+	 * @param source
+	 *            : arraylist can chuyen
 	 * @return mang String
 	 */
 	private String[] convertArrayListToArray(ArrayList<String> source) {
@@ -389,7 +471,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 
 	/**
 	 * su kien tu webview goi phat am
-	 * @param text: tu can phat am
+	 * 
+	 * @param text
+	 *            : tu can phat am
 	 */
 	@Override
 	public void speakOut(String text) {
@@ -399,7 +483,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 
 	/**
 	 * su kien tu webview goi tim tu
-	 * @param text: tu can tra
+	 * 
+	 * @param text
+	 *            : tu can tra
 	 */
 	@Override
 	public void lookup(String text) {
@@ -422,7 +508,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (handleKeyBack()){
+			if (handleKeyBack()) {
 				return true;
 			}
 		}
@@ -432,6 +518,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 
 	/**
 	 * xu ly su kien nhan back
+	 * 
 	 * @return false neu lich su tra tu hien tai trong, true neu nguoc lai
 	 */
 	private boolean handleKeyBack() {
@@ -459,17 +546,16 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	/**
 	 * su kien tu webview khi nhan them favorite
 	 */
-	
+
 	@Override
-	
 	public void setFavorite(String word) {
 		// them tu yeu thich
 		try {
-			if(favoriteHistory.Isexists(word, 2)){
-				Toast.makeText(this, "Word is Exist in your favorites", Toast.LENGTH_SHORT).show();
-			}
-			else{
-				favoriteHistory.WriteFile(word,2);
+			if (favoriteHistory.Isexists(word, 2)) {
+				Toast.makeText(this, "Word is Exist in your favorites",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				favoriteHistory.WriteFile(word, 2);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -490,36 +576,38 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * su kien resume activity
 	 */
 	@Override
-	protected void onResume() {		
+	protected void onResume() {
 		super.onResume();
 		// kiem tra tu dang hien thi co la favorite hay ko de hien thi
 		checkFavoriteWord();
 	}
-	
+
 	/**
 	 * ham xu ly kiem tra tu favorite
 	 */
-	private void checkFavoriteWord(){
-		if (currentWord != null){
+	private void checkFavoriteWord() {
+		if (currentWord != null) {
 			try {
-				boolean isFavorite = favoriteHistory.isFavorite(currentWord.getWord());
+				boolean isFavorite = favoriteHistory.isFavorite(currentWord
+						.getWord());
 				wvMean.loadUrl("javascript:setFavorite(" + isFavorite + ")");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	/**
 	 * hien thi dialog loading khi hien thi nghia tu
 	 */
-	private void showLoadingDialog(){
-		String msg = getResources().getString(R.string.dict_message_loading_dialog);
+	private void showLoadingDialog() {
+		String msg = getResources().getString(
+				R.string.dict_message_loading_dialog);
 		pgbLoading.setMessage(msg);
 		pgbLoading.show();
 	}
@@ -529,11 +617,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 */
 	@Override
 	public void onLoadComplete() {
-		if (pgbLoading.isShowing()){
+		if (pgbLoading.isShowing()) {
 			pgbLoading.dismiss();
 			wvMean.requestFocus();
 			checkFavoriteWord();
-		}		
+		}
 	}
 	
 	private void changeScreen(Screen screen){

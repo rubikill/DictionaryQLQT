@@ -68,7 +68,6 @@ public class FavoriteHistoryDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return _ResultReadFile;
 	}
 	//ghi file tu sd cadr( doc file history hoac favorite
