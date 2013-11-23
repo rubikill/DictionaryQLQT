@@ -70,7 +70,9 @@
                     android:background="@null"
                     android:paddingBottom="2.0dip"
                     android:paddingTop="3.0dip"
-                    android:src="@drawable/ic_reset_search" />
+                    android:src="@drawable/ic_reset_search"
+                    android:visibility="invisible" />
+
             </LinearLayout>
 
             <LinearLayout

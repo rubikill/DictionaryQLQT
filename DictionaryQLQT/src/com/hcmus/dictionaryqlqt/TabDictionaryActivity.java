@@ -41,14 +41,12 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
-import android.view.Window;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import dao.DatabaseHelperDAOImpl;
@@ -60,39 +58,104 @@ import dao.IndexerDAO;
 
 /**
  * 
- * @author Minh Khanh
- * 
- *         ham nao ai lam thi comment them nhe
+ * @author Minh Khanh 
+ *   
  * 
  */
 
+@SuppressWarnings("deprecation")
 public class TabDictionaryActivity extends Activity implements OnClickListener,
 		TextWatcher, OnItemClickListener, AndroidBridgeListener {
 
+	/*
+	 * enum trang thai man hinh
+	 */
 	enum Screen{
-		Start,
-		Meaning
+		Start, // man hinh luc khoi dong
+		Meaning // man hinh luc hien thi nghia
 	}
+	
+	////////////////////////// CAC BIEN /////////////////////////////
 	
 	/*
 	 * ma Code de nhan ket qua tra ve tu voice search
 	 */
 	private static final int SPEECH_RECOGNIZER_CODE = 1;
-	private int statusSearchTab = 0; // status = 0: trang thai cancel search //
-										// status = 1: sau khi click vao search
-										// box
-	private EditText edWord;
-	private ImageView btnVoiceSearch, btnCancelSearch, btnResetSearch, btnZoom;
-	private ImageView imgLogo;
-	private View searchBar, rootLayout;
+	
+	/*
+	 * status = 0: trang thai cancel search
+	 * status = 1: sau khi click vao search box
+	 */
+	private int statusSearchTab = 0;
+	
+	/*
+	 * strang thai man hinh hien tai
+	 * 
+	 */
 	private Screen currentScreen;
 	
+	/*
+	 * tu hien tai duoc hien thi
+	 */	
+	private Vocabulary currentWord;
+	
+	/*
+	 * doi tuong de goi qua javascript trong wbMean
+	 */
+	private AndroidBridge bridge;
+	
+	/*
+	 * luu lich su tra tu hien tai
+	 */
+	private Stack<Vocabulary> history;
+
+	/*
+	 * trang thai toan man hinh
+	 */
+	private boolean isFullScreen = false;	
+
+	/*
+	 * bo phat am
+	 */
+	private SpeakerImpl speaker;
+
+	
+	
+	///////////////////// CAC THANH PHAN GIAO DIEN /////////////////////
+	
+	/*
+	 * edittext nhap tu 
+	 */
+	private AutoCompleteTextView etWord;
+	
+	/*
+	 * button voice search, cancel search, zoom
+	 */
+	private ImageView btnVoiceSearch, btnCancelSearch,btnZoom;
+	
+	/*
+	 * imageview hien thi logo
+	 */
+	private ImageView imgLogo;
+	
+	/*
+	 * search bar, root layout
+	 */
+	private View searchBar, rootLayout;
+
 	/*
 	 * progressbar load nghia tu
 	 */
 	private ProgressDialog pgbLoading;
 
-	private AutoCompleteTextView matchSearchText;
+	/*
+	 * webview hien thi nghia tu
+	 */
+	private WebView wvMean;	
+	
+	
+	/////////////////////////// DATA  /////////////////////////////////
+	
 	private DatabaseHelperDAOImpl databaseHelper;
 	private FileHelperDAOImpl fileHelper;
 	private FinderDAOImpl finder;
@@ -100,40 +163,16 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	private ArrayList<String> index;
 	private ArrayList<String> length;
 	private FavoriteHistoryDAO favoriteHistory = new FavoriteHistoryDAO();
-	/*
-	 * tu hien tai duoc hien thi
-	 */
-	private Vocabulary currentWord;
-
-	/*
-	 * webview hien thi nghia tu
-	 */
-	private WebView wvMean;
-
-	/*
-	 * doi tuong de goi qua javascript trong wbMean
-	 */
-	private AndroidBridge bridge;
-
-	/*
-	 * bo phat am
-	 */
-	private SpeakerImpl speaker;
-
-	/*
-	 * luu lich su tra tu hien tai
-	 */
-	private Stack<Vocabulary> history;
 	
-	private boolean isFullScreen = false;
-
+	
+	////////////////////////// KHOI TAO ////////////////////////////////
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.new_activity_tab_dictionary);
+		
 		initComponents();
-		setDictionaryTabScreen(statusSearchTab);
 		initData();
 	}
 
@@ -178,34 +217,38 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 * khoi tao cac thanh phan can thiet
 	 */
 	private void initComponents() {
-		statusSearchTab = 0;
-		edWord = (EditText) findViewById(R.id.mactSearchText);
+		// khoi tao cac thanh phan giao dien
 		btnVoiceSearch = (ImageView) findViewById(R.id.btnVoiceSearch);
 		btnCancelSearch = (ImageView) findViewById(R.id.btnCancelSearch);
-		btnResetSearch = (ImageView) findViewById(R.id.btnResetsearch);
-		matchSearchText = (AutoCompleteTextView) findViewById(R.id.mactSearchText);
-		matchSearchText.setThreshold(1);
-		matchSearchText.addTextChangedListener(TabDictionaryActivity.this);
-		matchSearchText.setOnItemClickListener(TabDictionaryActivity.this);
-		btnVoiceSearch.setOnClickListener(this);
-		btnCancelSearch.setOnClickListener(this);
-		edWord.setOnClickListener(this);
-		btnZoom = (ImageView) findViewById(R.id.btnZoomDict);
-		btnZoom.setOnClickListener(this);
-		searchBar = findViewById(R.id.searchbar);
-		
+		etWord = (AutoCompleteTextView) findViewById(R.id.mactSearchText);
+		searchBar = findViewById(R.id.searchbar);		
 		rootLayout = findViewById(R.id.rootDict);
 		imgLogo = (ImageView) findViewById(R.id.imgLogo);
 		wvMean = (WebView) findViewById(R.id.wvMeaning);
-		bridge = new AndroidBridge();
-		bridge.setListener(this);
-		speaker = new SpeakerImpl(getApplicationContext(), Locale.ENGLISH);
-		history = new Stack<Vocabulary>();
+		btnZoom = (ImageView) findViewById(R.id.btnZoomDict);
+		
+		// thiet lap trang thai va su kien
+		etWord.setThreshold(1);
+		etWord.setOnClickListener(this);
+		etWord.addTextChangedListener(TabDictionaryActivity.this);
+		etWord.setOnItemClickListener(TabDictionaryActivity.this);		
+		btnVoiceSearch.setOnClickListener(this);
+		btnCancelSearch.setOnClickListener(this);
+		btnZoom.setOnClickListener(this);
 		pgbLoading = new ProgressDialog(this);
 		
+		speaker = new SpeakerImpl(getApplicationContext(), Locale.ENGLISH);
+		history = new Stack<Vocabulary>();
+		bridge = new AndroidBridge();
+		bridge.setListener(this);
+
 		changeScreen(Screen.Start);
+		statusSearchTab = 0;
+		setDictionaryTabScreen(statusSearchTab);
 	}
 
+	//////////////////////// XU LY SU KIEN  ////////////////////////////////////
+	
 	@Override
 	public void onClick(View v) {
 
@@ -226,14 +269,16 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			wvMean.requestFocus();
 			break;
 		case R.id.btnResetsearch:
-			edWord.setText("");
-			btnResetSearch.setVisibility(View.INVISIBLE);
+			etWord.setText("");
 			break;
 		case R.id.btnZoomDict:
 			zoomScreenHandle();
 			break;
 		}
 	}
+	
+	
+	///////////////////////// VOICE SEARCH ///////////////////////////////	
 
 	/**
 	 * mo man hinh nhan dien giong noi
@@ -242,7 +287,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		Intent intent = new Intent(this, SpeechRecognizerActivity.class);
 		startActivityForResult(intent, SPEECH_RECOGNIZER_CODE);
 	}
-
+	
 	/**
 	 * su kien nhan ket qua tra ve tu voice search
 	 */
@@ -266,6 +311,20 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 				}
 			}
 		}
+	}	
+
+	/**
+	 * chuyen tu arraylist String sang mang String
+	 * 
+	 * @param source
+	 *            : arraylist can chuyen
+	 * @return mang String
+	 */
+	private String[] convertArrayListToArray(ArrayList<String> source) {
+		String[] result = new String[source.size()];
+		source.toArray(result);
+
+		return result;
 	}
 
 	/**
@@ -286,9 +345,35 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		});
 		builder.show();
 	}
+	
+	/////////////////////////////// PHAT AM //////////////////////////////////
+	
+	/**
+	 * su kien tu webview goi phat am
+	 * 
+	 * @param text
+	 *            : tu can phat am
+	 */
+	@Override
+	public void speakOut(String text) {
+		speaker.speakOut(text);
+		Log.i("Dictionary - Speakout: ", text);
+	}
+	
+	/**
+	 * su kien huy activity
+	 */
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		// giai phong speaker
+		speaker.shutdown();
+	}
+	
+	///////////////////////// TRA TU  ///////////////////////////////////////	
 
 	public void Search(String word) {
-		edWord.setText(word);
+		etWord.setText(word);
 		Vocabulary vocabulary = finder.find(word.trim());
 		String meaning = "";
 		if (vocabulary != null) {
@@ -314,7 +399,42 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		showLoadingDialog();
 		WebviewHelper.ShowMeaning(wvMean, meaning, bridge);
 	}
+	
+	/**
+	 * su kien tu webview goi tim tu: tra cheo
+	 * 
+	 * @param text
+	 *            : tu can tra
+	 */
+	@Override
+	public void lookup(String text) {
+		Search(text);
+	}
 
+	/**
+	 * su kien load xong nghia tu tren webview
+	 */
+	@Override
+	public void onLoadComplete() {
+		if (pgbLoading.isShowing()) {
+			pgbLoading.dismiss();
+			wvMean.requestFocus();
+			checkFavoriteWord();
+		}
+	}
+
+	/**
+	 * hien thi dialog loading khi hien thi nghia tu
+	 */
+	private void showLoadingDialog() {
+		String msg = getResources().getString(
+				R.string.dict_message_loading_dialog);
+		pgbLoading.setMessage(msg);
+		pgbLoading.show();
+	}
+	
+	////////////////////// LICH SU TRA TU HIEN TAI  //////////////////////////
+	
 	/**
 	 * lua lai tu tra cuu hien tai
 	 * 
@@ -338,39 +458,65 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		// gan lai tu hien tai
 		currentWord = word;
 	}
+	
 
-	private void setDictionaryTabScreen(int status) {
-		btnResetSearch.setVisibility(View.INVISIBLE);
-		if (status == 0) {
-			btnVoiceSearch.setVisibility(View.VISIBLE);
-			btnCancelSearch.setVisibility(View.GONE);
-			edWord.setText("");
-
-		} else if (status == 1) {
-			btnVoiceSearch.setVisibility(View.VISIBLE);
-			btnCancelSearch.setVisibility(View.VISIBLE);
+	/**
+	 * su kien nhan back
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (handleKeyBack()) {
+				return true;
+			}
 		}
+
+		return super.onKeyDown(keyCode, event);
 	}
+	
+	/**
+	 * xu ly su kien nhan back
+	 * 
+	 * @return false neu lich su tra tu hien tai trong, true neu nguoc lai
+	 */
+	private boolean handleKeyBack() {
+		if (currentScreen == Screen.Start){
+			return false;
+		} 
+		
+		if (history.isEmpty()) {
+			changeScreen(Screen.Start);
+			if (isFullScreen){
+				zoomScreenHandle();
+			}
+		}
+		else {
+			// lay tu tren cung cua lich su ra va xoa bo
+			Vocabulary word = history.pop();
+			currentWord = word;
+			// hien thi nghia cua tu
+			showMeaning(word.getStMean());
+		}
+
+		return true;
+	}
+
+	
+	///////////////////// AUTOCOMPLETE ////////////////////////////////
 
 	@Override
-	public void afterTextChanged(Editable arg0) {
-		// TODO Auto-generated method stub
-
-	}
+	public void afterTextChanged(Editable arg0) {}
 
 	@Override
 	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-			int arg3) {
-		// TODO Auto-generated method stub
-
-	}
+			int arg3) {}
 
 	@Override
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-		if (matchSearchText.isPerformingCompletion())
+		if (etWord.isPerformingCompletion())
 			return;
-		if (matchSearchText.getText().toString().length() > 0) {
-			ArrayList<Vocabulary> arr = finder.getRecommendWord(matchSearchText
+		if (etWord.getText().toString().length() > 0) {
+			ArrayList<Vocabulary> arr = finder.getRecommendWord(etWord
 					.getText().toString());
 			if (arr != null) { // kiem tra danh sach goi y co rong hay khong,
 								// neu khac null thi hien sach sach
@@ -383,12 +529,12 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 					index.add(vocabulary.getIndex());
 					length.add(vocabulary.getLength());
 				}
-				matchSearchText
+				etWord
 						.setAdapter(new ArrayAdapter<String>(
 								TabDictionaryActivity.this,
 								android.R.layout.simple_list_item_1,
 								words));
-				matchSearchText.showDropDown();
+				etWord.showDropDown();
 			}
 
 		}
@@ -418,6 +564,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			try {
 				fsDirectory = FSDirectory.open(file);
 				IndexReader indexReader = IndexReader.open(fsDirectory);
+				@SuppressWarnings("resource")
 				Searcher indexSearcher = new IndexSearcher(indexReader);
 
 				// tao query
@@ -442,9 +589,8 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 				}
 				else
 				{
-					matchSearchText.setText("");
+					etWord.setText("");
 					String meaning = "Word not found!";
-					Toast.makeText(TabDictionaryActivity.this, meaning, Toast.LENGTH_LONG);
 					showMeaning(meaning);
 				}
 			} catch (IOException e) {
@@ -455,93 +601,8 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}
 	}
 
-	/**
-	 * chuyen tu arraylist String sang mang String
-	 * 
-	 * @param source
-	 *            : arraylist can chuyen
-	 * @return mang String
-	 */
-	private String[] convertArrayListToArray(ArrayList<String> source) {
-		String[] result = new String[source.size()];
-		source.toArray(result);
 
-		return result;
-	}
-
-	/**
-	 * su kien tu webview goi phat am
-	 * 
-	 * @param text
-	 *            : tu can phat am
-	 */
-	@Override
-	public void speakOut(String text) {
-		speaker.speakOut(text);
-		Log.i("Dictionary - Speakout: ", text);
-	}
-
-	/**
-	 * su kien tu webview goi tim tu
-	 * 
-	 * @param text
-	 *            : tu can tra
-	 */
-	@Override
-	public void lookup(String text) {
-		Search(text);
-	}
-
-	/**
-	 * su kien huy activity
-	 */
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		// giai phong speaker
-		speaker.shutdown();
-	}
-
-	/**
-	 * su kien nhan back
-	 */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (handleKeyBack()) {
-				return true;
-			}
-		}
-
-		return super.onKeyDown(keyCode, event);
-	}
-
-	/**
-	 * xu ly su kien nhan back
-	 * 
-	 * @return false neu lich su tra tu hien tai trong, true neu nguoc lai
-	 */
-	private boolean handleKeyBack() {
-		if (currentScreen == Screen.Start){
-			return false;
-		} 
-		
-		if (history.isEmpty()) {
-			changeScreen(Screen.Start);
-			if (isFullScreen){
-				zoomScreenHandle();
-			}
-		}
-		else {
-			// lay tu tren cung cua lich su ra va xoa bo
-			Vocabulary word = history.pop();
-			currentWord = word;
-			// hien thi nghia cua tu
-			showMeaning(word.getStMean());
-		}
-
-		return true;
-	}
+    ////////////////////////// FAVORITES //////////////////////////////	
 
 	/**
 	 * su kien tu webview khi nhan them favorite
@@ -601,26 +662,18 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			}
 		}
 	}
+	
+	/////////////////////////// XU LY TRANG THAI MAN HINH  ////////////////////////////////////
 
-	/**
-	 * hien thi dialog loading khi hien thi nghia tu
-	 */
-	private void showLoadingDialog() {
-		String msg = getResources().getString(
-				R.string.dict_message_loading_dialog);
-		pgbLoading.setMessage(msg);
-		pgbLoading.show();
-	}
+	private void setDictionaryTabScreen(int status) {
+		if (status == 0) {
+			btnVoiceSearch.setVisibility(View.VISIBLE);
+			btnCancelSearch.setVisibility(View.GONE);
+			etWord.setText("");
 
-	/**
-	 * su kien load xong nghia tu tren webview
-	 */
-	@Override
-	public void onLoadComplete() {
-		if (pgbLoading.isShowing()) {
-			pgbLoading.dismiss();
-			wvMean.requestFocus();
-			checkFavoriteWord();
+		} else if (status == 1) {
+			btnVoiceSearch.setVisibility(View.VISIBLE);
+			btnCancelSearch.setVisibility(View.VISIBLE);
 		}
 	}
 	
