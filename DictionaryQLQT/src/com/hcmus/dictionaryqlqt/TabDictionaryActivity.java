@@ -25,15 +25,18 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import dao.DatabaseHelperDAOImpl;
@@ -66,10 +69,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 										// status = 1: sau khi click vao search
 										// box
 	private EditText edWord;
-	private ImageView btnVoiceSearch, btnCancelSearch, btnResetSearch,
-			btnSearch;
+	private ImageView btnVoiceSearch, btnCancelSearch, btnResetSearch, btnZoom;
 	private ImageView imgLogo;
-	private RelativeLayout rlContent;
+	private View searchBar, rootLayout;
 	private Screen currentScreen;
 	
 	/*
@@ -109,6 +111,8 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 * luu lich su tra tu hien tai
 	 */
 	private Stack<Vocabulary> history;
+	
+	private boolean isFullScreen = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +161,6 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		btnVoiceSearch = (ImageView) findViewById(R.id.btnVoiceSearch);
 		btnCancelSearch = (ImageView) findViewById(R.id.btnCancelSearch);
 		btnResetSearch = (ImageView) findViewById(R.id.btnResetsearch);
-		btnSearch = (ImageView) findViewById(R.id.btnSearchbox);
 		matchSearchText = (AutoCompleteTextView) findViewById(R.id.mactSearchText);
 		matchSearchText.setThreshold(1);
 		matchSearchText.addTextChangedListener(TabDictionaryActivity.this);
@@ -165,9 +168,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		btnVoiceSearch.setOnClickListener(this);
 		btnCancelSearch.setOnClickListener(this);
 		edWord.setOnClickListener(this);
-		btnSearch.setOnClickListener(this);
-
-		rlContent = (RelativeLayout) findViewById(R.id.rlContent);
+		btnZoom = (ImageView) findViewById(R.id.btnZoomDict);
+		btnZoom.setOnClickListener(this);
+		searchBar = findViewById(R.id.searchbar);
+		
+		rootLayout = findViewById(R.id.rootDict);
 		imgLogo = (ImageView) findViewById(R.id.imgLogo);
 		wvMean = (WebView) findViewById(R.id.wvMeaning);
 		bridge = new AndroidBridge();
@@ -196,13 +201,14 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		case R.id.btnCancelSearch:
 			statusSearchTab = 0;
 			setDictionaryTabScreen(statusSearchTab);
+			wvMean.requestFocus();
 			break;
 		case R.id.btnResetsearch:
 			edWord.setText("");
 			btnResetSearch.setVisibility(View.INVISIBLE);
 			break;
-		case R.id.btnSearchbox:
-			Search(matchSearchText.getText().toString());
+		case R.id.btnZoomDict:
+			zoomScreenHandle();
 			break;
 		}
 	}
@@ -309,15 +315,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	private void setDictionaryTabScreen(int status) {
 		btnResetSearch.setVisibility(View.INVISIBLE);
 		if (status == 0) {
-			// findViewById(R.id.imgSearchbar).setVisibility(View.VISIBLE);
-			// findViewById(R.id.imgSearchbarClick).setVisibility(View.INVISIBLE);
 			btnVoiceSearch.setVisibility(View.VISIBLE);
 			btnCancelSearch.setVisibility(View.GONE);
 			edWord.setText("");
 
 		} else if (status == 1) {
-			// findViewById(R.id.imgSearchbar).setVisibility(View.INVISIBLE);
-			// findViewById(R.id.imgSearchbarClick).setVisibility(View.VISIBLE);
 			btnVoiceSearch.setVisibility(View.VISIBLE);
 			btnCancelSearch.setVisibility(View.VISIBLE);
 		}
@@ -439,6 +441,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		
 		if (history.isEmpty()) {
 			changeScreen(Screen.Start);
+			if (isFullScreen){
+				zoomScreenHandle();
+			}
 		}
 		else {
 			// lay tu tren cung cua lich su ra va xoa bo
@@ -536,16 +541,72 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		case Start:
 			wvMean.setVisibility(View.INVISIBLE);
 			imgLogo.setVisibility(View.VISIBLE);
-			rlContent.setBackgroundColor(getResources().
+			rootLayout.setBackgroundColor(getResources().
 					getColor(R.color.bg_content_start));
+			btnZoom.setVisibility(View.INVISIBLE);
+			btnZoom.setFocusable(false);
 			break;
 		case Meaning:
 			wvMean.setVisibility(View.VISIBLE);
 			imgLogo.setVisibility(View.INVISIBLE);
-			rlContent.setBackgroundColor(getResources().
+			rootLayout.setBackgroundColor(getResources().
 					getColor(R.color.bg_content_meaning));
+			btnZoom.setVisibility(View.VISIBLE);
+			btnZoom.setFocusable(true);
 			break;
 		}		
 		currentScreen = screen;
 	}
+	
+	private void zoomScreenHandle(){
+		if (isFullScreen){
+			btnZoom.setImageResource(R.drawable.ic_zoom_in);			
+			FullscreenActivity.getInstance().showTabs();
+			showSearchBar();
+		}
+		else{
+			btnZoom.setImageResource(R.drawable.ic_zoom_out);
+			FullscreenActivity.getInstance().hideTabs();
+			hideSearchBar();
+		}
+		isFullScreen = !isFullScreen;
+	}
+	
+	private void hideSearchBar(){
+		Animation slideOut = AnimationUtils.loadAnimation(this,
+				R.anim.slide_up_out);
+		slideOut.setAnimationListener(barSlideOut);
+		searchBar.startAnimation(slideOut);
+	}
+	
+	private void showSearchBar(){
+		LayoutParams params = (LayoutParams) searchBar.getLayoutParams();
+		params.height = LayoutParams.WRAP_CONTENT;
+		searchBar.setLayoutParams(params);
+		
+		Animation slideIn = AnimationUtils.loadAnimation(this,
+				R.anim.slide_up_in);
+		searchBar.startAnimation(slideIn);
+	}
+	
+	private AnimationListener barSlideOut = new AnimationListener() {
+
+		@Override
+		public void onAnimationStart(Animation animation) {
+
+		}
+
+		@Override
+		public void onAnimationRepeat(Animation animation) {
+
+		}
+
+		@Override
+		public void onAnimationEnd(Animation animation) {
+			LayoutParams params = (LayoutParams) searchBar.getLayoutParams();
+			params.height = 0;
+
+			searchBar.setLayoutParams(params);
+		}
+	};
 }

@@ -7,11 +7,20 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical" >        
+
+        <FrameLayout 
+            android:id="@android:id/tabcontent" 
+            android:layout_width="fill_parent" 
+            android:layout_height="fill_parent" 
+            android:layout_weight="1.0" 
+            android:layout_above="@+id/tab_widget" 
+            android:layout_alignParentTop="true" >
+        </FrameLayout>
         
         <LinearLayout 
             android:orientation="vertical" 
-            android:id="@+id/tab_widget_holder"
+            android:id="@+id/tab_widget"
             android:layout_width="fill_parent" 
             android:layout_height="wrap_content" 
             android:layout_alignParentBottom="true">
@@ -29,15 +38,6 @@
                 android:layout_width="fill_parent" 
                 android:layout_height="wrap_content" />
         </LinearLayout>
-
-        <FrameLayout 
-            android:id="@android:id/tabcontent" 
-            android:layout_width="fill_parent" 
-            android:layout_height="fill_parent" 
-            android:layout_weight="1.0" 
-            android:layout_above="@+id/tab_widget_holder" 
-            android:layout_alignParentTop="true" >
-        </FrameLayout>
         
     </RelativeLayout>
 

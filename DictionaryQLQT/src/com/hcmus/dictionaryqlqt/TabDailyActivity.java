@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -27,12 +30,13 @@ import android.content.DialogInterface;
  * Tab xem word of day
  */
 
-public class TabDailyActivity extends Activity implements AndroidBridgeListener {
+public class TabDailyActivity extends Activity implements AndroidBridgeListener, OnClickListener {
 
 	/*
 	 * webview hien thi noi dung
 	 */
 	private WebView wbvContent;
+	private ImageView btnZoom;
 	
 	/*
 	 * progress dialog khi load noi dung
@@ -46,6 +50,7 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener 
 	 * luu trang thai da load hay chua
 	 */
 	private boolean isLoaded = false;
+	private boolean isFullScreen = false;
 	
 	private AndroidBridge bridge;
 
@@ -96,6 +101,10 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener 
 
 		wbvContent = (WebView) findViewById(R.id.wbvContent);
 		pgbLoading = new ProgressDialog(this);
+		
+		btnZoom = (ImageView) findViewById(R.id.btnZoom);
+		btnZoom.setOnClickListener(this);
+		
 	}
 	
 	@Override
@@ -201,5 +210,20 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener 
 		if (pgbLoading.isShowing()){
 			pgbLoading.dismiss();
 		}		
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.btnZoom){
+			if (isFullScreen){
+				btnZoom.setImageResource(R.drawable.ic_zoom_in);
+				FullscreenActivity.getInstance().showTabs();
+			} 
+			else{
+				btnZoom.setImageResource(R.drawable.ic_zoom_out);
+				FullscreenActivity.getInstance().hideTabs();
+			}
+			isFullScreen = !isFullScreen;
+		}
 	}
 }

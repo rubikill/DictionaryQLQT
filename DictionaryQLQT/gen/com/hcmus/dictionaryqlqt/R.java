@@ -8,6 +8,12 @@
 package com.hcmus.dictionaryqlqt;
 
 public final class R {
+    public static final class anim {
+        public static final int slide_down_in=0x7f040000;
+        public static final int slide_down_out=0x7f040001;
+        public static final int slide_up_in=0x7f040002;
+        public static final int slide_up_out=0x7f040003;
+    }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -19,13 +25,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int buttonBarStyle=0x7f010000;
     }
     public static final class color {
-        public static final int bg_content_meaning=0x7f040005;
-        public static final int bg_content_start=0x7f040006;
-        public static final int bg_dialog=0x7f040004;
-        public static final int black_overlay=0x7f040000;
-        public static final int prb_volume_end_color=0x7f040002;
-        public static final int prb_volume_start_color=0x7f040001;
-        public static final int tv_status_voice_search_color=0x7f040003;
+        public static final int bg_content_meaning=0x7f050005;
+        public static final int bg_content_start=0x7f050006;
+        public static final int bg_dialog=0x7f050004;
+        public static final int black_overlay=0x7f050000;
+        public static final int prb_volume_end_color=0x7f050002;
+        public static final int prb_volume_start_color=0x7f050001;
+        public static final int tv_status_voice_search_color=0x7f050003;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -34,13 +40,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f050000;
-        public static final int activity_vertical_margin=0x7f050001;
-        public static final int dropDownVerticalOffset=0x7f050005;
-        public static final int edit_text_radius=0x7f050004;
-        public static final int logo_size=0x7f050006;
-        public static final int prb_volume_radius_corner=0x7f050002;
-        public static final int voice_search_layout_margin=0x7f050003;
+        public static final int activity_horizontal_margin=0x7f060000;
+        public static final int activity_vertical_margin=0x7f060001;
+        public static final int dropDownVerticalOffset=0x7f060005;
+        public static final int edit_text_radius=0x7f060004;
+        public static final int logo_size=0x7f060006;
+        public static final int prb_volume_radius_corner=0x7f060002;
+        public static final int voice_search_layout_margin=0x7f060003;
     }
     public static final class drawable {
         public static final int about=0x7f020000;
@@ -174,51 +180,53 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int volume_bar_on=0x7f020080;
     }
     public static final class id {
-        public static final int LinearLayout=0x7f090008;
-        public static final int LinearLayout1=0x7f090000;
-        public static final int LinearLayout2=0x7f090020;
-        public static final int RelativeLayout1=0x7f090017;
-        public static final int action_settings=0x7f09002c;
-        public static final int activity_activity_speech_recognizer_button_cancel=0x7f09000e;
-        public static final int activity_speech_recognizer_progressbar=0x7f09000d;
-        public static final int activity_speech_recognizer_title=0x7f09000c;
-        public static final int btnCancelSearch=0x7f090015;
-        public static final int btnEditDelete=0x7f090003;
-        public static final int btnEditFavorites=0x7f09001a;
-        public static final int btnEditrecent=0x7f09001f;
-        public static final int btnFavCancel=0x7f09001d;
-        public static final int btnFavDelete=0x7f09001b;
-        public static final int btnFavDeleteAll=0x7f09001c;
-        public static final int btnRecentCancel=0x7f090023;
-        public static final int btnRecentDelete=0x7f090021;
-        public static final int btnRecentDeleteAll=0x7f090022;
-        public static final int btnResetsearch=0x7f090014;
-        public static final int btnSearchbox=0x7f090012;
-        public static final int btnVoiceSearch=0x7f090016;
-        public static final int btnZoom=0x7f090010;
-        public static final int icon_voice_search=0x7f09000b;
-        public static final int imageView3=0x7f090018;
-        public static final int imgBranding=0x7f090011;
-        public static final int imgLogo=0x7f090028;
-        public static final int imgViewLogo=0x7f090009;
-        public static final int listFavorites=0x7f09001e;
-        public static final int listRecentSearch=0x7f090024;
-        public static final int mactSearchText=0x7f090013;
-        public static final int rlContent=0x7f090027;
-        public static final int search_bar_input_frame=0x7f090025;
-        public static final int search_button=0x7f090026;
-        public static final int tab_copyleft=0x7f090029;
-        public static final int tab_icon=0x7f09002b;
-        public static final int tab_title=0x7f09002a;
-        public static final int tab_widget_holder=0x7f090006;
-        public static final int tabdivider=0x7f090007;
-        public static final int tvAbout=0x7f090002;
-        public static final int tvAbout1=0x7f090004;
-        public static final int tvCopyrights=0x7f090005;
-        public static final int tvLabel=0x7f09000a;
-        public static final int tvedit=0x7f090001;
-        public static final int wbvContent=0x7f09000f;
-        public static final int wvMeaning=0x7f090019;
+        public static final int LinearLayout1=0x7f0a0000;
+        public static final int LinearLayout2=0x7f0a0020;
+        public static final int RelativeLayout1=0x7f0a0017;
+        public static final int action_settings=0x7f0a002e;
+        public static final int activity_activity_speech_recognizer_button_cancel=0x7f0a000e;
+        public static final int activity_speech_recognizer_progressbar=0x7f0a000d;
+        public static final int activity_speech_recognizer_title=0x7f0a000c;
+        public static final int btnCancelSearch=0x7f0a0015;
+        public static final int btnEditDelete=0x7f0a0003;
+        public static final int btnEditFavorites=0x7f0a001a;
+        public static final int btnEditrecent=0x7f0a001f;
+        public static final int btnFavCancel=0x7f0a001d;
+        public static final int btnFavDelete=0x7f0a001b;
+        public static final int btnFavDeleteAll=0x7f0a001c;
+        public static final int btnRecentCancel=0x7f0a0023;
+        public static final int btnRecentDelete=0x7f0a0021;
+        public static final int btnRecentDeleteAll=0x7f0a0022;
+        public static final int btnResetsearch=0x7f0a0014;
+        public static final int btnSearchbox=0x7f0a0012;
+        public static final int btnVoiceSearch=0x7f0a0016;
+        public static final int btnZoom=0x7f0a0010;
+        public static final int btnZoomDict=0x7f0a002b;
+        public static final int icon_voice_search=0x7f0a000b;
+        public static final int imageView3=0x7f0a0018;
+        public static final int imgBranding=0x7f0a0011;
+        public static final int imgLogo=0x7f0a0029;
+        public static final int imgViewLogo=0x7f0a0009;
+        public static final int listFavorites=0x7f0a001e;
+        public static final int listRecentSearch=0x7f0a0024;
+        public static final int mactSearchText=0x7f0a0013;
+        public static final int rlContent=0x7f0a0028;
+        public static final int rootDict=0x7f0a0008;
+        public static final int search_bar_input_frame=0x7f0a0025;
+        public static final int search_button=0x7f0a0026;
+        public static final int searchbar=0x7f0a0027;
+        public static final int tab_copyleft=0x7f0a002a;
+        public static final int tab_icon=0x7f0a002d;
+        public static final int tab_title=0x7f0a002c;
+        public static final int tab_widget=0x7f0a0006;
+        public static final int tabdivider=0x7f0a0007;
+        public static final int tvAbout=0x7f0a0002;
+        public static final int tvAbout1=0x7f0a0004;
+        public static final int tvCopyrights=0x7f0a0005;
+        public static final int tvLabel=0x7f0a000a;
+        public static final int tvedit=0x7f0a0001;
+        public static final int wbvContent=0x7f0a000f;
+        public static final int wvMeaning=0x7f0a0019;
     }
     public static final class layout {
         public static final int activity_about=0x7f030000;
@@ -237,43 +245,43 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tab_indicator_layout=0x7f03000d;
     }
     public static final class menu {
-        public static final int main=0x7f080000;
-        public static final int speech_recognizer=0x7f080001;
+        public static final int main=0x7f090000;
+        public static final int speech_recognizer=0x7f090001;
     }
     public static final class string {
-        public static final int action_settings=0x7f060001;
-        public static final int analyzing_status=0x7f060006;
-        public static final int app_name=0x7f060000;
-        public static final int copyright=0x7f060017;
-        public static final int date_class_name=0x7f06000a;
+        public static final int action_settings=0x7f070001;
+        public static final int analyzing_status=0x7f070006;
+        public static final int app_name=0x7f070000;
+        public static final int copyright=0x7f070017;
+        public static final int date_class_name=0x7f07000a;
         /**  tab dictonary 
          */
-        public static final int dict_message_loading_dialog=0x7f060013;
-        public static final int didyouknow_class_name=0x7f06000e;
-        public static final int examples_class_name=0x7f06000d;
-        public static final int hello_world=0x7f060002;
-        public static final int mean_class_name=0x7f06000c;
-        public static final int phonetic_class_name=0x7f06000b;
-        public static final int preparing_status=0x7f060005;
-        public static final int recording_status=0x7f060004;
-        public static final int speechrecognizer_network_error=0x7f060015;
+        public static final int dict_message_loading_dialog=0x7f070013;
+        public static final int didyouknow_class_name=0x7f07000e;
+        public static final int examples_class_name=0x7f07000d;
+        public static final int hello_world=0x7f070002;
+        public static final int mean_class_name=0x7f07000c;
+        public static final int phonetic_class_name=0x7f07000b;
+        public static final int preparing_status=0x7f070005;
+        public static final int recording_status=0x7f070004;
+        public static final int speechrecognizer_network_error=0x7f070015;
         /**  speech recognizer 
          */
-        public static final int speechrecognizer_title_dialog=0x7f060014;
-        public static final int speechrecognizer_understand_error=0x7f060016;
-        public static final int title_activity_recording=0x7f060003;
-        public static final int wod_message_check_network_dialog=0x7f060012;
+        public static final int speechrecognizer_title_dialog=0x7f070014;
+        public static final int speechrecognizer_understand_error=0x7f070016;
+        public static final int title_activity_recording=0x7f070003;
+        public static final int wod_message_check_network_dialog=0x7f070012;
         /**  word of day parser 
  tab daily 
          */
-        public static final int wod_message_loading_dialog=0x7f060010;
+        public static final int wod_message_loading_dialog=0x7f070010;
         /**  word of day parser 
          */
-        public static final int wod_service_url=0x7f060007;
-        public static final int wod_title_check_network_dialog=0x7f060011;
-        public static final int wod_url=0x7f060008;
-        public static final int word_class_name=0x7f060009;
-        public static final int word_function_class_name=0x7f06000f;
+        public static final int wod_service_url=0x7f070007;
+        public static final int wod_title_check_network_dialog=0x7f070011;
+        public static final int wod_url=0x7f070008;
+        public static final int word_class_name=0x7f070009;
+        public static final int word_function_class_name=0x7f07000f;
     }
     public static final class style {
         /** 
@@ -297,11 +305,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
+        public static final int AppTheme=0x7f080001;
     }
     public static final class styleable {
         /** 
