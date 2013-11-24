@@ -22,11 +22,11 @@ public class TestFavoriteHistoryDAO extends AndroidTestCase {
 	/**
 	 * Test FileOpen(int idAction)
 	 */
-	public void testOpenHistoryFile(){
+	public void testOpenHistoryFileSuccess(){
 		assertEquals("History.txt", fhDAO.FileOpen(1));
 	}
 	
-	public void testOpenFavoriteFile(){
+	public void testOpenFavoriteFileSuccess(){
 		assertEquals("Favorite.txt", fhDAO.FileOpen(2));
 	}
 	
@@ -34,7 +34,7 @@ public class TestFavoriteHistoryDAO extends AndroidTestCase {
 	 * Test WriteFile(String keyWord, int idAction)
 	 * @throws IOException 
 	 */
-	public void testWriteToFavoriteFile() throws IOException{
+	public void testWriteToFavoriteFileSuccess() throws IOException{
 		String keyWord = "Favorite";
 		ArrayList<String> expected = new ArrayList<String>();
 		expected.add(keyWord);
@@ -50,7 +50,7 @@ public class TestFavoriteHistoryDAO extends AndroidTestCase {
 	 * Test DeleteItem(String word, int idAction)
 	 * @throws IOException 
 	 */
-	public void testDeleteItemInHistoryFile() throws IOException{
+	public void testDeleteItemInHistoryFileSuccess() throws IOException{
 		ArrayList<String> expected = new ArrayList<String>();
 		expected.add("Hello");
 		expected.add("Man");
@@ -69,7 +69,7 @@ public class TestFavoriteHistoryDAO extends AndroidTestCase {
 	 * Test DeleteAll(int idAction)
 	 * @throws IOException 
 	 */
-	public void testDeleteAllItemInHistoryFile() throws IOException{
+	public void testDeleteAllItemInHistoryFileSuccess() throws IOException{
 		ArrayList<String> expected = new ArrayList<String>();
 		
 		fhDAO.DeleteAll(1);
