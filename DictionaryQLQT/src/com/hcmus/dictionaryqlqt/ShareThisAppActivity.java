@@ -58,10 +58,13 @@ public class ShareThisAppActivity extends ListActivity implements
 			facebookLogin = true;
 		else
 			facebookLogin = false;
+		//---------------------/facebook--------------
 	}
+	//------------------------facbook
 /***
  * ham callback
  */
+
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state,
@@ -124,7 +127,58 @@ public class ShareThisAppActivity extends ListActivity implements
 				});
 		request.executeAsync();
 	}
+	// khoi tao popup share facebook
+		private void initFacebookPopup() {
+			// TODO Auto-generated method stub
+			LayoutInflater inflater = (LayoutInflater) ShareThisAppActivity.this
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View layout = inflater.inflate(R.layout.popup_loginfacebook,
+					(ViewGroup) findViewById(R.id.popup_element));
+			Display display = getWindowManager().getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			int width = (int) (size.x * 0.8);
+			int height = (int) (size.y * 0.7);
+			facebookPpopup = new PopupWindow(layout, width, height, true);
+			facebookPpopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
+			btnShare = (Button) layout.findViewById(R.id.btnShare);
+			btn_face_close = (Button) layout.findViewById(R.id.btn_face_close);
+			btnShare.setOnClickListener(this);
+			btn_face_close.setOnClickListener(this);
+			if (!facebookLogin)
+				btnShare.setVisibility(View.INVISIBLE);
+			else
+				btnShare.setVisibility(View.VISIBLE);
+			profilePictureView = (ProfilePictureView) layout
+					.findViewById(R.id.selection_profile_pic);
+			profilePictureView.setCropped(true);
+			profilePictureView.setProfileId(uid);
+		}
+		
+		private void shareToFacebook() {
+			// TODO Auto-generated method stub
+			Bundle params = new Bundle();
+			params.putString("name", "Dictionary-QLQPPM-N2");
+			params.putString("caption", "Contact us for more details.");
+			params.putString("description",
+					"Dictionary project of university of Siences.");
+			params.putString("picture",
+					"http://www.hcmus.edu.vn/images/stories/logo-khtn.png");
 
+			WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(this,
+					Session.getActiveSession(), params)).setOnCompleteListener(
+					new OnCompleteListener() {
+
+						@Override
+						public void onComplete(Bundle values,
+								FacebookException error) {
+
+						}
+
+					}).build();
+			feedDialog.show();
+		}
+		
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		switch (position) {
@@ -142,33 +196,7 @@ public class ShareThisAppActivity extends ListActivity implements
 		}
 	}
 
-	// khoi tao popup share facebook
-	private void initFacebookPopup() {
-		// TODO Auto-generated method stub
-		LayoutInflater inflater = (LayoutInflater) ShareThisAppActivity.this
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.popup_loginfacebook,
-				(ViewGroup) findViewById(R.id.popup_element));
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = (int) (size.x * 0.8);
-		int height = (int) (size.y * 0.7);
-		facebookPpopup = new PopupWindow(layout, width, height, true);
-		facebookPpopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
-		btnShare = (Button) layout.findViewById(R.id.btnShare);
-		btn_face_close = (Button) layout.findViewById(R.id.btn_face_close);
-		btnShare.setOnClickListener(this);
-		btn_face_close.setOnClickListener(this);
-		if (!facebookLogin)
-			btnShare.setVisibility(View.INVISIBLE);
-		else
-			btnShare.setVisibility(View.VISIBLE);
-		profilePictureView = (ProfilePictureView) layout
-				.findViewById(R.id.selection_profile_pic);
-		profilePictureView.setCropped(true);
-		profilePictureView.setProfileId(uid);
-	}
+	
 
 	@Override
 	public void onClick(View v) {
@@ -184,29 +212,7 @@ public class ShareThisAppActivity extends ListActivity implements
 		}
 	}
 
-	private void shareToFacebook() {
-		// TODO Auto-generated method stub
-		Bundle params = new Bundle();
-		params.putString("name", "Dictionary-QLQPPM-N2");
-		params.putString("caption", "Contact us for more details.");
-		params.putString("description",
-				"Dictionary project of university of Siences.");
-		params.putString("picture",
-				"http://i0.upanh.com/2013/1124/09/58171518.mylogolarger.120x1.png");
-
-		WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(this,
-				Session.getActiveSession(), params)).setOnCompleteListener(
-				new OnCompleteListener() {
-
-					@Override
-					public void onComplete(Bundle values,
-							FacebookException error) {
-
-					}
-
-				}).build();
-		feedDialog.show();
-	}
+	
 
 	@Override
 	public void onResume() {
