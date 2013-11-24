@@ -37,26 +37,27 @@ public class TestDictionaryDAO extends AndroidTestCase {
 	/**
 	 * Test ham getRecommendWord(String keyWord) trong class FinderDAOImpl.java
 	 */
-	public void testGetRecommentWord(){
+	public void testGetRecommentWordWithKeywordSuccess(){
+		String keyWord = "love";
 		ArrayList<String> actual = new ArrayList<String>();
-		ArrayList<Vocabulary> vocabularies = finderDAO.getRecommendWord("love");
+		ArrayList<Vocabulary> vocabularies = finderDAO.getRecommendWord(keyWord);
 		for (Vocabulary vocabulary : vocabularies) {
-			actual.add(vocabulary.getWord() + vocabulary.getIndex() + vocabulary.getLength());
+			actual.add(vocabulary.getWord());
 		}
 		
 		ArrayList<String> expected = new ArrayList<String>();
-		expected.add("love" + "UeH9" + "V+");
-		expected.add("loveable" + "wsbm" + "l");
-		expected.add("love-affair" + "Ued7" + "BT");
-		expected.add("love-apple" + "UefO" + "BH");
-		expected.add("love-begotten" + "UegV" + "8");
-		expected.add("love-bird" + "UehR" + "BJ");
-		expected.add("lovebird" + "wscL" + "BJ");
-		expected.add("love-child" + "Ueia" + "1");
-		expected.add("loved" + "wsdU" + "r");
-		expected.add("love-favour" + "wsU8" + "9");
-		expected.add("love-hate relationship" + "wsV5" + "7");
-		expected.add("love-knot" + "UejP" + "/");
+		expected.add("love");
+		expected.add("loveable");
+		expected.add("love-affair");
+		expected.add("love-apple");
+		expected.add("love-begotten");
+		expected.add("love-bird");
+		expected.add("lovebird");
+		expected.add("love-child");
+		expected.add("loved");
+		expected.add("love-favour");
+		expected.add("love-hate relationship");
+		expected.add("love-knot");
 		
 		assertEquals(expected, actual);
 	}
@@ -64,18 +65,18 @@ public class TestDictionaryDAO extends AndroidTestCase {
 	/**
 	 * Test ham getDemicalValue(String str) trong class FileHelperDAOImpl.java
 	 */
-	public void testConvertLengthValueToDemicalValue(){
+	public void testConvertLengthValueToDemicalValueSuccess(){
 		assertEquals(1406, fileDAO.getDemicalValue("V+"));
 	}
 	
-	public void testConvertIndexValueToDemicalValue(){
+	public void testConvertIndexValueToDemicalValueSuccess(){
 		assertEquals(5366269, fileDAO.getDemicalValue("UeH9"));
 	}
 	
 	/**
 	 * Test ham find(String keyWord) trong finderDAOImpl.java
 	 */
-	public void testFindWordWithWordKey(){
+	public void testFindWordWithWordKeySuccess(){
 		Vocabulary vocabulary = finderDAO.find("normal");
 		
 		Vocabulary expectedVocabulary = new Vocabulary();

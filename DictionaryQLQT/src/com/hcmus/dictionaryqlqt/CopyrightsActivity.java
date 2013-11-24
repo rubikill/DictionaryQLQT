@@ -15,10 +15,7 @@ public class CopyrightsActivity extends Activity{
 		setContentView(R.layout.activity_copyrights);
 		
 		tvCopyrights = (TextView)findViewById(R.id.tvCopyrights);
-		tvCopyrights.setText("All content of this Application is 2012 Merriam-Webster, Incorporated. Some of" +
-				"the software in this Application is provided bhy licensors. Merriam-Webster claims no compilation" +
-				"copyright in materials that are subject to open source licenses. As required, MW makes the following open" +
-				"source licenses disclosures:");
+		tvCopyrights.setText("Developed by 2013 QLQTPM-TH10-N2 - University of Science - Ho Chi Minh City");
 	}
 
 	@Override
