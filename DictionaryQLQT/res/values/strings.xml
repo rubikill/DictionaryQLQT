@@ -34,6 +34,7 @@
 	<string name="speechrecognizer_title_dialog">Voice search</string>
 	<string name="speechrecognizer_network_error">You need network access to do a voice search.</string>
 	<string name="speechrecognizer_understand_error">Sorry, we couldn\'t understand that word. Please try your search again.</string>
+	<string name="speechrecognizer_not_available">Sorry, your device does not support speech recognizer</string>
 	
 	<string name="copyright">&#169; 2013 QLQTPM-TH10-N2</string>
 </resources>

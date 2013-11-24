@@ -74,21 +74,31 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 		getWindow().setBackgroundDrawableResource(R.color.bg_dialog);
 		setContentView(R.layout.activity_speech_recognizer);
 		
-		initComponents();
-		startSpeechRecognizer();
+		if (initComponents()){
+			startSpeechRecognizer();
+		}
+		else{
+			showDialogNotAvailable();
+		}
 	}
 	
 	/*
 	 * khoÌ‰i taÌ£o caÌ�c thaÌ€nh phÃ¢Ì€n giao diÃªÌ£n vaÌ€ triÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
 	 */
-	private void initComponents(){
+	private boolean initComponents(){
 		tvTitle = (TextView) findViewById(R.id.activity_speech_recognizer_title);
 		pgbVolume = (ProgressBar) findViewById(R.id.activity_speech_recognizer_progressbar);
-		btCancel = (Button) findViewById(R.id.activity_activity_speech_recognizer_button_cancel);
-		recognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+		btCancel = (Button) findViewById(R.id.activity_activity_speech_recognizer_button_cancel);		
+
+		if (!SpeechRecognizer.isRecognitionAvailable(getApplicationContext())){		
+			return false;
+		}
 		
+		recognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());		
 		btCancel.setOnClickListener(this);
 		recognizer.setRecognitionListener(this);	
+		
+		return true;
 	}
 	
 	/*
@@ -145,6 +155,20 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 		}
 	}
 	
+	private void showDialogNotAvailable(){
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);		 
+        alertDialog.setTitle(R.string.speechrecognizer_title_dialog);
+        alertDialog.setMessage(getString(R.string.speechrecognizer_not_available));
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+            	// khÆ¡Ì‰i Ä‘Ã´Ì£ng laÌ£i nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+            	SpeechRecognizerActivity.this.setResult(RESULT_CANCELED);
+            	SpeechRecognizerActivity.this.finish();
+            } 
+        });
+        alertDialog.show();
+	}
+
 	/*
 	 * hiÃªÌ‰n thiÌ£ dialog lÃ´Ìƒi
 	 */
@@ -234,7 +258,9 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		recognizer.destroy();
+		if (recognizer != null){
+			recognizer.destroy();
+		}
 	}
 
 	/*

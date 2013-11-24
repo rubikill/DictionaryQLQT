@@ -90,3 +90,14 @@ body {
   background-color: gray;
   color: white;
 }
+
+.center {
+	text-align: center;
+    margin: 0;
+    padding: 0;
+    color: #746c6c;
+}
+
+.h-center {
+    margin-top: 70px;
+}

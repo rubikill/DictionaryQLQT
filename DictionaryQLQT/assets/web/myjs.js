@@ -1,4 +1,4 @@
-﻿var headertp = "<div id='headerword'>\
+var headertp = "<div id='headerword'>\
             <span class='word'>@WORD</span>\
             <span class='audio' id='audio'></span>\
             <span class='favorite' id='favorite' data-starred='false'></span>\
@@ -18,8 +18,21 @@ var examtp = "<div class='exam'>\
             <span>@TRANS</span>\
         </div>";
 
+var notfound = "<div class='h-center'>\
+                <p class='center'>Sorry, no match found</p>\
+		        <p class='center'>in the dictionary.</p>\
+		        <p class='center'>Please try your search again.</p>\
+            </div>"
+
 $(document).ready(function () {
     var mean = $('#mean').text();
+	if (mean.trim() == ''){
+	    $(notfound).appendTo('#mean');
+	    window.android.onLoadComplete();
+
+	    return;
+	}
+	
     $('#mean').html('');
     var lines = mean.split('\n');
     for (var i = 0; i < lines.length; i++) {
