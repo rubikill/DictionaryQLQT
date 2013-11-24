@@ -9,7 +9,7 @@ import android.widget.ListView;
 public class TabMoreActivity extends ListActivity {
 
 	static final String[] TAB_MORE = 
-            new String[] { "Feedback", "Rate This App", "Share This App", "About Merrian-Webster"
+            new String[] { "Feedback", "Rate This App", "Share This App", "About Dictionary"
 						, "Recommended Apps", "Copyrights"};
 	
 	@Override
@@ -32,7 +32,7 @@ public class TabMoreActivity extends ListActivity {
 		} else if (selectedValue.equals("Share This App")){
 			Intent i = new Intent(this, ShareThisAppActivity.class);
 			startActivity(i);
-		} else if (selectedValue.equals("About Merrian-Webster")){
+		} else if (selectedValue.equals("About Dictionary")){
 			Intent i = new Intent(this, AboutActivity.class);
 			startActivity(i);
 		} else if (selectedValue.equals("Recommended Apps")){

@@ -31,15 +31,13 @@ public class CustomArrayAdapter extends ArrayAdapter<String> {
 		// Change icon based on name
 		String s = values[position];
  
-		//System.out.println(s);
- 
 		if (s.equals("Feedback")) {
 			imageView.setImageResource(R.drawable.feedback);
 		} else if (s.equals("Rate This App")) {
 			imageView.setImageResource(R.drawable.rate_this_app);
 		} else if (s.equals("Share This App")) {
 			imageView.setImageResource(R.drawable.share_this_app);
-		} else if (s.equals("About Merrian-Webster")) {
+		} else if (s.equals("About Dictionary")) {
 			imageView.setImageResource(R.drawable.about);
 		} else if (s.equals("Recommended Apps")) {
 			imageView.setImageResource(R.drawable.recommend);

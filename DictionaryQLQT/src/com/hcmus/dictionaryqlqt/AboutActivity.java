@@ -14,11 +14,8 @@ public class AboutActivity extends Activity{
 		setContentView(R.layout.activity_about);
 		tvAbout = (TextView)findViewById(R.id.tvAbout);
 		tvAbout1 = (TextView)findViewById(R.id.tvAbout1);
-		tvAbout.setText("For more than 150 years, Merriam-Webster has been America's leading and most" +
-				"trusted provider of language information." +
-				"\n\nIn print, online, and in mobile products like this, we're proud to offer guidance to millions of people every day.");
-		
-		tvAbout1.setText("All content in this app is 2012 Merriam-Webster, Inc");
+		tvAbout.setText("This dictionary can help you to improve your vocabularies.");
+		tvAbout1.setText("2013 QLQTPM-TH10-N2");
 	}
 	
 }

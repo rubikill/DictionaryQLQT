@@ -16,29 +16,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="About Merriam-Webser"
+        android:text="About Dictionary"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/tvAbout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="For more than 150 year, ..." />
+        android:text="About dictionary" />
 
     <ImageView
         android:id="@+id/btnEditDelete"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/about_logo" />
+        android:src="@drawable/mylogo" />
 
     <TextView
         android:id="@+id/tvAbout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="All content in this app..."
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="14px" />
+        android:text="About group"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>
