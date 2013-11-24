@@ -24,6 +24,7 @@ import bridge.AndroidBridgeListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import manager.SpeakerImpl;
@@ -38,9 +39,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -65,7 +68,7 @@ import dao.IndexerDAO;
 
 @SuppressWarnings("deprecation")
 public class TabDictionaryActivity extends Activity implements OnClickListener,
-		TextWatcher, OnItemClickListener, AndroidBridgeListener {
+		TextWatcher, OnItemClickListener, AndroidBridgeListener, OnFocusChangeListener {
 
 	/*
 	 * enum trang thai man hinh
@@ -153,6 +156,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 */
 	private WebView wvMean;	
 	
+	/*
+	 * trang thai drop down autocomplete
+	 */
+	private boolean dropDownEnable;
+	
 	
 	/////////////////////////// DATA  /////////////////////////////////
 	
@@ -231,7 +239,8 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		etWord.setThreshold(1);
 		etWord.setOnClickListener(this);
 		etWord.addTextChangedListener(TabDictionaryActivity.this);
-		etWord.setOnItemClickListener(TabDictionaryActivity.this);		
+		etWord.setOnItemClickListener(TabDictionaryActivity.this);	
+		etWord.setOnFocusChangeListener(this);
 		btnVoiceSearch.setOnClickListener(this);
 		btnCancelSearch.setOnClickListener(this);
 		btnZoom.setOnClickListener(this);
@@ -255,6 +264,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		int id = v.getId();
 		switch (id) {
 		case R.id.mactSearchText:
+			dropDownEnable = true;
 			if (statusSearchTab == 0) {
 				statusSearchTab = 1;
 				setDictionaryTabScreen(statusSearchTab);
@@ -373,16 +383,21 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	///////////////////////// TRA TU  ///////////////////////////////////////	
 
 	public void Search(String word) {
+		if (currentWord != null &&
+				currentWord.getWord().equalsIgnoreCase(word)){
+			return;
+		}
+		dropDownEnable = false;
 		etWord.setText(word);
 		Vocabulary vocabulary = finder.find(word.trim());
 		String meaning = "";
 		if (vocabulary != null) {
 			meaning = finder.getMean(vocabulary);
 			saveHistory(new Vocabulary(word, meaning));
-			showMeaning(meaning);
 		} else {
-			meaning = "Word not found!";
+			meaning = "";
 		}
+		showMeaning(meaning);
 	}
 
 	/**
@@ -486,6 +501,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		
 		if (history.isEmpty()) {
 			changeScreen(Screen.Start);
+			currentWord = null;
 			if (isFullScreen){
 				zoomScreenHandle();
 			}
@@ -495,6 +511,8 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			Vocabulary word = history.pop();
 			currentWord = word;
 			// hien thi nghia cua tu
+			dropDownEnable = false;
+			etWord.setText(word.getWord());
 			showMeaning(word.getStMean());
 		}
 
@@ -513,7 +531,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-		if (etWord.isPerformingCompletion())
+		if (etWord.isPerformingCompletion() || !dropDownEnable)
 			return;
 		if (etWord.getText().toString().length() > 0) {
 			ArrayList<Vocabulary> arr = finder.getRecommendWord(etWord
@@ -536,14 +554,18 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 								words));
 				etWord.showDropDown();
 			}
-
 		}
 
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		hideKeyboard();
 		String word = words.get(arg2);
+		if (currentWord != null &&
+				currentWord.getWord().equalsIgnoreCase(word)){
+			return;
+		}
 		boolean flagSimilar = word.contains("---");
 		// kiem tra xem co phai la lua chon similar hay khong
 		if (flagSimilar == false) {
@@ -590,12 +612,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 				else
 				{
 					etWord.setText("");
-					String meaning = "Word not found!";
+					String meaning = "";
 					showMeaning(meaning);
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e("Dictonary - Search", e.getMessage());
 			}
 
 		}
@@ -686,6 +707,8 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 					getColor(R.color.bg_content_start));
 			btnZoom.setVisibility(View.INVISIBLE);
 			btnZoom.setFocusable(false);
+			etWord.setText("");
+			imgLogo.requestFocus();
 			break;
 		case Meaning:
 			wvMean.setVisibility(View.VISIBLE);
@@ -750,4 +773,16 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			searchBar.setLayoutParams(params);
 		}
 	};
+	
+	private void hideKeyboard(){
+		InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(etWord.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+		if (hasFocus){
+			dropDownEnable = true;
+		}		
+	}
 }

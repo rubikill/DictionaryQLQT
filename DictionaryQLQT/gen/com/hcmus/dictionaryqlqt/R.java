@@ -252,7 +252,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int action_settings=0x7f070001;
         public static final int analyzing_status=0x7f070006;
         public static final int app_name=0x7f070000;
-        public static final int copyright=0x7f070017;
+        public static final int copyright=0x7f070018;
         public static final int date_class_name=0x7f07000a;
         /**  tab dictonary 
          */
@@ -265,6 +265,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int preparing_status=0x7f070005;
         public static final int recording_status=0x7f070004;
         public static final int speechrecognizer_network_error=0x7f070015;
+        public static final int speechrecognizer_not_available=0x7f070017;
         /**  speech recognizer 
          */
         public static final int speechrecognizer_title_dialog=0x7f070014;
