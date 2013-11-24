@@ -210,15 +210,6 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		words = new ArrayList<String>();
 		index = new ArrayList<String>();
 		length = new ArrayList<String>();
-		// kiem tra xem indexdata fuzzy da ton tai hay chua
-		// neu chua thi tao indexdata
-		File file = new File(Environment.getExternalStorageDirectory()
-				.getPath() + "/fuzzydata");
-		if (!file.exists()) {
-			IndexerDAO indexer = new IndexerDAO(this.getBaseContext());
-			indexer.createIndexWriter();
-			indexer.indexData();
-		}
 	}
 
 	/**

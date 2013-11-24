@@ -16,6 +16,7 @@
             android:layout_weight="1.0" 
             android:layout_above="@+id/tab_widget" 
             android:layout_alignParentTop="true" >
+
         </FrameLayout>
         
         <LinearLayout 

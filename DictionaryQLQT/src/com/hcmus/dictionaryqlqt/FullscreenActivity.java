@@ -24,7 +24,6 @@ public class FullscreenActivity extends TabActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_fullscreen);
-
 		Instance = this;
 		lnTabs = (LinearLayout) findViewById(R.id.tab_widget);
 
