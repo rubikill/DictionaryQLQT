@@ -30,6 +30,7 @@ import android.content.Intent;
 import manager.SpeakerImpl;
 import manager.WebviewHelper;
 import model.Vocabulary;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.speech.RecognizerIntent;
@@ -179,7 +180,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_activity_tab_dictionary);
-		
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		initComponents();
 		initData();
 	}

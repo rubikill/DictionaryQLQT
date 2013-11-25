@@ -1,5 +1,6 @@
 package com.hcmus.dictionaryqlqt;
 
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -24,7 +25,6 @@ public class FullscreenActivity extends TabActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_fullscreen);
-
 		Instance = this;
 		lnTabs = (LinearLayout) findViewById(R.id.tab_widget);
 
