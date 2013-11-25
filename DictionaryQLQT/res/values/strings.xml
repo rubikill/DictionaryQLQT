@@ -37,4 +37,8 @@
 	<string name="speechrecognizer_not_available">Sorry, your device does not support speech recognizer</string>
 	
 	<string name="copyright">&#169; 2013 QLQTPM-TH10-N2</string>
+	
+	<string name="btnShare">Share this app</string>
+	<string name="app_id">494863537277784</string>
+	<string name="close">close</string>
 </resources>
