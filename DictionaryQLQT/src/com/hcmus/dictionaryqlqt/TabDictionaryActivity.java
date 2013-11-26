@@ -183,6 +183,13 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		initComponents();
 		initData();
+		/*Intent  intentresult = getIntent();
+		Bundle bundle = intentresult.getExtras();
+		String word = "";
+		word = bundle.getString("word");
+		if(word != ""){
+			Search(word);
+		}*/
 	}
 
 	private void initData() {
@@ -384,6 +391,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		Vocabulary vocabulary = finder.find(word.trim());
 		String meaning = "";
 		if (vocabulary != null) {
+		
 			meaning = finder.getMean(vocabulary);
 			saveHistory(new Vocabulary(word, meaning));
 		} else {
@@ -464,6 +472,17 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}
 		// gan lai tu hien tai
 		currentWord = word;
+		try {
+			if (favoriteHistory.Isexists(word.getWord(), 1)) {
+				Toast.makeText(this, "Word is Exist in your favorites",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				favoriteHistory.WriteFile(word.getWord(), 1);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 
