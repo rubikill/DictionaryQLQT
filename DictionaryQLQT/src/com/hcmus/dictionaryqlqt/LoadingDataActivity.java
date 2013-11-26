@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -22,18 +25,25 @@ import org.apache.lucene.util.Version;
 import dao.IndexerDAO;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.format.Time;
 import android.view.KeyEvent;
 
 public class LoadingDataActivity extends Activity {
 	Thread loadingdata;
 	Boolean flag_thread = true;
+	Boolean flag_isRun = false;
+	SQLiteDatabase db;
+	String strdirectory;
 	Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -53,6 +63,32 @@ public class LoadingDataActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+
+		// khoi tao datavase
+		db = this.openOrCreateDatabase("mydatafuzzy", MODE_PRIVATE, null);
+
+		// tao bang neu chau ton tai
+		String sql = "create table if not exists tbfuzzy ("
+				+ "id integer PRIMARY KEY autoincrement,"
+				+ "namedirectory text," + "arecreate integer);";
+		db.execSQL(sql);
+		String sqlselect = "select * from tbfuzzy";
+		Cursor c1 = db.rawQuery(sqlselect, null);
+		if (c1.getCount() == 0) {
+			flag_isRun = true;
+			String sqlCreate = "insert into tbfuzzy(namedirectory, arecreate) values ('"
+					+ "demo" + "', " + 0 + " );";
+			db.execSQL(sqlCreate);
+		} else {
+			c1.moveToPosition(0);
+			int isCreated = c1.getInt(2);
+			if (isCreated == 0)
+				flag_isRun = true;
+		}
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		Date date = new Date();
+		strdirectory = "fz" + dateFormat.format(date);
+		c1.close();
 		setContentView(R.layout.activity_loadingdata);
 	}
 
@@ -64,11 +100,8 @@ public class LoadingDataActivity extends Activity {
 
 			@Override
 			public void run() {
-				// kiem tra xem indexdata fuzzy da ton tai hay chua
-				// neu chua thi tao indexdata
-				File file = new File(Environment.getExternalStorageDirectory()
-						.getPath() + "/fuzzydata");
-				if (!file.exists()) {
+				// kiem tra du lieu trong database
+				if (flag_isRun == true) {
 					IndexWriter indexWriter = null;
 					// tao indexwriter
 					if (indexWriter == null) {
@@ -82,15 +115,15 @@ public class LoadingDataActivity extends Activity {
 
 							File f = new File(Environment
 									.getExternalStorageDirectory().getPath()
-									+ "/fuzzydata/");
+									+ "/" + strdirectory + "/");
 							f.mkdir();
 							Directory fsDirectory = FSDirectory.open(f);
-							
+
 							Analyzer standardAnalyzer = new StandardAnalyzer(
 									Version.LUCENE_34);
 							// Create a new index
 							boolean create = true;
-						
+
 							// Create the instance of deletion policy
 							IndexDeletionPolicy deletionPolicy = new KeepOnlyLastCommitDeletionPolicy();
 							indexWriter = new IndexWriter(fsDirectory,
@@ -143,20 +176,10 @@ public class LoadingDataActivity extends Activity {
 							doc.add(wordfield);
 							doc.add(indexfield);
 							doc.add(lenfield);
-						
+
 							indexWriter.addDocument(doc);
 						}
-						if(flag_thread)
-						{
-							File f = new File(Environment
-									.getExternalStorageDirectory().getPath()
-									+ "/fuzzydata/");
-							Directory fsDirectory = FSDirectory.open(f);
-							fsDirectory.clearLock(indexWriter.WRITE_LOCK_NAME);
-							fsDirectory.close();
-							indexWriter.deleteAll();
-							
-						}
+						
 						indexWriter.optimize();
 						indexWriter.close();
 
@@ -164,8 +187,15 @@ public class LoadingDataActivity extends Activity {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					if (flag_thread) {
+						ContentValues data = new ContentValues();
+						data.put("namedirectory", strdirectory);
+						data.put("arecreate", 1);
+						db.update("tbfuzzy", data, "id= 1", null);
+					}
 
 				}
+
 				String strMessage = "DONE";
 				if (flag_thread) {
 					Message msg = handler.obtainMessage(1, (String) strMessage);
@@ -177,18 +207,18 @@ public class LoadingDataActivity extends Activity {
 		loadingdata.start();
 
 	}
-	
+
 	private void recursiveDelete(File fileOrDirectory) {
-        if (fileOrDirectory.isDirectory())
-            for (File child : fileOrDirectory.listFiles())
-                recursiveDelete(child);
+		if (fileOrDirectory.isDirectory())
+			for (File child : fileOrDirectory.listFiles())
+				recursiveDelete(child);
 
-        fileOrDirectory.delete();
-    }
+		fileOrDirectory.delete();
+	}
 
-	//@Override
-	/*public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) { // Back key pressed
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 					LoadingDataActivity.this);
 
@@ -205,29 +235,34 @@ public class LoadingDataActivity extends Activity {
 										int id) {
 									// if this button is clicked, close
 									// current activity
-							//		flag_thread = false;
 									try {
-										Thread.sleep(3000);
+										Thread.sleep(2000);
 									} catch (InterruptedException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
+									flag_thread = false;
 									File file = new File(Environment
 											.getExternalStorageDirectory()
 											.getPath()
-											+ "/fuzzydata");
+											+ "/" + strdirectory);
 									if (file.exists()) {
+										System.out.println("Xoa file roi");
 										recursiveDelete(file);
 									}
+									ContentValues data = new ContentValues();
+									data.put("namedirectory", "demo");
+									data.put("arecreate", 0);
+									db.update("tbfuzzy", data, "id= 1", null);
 									LoadingDataActivity.this.finish();
 								}
 							})
 					.setNegativeButton("No",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
-										int id) {
-									// if this button is clicked, just close
-									// the dialog box and do nothing
+										int id) { // if this button is clicked,
+													// just close // the dialog
+													// box and do nothing
 									dialog.cancel();
 								}
 							});
@@ -240,7 +275,7 @@ public class LoadingDataActivity extends Activity {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
-	}*/
+	}
 
 	@Override
 	protected void onPause() {
@@ -251,7 +286,7 @@ public class LoadingDataActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-//		flag_thread = false;
+		// flag_thread = false;
 		super.onDestroy();
 
 	}

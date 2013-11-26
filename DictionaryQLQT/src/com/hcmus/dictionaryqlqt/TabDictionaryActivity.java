@@ -27,6 +27,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import manager.SpeakerImpl;
 import manager.WebviewHelper;
 import model.Vocabulary;
@@ -572,9 +574,17 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			String[] listTemp = word.split("---");
 			String strText = listTemp[0];
 
+			
+			SQLiteDatabase db = this.openOrCreateDatabase("mydatafuzzy", MODE_PRIVATE, null);
+			String sqlselect = "select * from tbfuzzy";
+			Cursor c1 = db.rawQuery(sqlselect, null);
+			c1.moveToPosition(0);
+			String strdirectory = c1.getString(1);
 			File file = new File(Environment.getExternalStorageDirectory()
-					.getPath() + "/fuzzydata");
+					.getPath() + "/" + strdirectory);
 			Directory fsDirectory;
+			c1.close();
+			db.close();
 			try {
 				fsDirectory = FSDirectory.open(file);
 				IndexReader indexReader = IndexReader.open(fsDirectory);
