@@ -27,6 +27,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import manager.SpeakerImpl;
 import manager.WebviewHelper;
 import model.Vocabulary;
@@ -183,6 +185,13 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		initComponents();
 		initData();
+		/*Intent  intentresult = getIntent();
+		Bundle bundle = intentresult.getExtras();
+		String word = "";
+		word = bundle.getString("word");
+		if(word != ""){
+			Search(word);
+		}*/
 	}
 
 	private void initData() {
@@ -384,6 +393,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		Vocabulary vocabulary = finder.find(word.trim());
 		String meaning = "";
 		if (vocabulary != null) {
+		
 			meaning = finder.getMean(vocabulary);
 			saveHistory(new Vocabulary(word, meaning));
 		} else {
@@ -464,6 +474,17 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}
 		// gan lai tu hien tai
 		currentWord = word;
+		try {
+			if (favoriteHistory.Isexists(word.getWord(), 1)) {
+				Toast.makeText(this, "Word is Exist in your favorites",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				favoriteHistory.WriteFile(word.getWord(), 1);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 
@@ -572,9 +593,17 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			String[] listTemp = word.split("---");
 			String strText = listTemp[0];
 
+			
+			SQLiteDatabase db = this.openOrCreateDatabase("mydatafuzzy", MODE_PRIVATE, null);
+			String sqlselect = "select * from tbfuzzy";
+			Cursor c1 = db.rawQuery(sqlselect, null);
+			c1.moveToPosition(0);
+			String strdirectory = c1.getString(1);
 			File file = new File(Environment.getExternalStorageDirectory()
-					.getPath() + "/fuzzydata");
+					.getPath() + "/" + strdirectory);
 			Directory fsDirectory;
+			c1.close();
+			db.close();
 			try {
 				fsDirectory = FSDirectory.open(file);
 				IndexReader indexReader = IndexReader.open(fsDirectory);

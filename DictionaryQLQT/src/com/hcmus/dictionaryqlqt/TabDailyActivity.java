@@ -1,5 +1,8 @@
 package com.hcmus.dictionaryqlqt;
 
+import java.io.IOException;
+
+import dao.FavoriteHistoryDAO;
 import bridge.AndroidBridge;
 import bridge.AndroidBridgeListener;
 import manager.WebviewHelper;
@@ -53,7 +56,7 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 	private boolean isFullScreen = false;
 	
 	private AndroidBridge bridge;
-
+	private FavoriteHistoryDAO favoriteHistory = new FavoriteHistoryDAO();
 	/**
 	 * xu ly cap nhat giao dien tu thread load du lieu
 	 */
@@ -197,12 +200,28 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 
 	@Override
 	public void setFavorite(String word) {
-		
+		try {
+			if(favoriteHistory.Isexists(word, 2)){
+				Toast.makeText(this, "Word is Exist in your favorites", Toast.LENGTH_SHORT).show();
+			}
+			else{
+				favoriteHistory.WriteFile(word,2);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 	}
 
 	@Override
 	public void removeFavorite(String word) {
-		
+		try {
+			favoriteHistory.DeleteItem(word, 2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
