@@ -1,6 +1,5 @@
 package com.hcmus.dictionaryqlqt;
 
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Intent;

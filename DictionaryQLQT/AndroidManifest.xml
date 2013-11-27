@@ -28,7 +28,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <activity android:name="com.hcmus.dictionaryqlqt.FullscreenActivity" >
+         <activity android:name="com.hcmus.dictionaryqlqt.FullscreenActivity"
+			android:windowSoftInputMode="adjustNothing"	>
         </activity>
         <activity android:name="com.hcmus.dictionaryqlqt.CopyrightsActivity" >
         </activity>
