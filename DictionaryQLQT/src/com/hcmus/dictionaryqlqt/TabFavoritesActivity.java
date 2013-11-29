@@ -8,25 +8,23 @@ import dao.FavoriteHistoryImp;
 import dao.IFavoriteHistory;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class TabFavoritesActivity extends Activity implements OnClickListener, OnItemClickListener{
+public class TabFavoritesActivity extends Activity implements OnClickListener, OnItemClickListener {
 
 	private ImageView btnEditFavorites, btnFavDelete, btnFavDeleteAll, btnFavCancel;
 	private ListView listFavorite;
 	
 	private  IFavoriteHistory  favorite; 
+
 	private ArrayList<String> arrfavorite = null;
 	private ArrayAdapter<String> adapter = null;
 	private MyArrayAdapter myadapter = null;
@@ -42,7 +40,6 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 		btnFavCancel = (ImageView)findViewById(R.id.btnFavCancel);
 		listFavorite = (ListView)findViewById(R.id.listFavorites);
 	
-		
 		favorite = new FavoriteHistoryImp(TabFavoritesActivity.this);
 			arrfavorite  = favorite.ReadTable("Favorite");
 		
@@ -54,6 +51,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 			listFavorite.setAdapter(adapter);
 			btnEditFavorites.setVisibility(0);
 		}
+
 		btnFavDelete.setVisibility(-1);
 		btnFavDeleteAll.setVisibility(-1);
 		btnFavCancel.setVisibility(-1);
@@ -64,7 +62,6 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 		btnFavCancel.setOnClickListener(this);
 		
 		listFavorite.setOnItemClickListener(this);
-		
 	}
 	
 	@Override
@@ -89,9 +86,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 					arrfavorite.remove(i);
 					isDelted = true;
 					String worddelete = arrfavorite.get(i);
-					
-						favorite.DeleteItem(worddelete, "Favorite");
-					
+					favorite.DeleteItem(worddelete, "Favorite");
 				}
 			}
 			if(isDelted == true){
@@ -114,8 +109,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 	}
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		wordisdeleted = arrfavorite.get(arg2);
+		String word = arrfavorite.get(arg2);
+		FullscreenActivity.getInstance().setDictionaryTab(word);		
 	}
-	
 }

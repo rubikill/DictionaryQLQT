@@ -18,11 +18,8 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.Lock;
-import org.apache.lucene.store.NativeFSLockFactory;
 import org.apache.lucene.util.Version;
 
-import dao.IndexerDAO;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -35,7 +32,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.text.format.Time;
 import android.view.KeyEvent;
 
 public class LoadingDataActivity extends Activity {
@@ -53,8 +49,8 @@ public class LoadingDataActivity extends Activity {
 
 				Intent intent = new Intent(LoadingDataActivity.this,
 						FullscreenActivity.class);
-				startActivity(intent);
 				LoadingDataActivity.this.finish();
+				startActivity(intent);
 			}
 		}
 	};

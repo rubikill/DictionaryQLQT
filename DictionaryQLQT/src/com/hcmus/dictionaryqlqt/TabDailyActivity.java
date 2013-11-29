@@ -189,7 +189,7 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 
 	@Override
 	public void lookup(final String word) {
-		Toast.makeText(this, word, Toast.LENGTH_SHORT).show();	
+		FullscreenActivity.getInstance().setDictionaryTab(word);
 	}
 	
 	

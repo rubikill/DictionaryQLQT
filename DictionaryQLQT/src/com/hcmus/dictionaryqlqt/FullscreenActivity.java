@@ -1,6 +1,5 @@
 package com.hcmus.dictionaryqlqt;
 
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -80,6 +79,14 @@ public class FullscreenActivity extends TabActivity {
 		tabHost.addTab(tabSpecMore);
 
 		tabHost.setCurrentTab(0);
+	}
+	
+	public void setDictionaryTab(String word){
+		tabHost.setCurrentTab(0);
+		TabDictionaryActivity instance = TabDictionaryActivity.getInstance();
+		if (instance != null){
+			instance.Search(word);
+		}
 	}
 
 	public void hideTabs() {

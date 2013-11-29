@@ -61,7 +61,6 @@ import dao.FileHelperDAOImpl;
 import dao.FinderDAOImpl;
 import dao.IFavoriteHistory;
 import dao.IOHelperDAOImpl;
-import dao.IndexerDAO;
 
 /**
  * 
@@ -126,7 +125,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 */
 	private SpeakerImpl speaker;
 
-	
+	private static TabDictionaryActivity Instance;
 	
 	///////////////////// CAC THANH PHAN GIAO DIEN /////////////////////
 	
@@ -186,13 +185,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		initComponents();
 		initData();
-		/*Intent  intentresult = getIntent();
-		Bundle bundle = intentresult.getExtras();
-		String word = "";
-		word = bundle.getString("word");
-		if(word != ""){
-			Search(word);
-		}*/
+		Instance = this;
 	}
 
 	private void initData() {
@@ -475,6 +468,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}
 		// gan lai tu hien tai
 		currentWord = word;
+
 		if (favoriteHistory.IsExists(word.getWord(), "Recent")) {
 			favoriteHistory.DeleteItem(word.getWord(), "Recent");
 		} 
@@ -787,5 +781,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		if (hasFocus){
 			dropDownEnable = true;
 		}		
+	}
+	
+	public static TabDictionaryActivity getInstance() {
+		return Instance;
 	}
 }
