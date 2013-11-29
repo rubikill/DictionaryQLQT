@@ -3,7 +3,9 @@ package com.hcmus.dictionaryqlqt;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import dao.FavoriteHistoryDAO;
+
+import dao.FavoriteHistoryImp;
+import dao.IFavoriteHistory;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.LauncherActivity.ListItem;
@@ -13,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,9 +25,10 @@ public class TabRecentActivity extends Activity implements OnClickListener, OnIt
 	private ImageView btnEditrecent, btnRecentDelete, btnRecentDeleteAll, btnRecentCancel;
 	private ListView listHistory;
 	
-	private  FavoriteHistoryDAO  history = new FavoriteHistoryDAO(); 
+	private  IFavoriteHistory  recent ;
 	private ArrayList<String> arrHistory = null;
 	private ArrayAdapter<String> adapter = null;
+	private MyArrayAdapter myadapter = null;
 	private String wordisdeleted = "";
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +41,9 @@ public class TabRecentActivity extends Activity implements OnClickListener, OnIt
 		btnRecentCancel = (ImageView)findViewById(R.id.btnRecentCancel);
 		listHistory = (ListView)findViewById(R.id.listRecentSearch);
 		
-		try {
-			arrHistory  = history.ReadFile(1);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		recent = new FavoriteHistoryImp(TabRecentActivity.this); 
+			arrHistory  = recent.ReadTable("Recent");
+		
 		if(arrHistory == null){
 			Toast.makeText(this,"IS EMPTY", Toast.LENGTH_SHORT).show();
 		}
@@ -64,36 +65,43 @@ public class TabRecentActivity extends Activity implements OnClickListener, OnIt
 		listHistory.setOnItemClickListener(this);
 		
 	}
-	FavoriteHistoryDAO favoriteHistory = new FavoriteHistoryDAO();
+	
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
 		switch (id) {
 		case R.id.btnEditrecent:
+			myadapter = new MyArrayAdapter( this, R.layout.my_item_layout,arrHistory);
+			listHistory.setAdapter(myadapter);
 			btnEditrecent.setVisibility(-1);
 			btnRecentDelete.setVisibility(0);
 			btnRecentDeleteAll.setVisibility(0);
 			btnRecentCancel.setVisibility(0);
 			break;
 		case R.id.btnRecentDelete:
-			if(wordisdeleted != ""){
-				try {
-					favoriteHistory.DeleteItem(wordisdeleted, 1);
-					arrHistory.remove(wordisdeleted);
-					adapter.notifyDataSetChanged();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			Boolean isDelted = false;
+			int size = listHistory.getChildCount();
+			for(int i = size -1 ; i >=0 ; i--){
+				View view = listHistory.getChildAt(i);
+				CheckBox checkbox = (CheckBox)view.findViewById(R.id.chkbitem);
+				if(checkbox.isChecked()){
+					arrHistory.remove(i);
+					isDelted = true;
+					String worddelete = arrHistory.get(i);
+					recent.DeleteItem(worddelete, "Recent");
 				}
-				Toast.makeText(this,"Deleted", Toast.LENGTH_SHORT).show();
+			}
+			if(isDelted == true){
+				myadapter.notifyDataSetChanged();
 			}
 			break;
 		case R.id.btnRecentDeleteAll:
-			favoriteHistory.DeleteAll(1);
+			recent.DeleteAll("Recent");
 			arrHistory.removeAll(arrHistory);
 			adapter.notifyDataSetChanged();
 			break;
 		case R.id.btnRecentCancel:
+			listHistory.setAdapter(adapter);
 			btnEditrecent.setVisibility(0);
 			btnRecentDelete.setVisibility(-1);
 			btnRecentDeleteAll.setVisibility(-1);

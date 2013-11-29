@@ -3,7 +3,9 @@ package com.hcmus.dictionaryqlqt;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import dao.FavoriteHistoryDAO;
+
+import dao.FavoriteHistoryImp;
+import dao.IFavoriteHistory;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -14,18 +16,20 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class TabFavoritesActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener{
+public class TabFavoritesActivity extends Activity implements OnClickListener, OnItemClickListener{
 
 	private ImageView btnEditFavorites, btnFavDelete, btnFavDeleteAll, btnFavCancel;
 	private ListView listFavorite;
 	
-	private  FavoriteHistoryDAO  favorite = new FavoriteHistoryDAO(); 
+	private  IFavoriteHistory  favorite; 
 	private ArrayList<String> arrfavorite = null;
 	private ArrayAdapter<String> adapter = null;
+	private MyArrayAdapter myadapter = null;
 	private String wordisdeleted = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +43,9 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 		listFavorite = (ListView)findViewById(R.id.listFavorites);
 	
 		
-		try {
-			arrfavorite  = favorite.ReadFile(2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		favorite = new FavoriteHistoryImp(TabFavoritesActivity.this);
+			arrfavorite  = favorite.ReadTable("Favorite");
+		
 		if(arrfavorite == null){
 			Toast.makeText(this,"IS EMPTY", Toast.LENGTH_SHORT).show();
 		}
@@ -64,38 +65,46 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 		
 		listFavorite.setOnItemClickListener(this);
 		
-		listFavorite.setOnItemLongClickListener(this);
 	}
-	FavoriteHistoryDAO favoriteHistory = new FavoriteHistoryDAO();
+	
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
 		switch (id) {
 		case R.id.btnEditFavorites:
+			myadapter = new MyArrayAdapter( this, R.layout.my_item_layout,arrfavorite);
+			listFavorite.setAdapter(myadapter);
 			btnEditFavorites.setVisibility(-1);
 			btnFavDelete.setVisibility(0);
 			btnFavDeleteAll.setVisibility(0);
 			btnFavCancel.setVisibility(0);
 			break;
 		case R.id.btnFavDelete:
-			if(wordisdeleted != ""){
-				try {
-					favoriteHistory.DeleteItem(wordisdeleted, 2);
-					arrfavorite.remove(wordisdeleted);
-					adapter.notifyDataSetChanged();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			Boolean isDelted = false;
+			int size = listFavorite.getChildCount();
+			for(int i = size -1 ; i >=0 ; i--){
+				View view = listFavorite.getChildAt(i);
+				CheckBox checkbox = (CheckBox)view.findViewById(R.id.chkbitem);
+				if(checkbox.isChecked()){
+					arrfavorite.remove(i);
+					isDelted = true;
+					String worddelete = arrfavorite.get(i);
+					
+						favorite.DeleteItem(worddelete, "Favorite");
+					
 				}
-				Toast.makeText(this,"Deleted", Toast.LENGTH_SHORT).show();
+			}
+			if(isDelted == true){
+				myadapter.notifyDataSetChanged();
 			}
 			break;
 		case R.id.btnFavDeleteAll:
-			favoriteHistory.DeleteAll(2);
+			favorite.DeleteAll("Favorite");
 			arrfavorite.removeAll(arrfavorite);
-			adapter.notifyDataSetChanged();
+			myadapter.notifyDataSetChanged();
 			break;
 		case R.id.btnFavCancel:
+			listFavorite.setAdapter(adapter);
 			btnEditFavorites.setVisibility(0);
 			btnFavDelete.setVisibility(-1);
 			btnFavDeleteAll.setVisibility(-1);
@@ -108,16 +117,5 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 		// TODO Auto-generated method stub
 		wordisdeleted = arrfavorite.get(arg2);
 	}
-	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		// TODO Auto-generated method stub
-		Intent myIntent =  new Intent(TabFavoritesActivity.this, TabDictionaryActivity.class);
-		Bundle mydata = new Bundle();
-		mydata.putString("word", arrfavorite.get(arg2));
-		myIntent.putExtras(mydata);
-		startActivity(myIntent);
-		return false;
-	}
-
+	
 }

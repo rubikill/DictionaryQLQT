@@ -56,9 +56,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 import dao.DatabaseHelperDAOImpl;
-import dao.FavoriteHistoryDAO;
+import dao.FavoriteHistoryImp;
 import dao.FileHelperDAOImpl;
 import dao.FinderDAOImpl;
+import dao.IFavoriteHistory;
 import dao.IOHelperDAOImpl;
 import dao.IndexerDAO;
 
@@ -173,7 +174,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	private ArrayList<String> words;
 	private ArrayList<String> index;
 	private ArrayList<String> length;
-	private FavoriteHistoryDAO favoriteHistory = new FavoriteHistoryDAO();
+	private IFavoriteHistory favoriteHistory = new FavoriteHistoryImp(TabDictionaryActivity.this);
 	
 	
 	////////////////////////// KHOI TAO ////////////////////////////////
@@ -474,17 +475,10 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}
 		// gan lai tu hien tai
 		currentWord = word;
-		try {
-			if (favoriteHistory.Isexists(word.getWord(), 1)) {
-				Toast.makeText(this, "Word is Exist in your favorites",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				favoriteHistory.WriteFile(word.getWord(), 1);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if (favoriteHistory.IsExists(word.getWord(), "Recent")) {
+			favoriteHistory.DeleteItem(word.getWord(), "Recent");
+		} 
+		favoriteHistory.InsertWord(word.getWord(), "Recent");
 	}
 	
 
@@ -653,17 +647,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	@Override
 	public void setFavorite(String word) {
 		// them tu yeu thich
-		try {
-			if (favoriteHistory.Isexists(word, 2)) {
-				Toast.makeText(this, "Word is Exist in your favorites",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				favoriteHistory.WriteFile(word, 2);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if (favoriteHistory.IsExists(word, "Favorite")) {
+			favoriteHistory.DeleteItem(word, "Favorite");
+		} 
+		favoriteHistory.InsertWord(word, "Favorite");
+		
 	}
 
 	/**
@@ -672,12 +660,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	@Override
 	public void removeFavorite(String word) {
 		// xoa tu yeu thich
-		try {
-			favoriteHistory.DeleteItem(word, 2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+		favoriteHistory.DeleteItem(word, "Favorite");
+		
 	}
 
 	/**
@@ -695,13 +680,10 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 */
 	private void checkFavoriteWord() {
 		if (currentWord != null) {
-			try {
-				boolean isFavorite = favoriteHistory.isFavorite(currentWord
-						.getWord());
+				boolean isFavorite = favoriteHistory.IsExists(currentWord
+						.getWord(), "Favorite");
 				wvMean.loadUrl("javascript:setFavorite(" + isFavorite + ")");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			
 		}
 	}
 	

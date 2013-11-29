@@ -133,4 +133,38 @@ public class DatabaseHelperDAOImpl extends SQLiteOpenHelper  implements IDataHel
 		}
 		return null;
 	}
+
+	@Override
+	public void Insert(String word, String nametable) {
+		String sql = "Insert into " + nametable + " (word)  values ('" + word +"')";
+		 myDataBase.execSQL(sql);
+	}
+
+	@Override
+	public Cursor GetAll(String nameTable) {
+		String sql = "select * from " + nameTable ;
+		Cursor cur = myDataBase.rawQuery(sql, null);
+		return cur;
+	}
+
+	@Override
+	public Cursor getWordInTable(String word, String nameTable) {
+		String sql = "select word from " + nameTable +" where word = '" +word +"'";
+		Cursor cur = myDataBase.rawQuery(sql, null);
+		return cur;
+	}
+
+	@Override
+	public void DeleteItem(String word, String nametable) {
+		String sql = "DELETE FROM "+ nametable +" WHERE word = '"+word+"'"; 
+		 myDataBase.execSQL(sql);
+	}
+
+	@Override
+	public void DelteAllItem(String nametable) {
+		// TODO Auto-generated method stub
+		String sql = "DELETE FROM "+ nametable ; 
+		 myDataBase.execSQL(sql);
+	}
+	
 }

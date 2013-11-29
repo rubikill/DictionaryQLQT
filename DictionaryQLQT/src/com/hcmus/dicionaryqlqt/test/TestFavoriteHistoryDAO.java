@@ -3,15 +3,16 @@ package com.hcmus.dicionaryqlqt.test;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import dao.FavoriteHistoryDAO;
+
+import dao.FavoriteHistoryImp;
 import android.test.AndroidTestCase;
 
 public class TestFavoriteHistoryDAO extends AndroidTestCase {
 
-	FavoriteHistoryDAO fhDAO;
+	FavoriteHistoryImp fhDAO;
 	
 	protected void setUp() throws Exception {
-		fhDAO = new FavoriteHistoryDAO();
+	//	fhDAO = new FavoriteHistoryImp();
 		super.setUp();
 	}
 
@@ -23,11 +24,11 @@ public class TestFavoriteHistoryDAO extends AndroidTestCase {
 	 * Test FileOpen(int idAction)
 	 */
 	public void testOpenHistoryFileSuccess(){
-		assertEquals("History.txt", fhDAO.FileOpen(1));
+		//assertEquals("History.txt", fhDAO.FileOpen(1));
 	}
 	
 	public void testOpenFavoriteFileSuccess(){
-		assertEquals("Favorite.txt", fhDAO.FileOpen(2));
+		//assertEquals("Favorite.txt", fhDAO.FileOpen(2));
 	}
 	
 	/**
@@ -39,9 +40,9 @@ public class TestFavoriteHistoryDAO extends AndroidTestCase {
 		ArrayList<String> expected = new ArrayList<String>();
 		expected.add(keyWord);
 		
-		fhDAO.DeleteAll(2);
-		fhDAO.WriteFile(keyWord, 2);
-		ArrayList<String> actual = fhDAO.ReadFile(2);
+		fhDAO.DeleteAll("Favorite");
+		//fhDAO.WriteFile(keyWord, 2);
+		ArrayList<String> actual = fhDAO.ReadTable("Favorite");
 		
 		assertEquals(expected, actual);
 	}
@@ -55,12 +56,12 @@ public class TestFavoriteHistoryDAO extends AndroidTestCase {
 		expected.add("Hello");
 		expected.add("Man");
 		
-		fhDAO.DeleteAll(1);
-		fhDAO.WriteFile("Hello", 1);
-		fhDAO.WriteFile("School", 1);
-		fhDAO.WriteFile("Man", 1);
-		fhDAO.DeleteItem("School", 1);
-		ArrayList<String> actual = fhDAO.ReadFile(1);
+		fhDAO.DeleteAll("Recent");
+		fhDAO.InsertWord("Hello", "Recent");
+		fhDAO.InsertWord("School", "Recent");
+		fhDAO.InsertWord("Man", "Recent");
+		fhDAO.DeleteItem("School", "Recent");
+		ArrayList<String> actual = fhDAO.ReadTable("Recent");
 		
 		assertEquals(expected, actual);
 	}
@@ -72,8 +73,8 @@ public class TestFavoriteHistoryDAO extends AndroidTestCase {
 	public void testDeleteAllItemInHistoryFileSuccess() throws IOException{
 		ArrayList<String> expected = new ArrayList<String>();
 		
-		fhDAO.DeleteAll(1);
-		ArrayList<String> actual = fhDAO.ReadFile(1);
+		fhDAO.DeleteAll("Recent");
+		ArrayList<String> actual = fhDAO.ReadTable("Recent");
 		
 		assertEquals(expected, actual);
 	}
@@ -83,20 +84,23 @@ public class TestFavoriteHistoryDAO extends AndroidTestCase {
 	 * @throws IOException 
 	 */
 	public void testWordIsExistsFileInFavorite() throws IOException{
-		fhDAO.DeleteAll(2);
-		fhDAO.WriteFile("Hello", 2);
-		fhDAO.WriteFile("School", 2);
-		fhDAO.WriteFile("Man", 2);
-		boolean actual = fhDAO.Isexists("School", 2);
+		fhDAO.DeleteAll("Favorite");
+		fhDAO.InsertWord("Hello", "Favorite");
+		fhDAO.InsertWord("School", "Favorite");
+		fhDAO.InsertWord("Man", "Favorite");
+		
+		
+		boolean actual = fhDAO.IsExists("School", "Favorite");
 		boolean expected = true;
 		assertEquals(expected, actual);
 	}
 	
 	public void testWordIsNotExistsFileInFavorite() throws IOException{
-		fhDAO.DeleteAll(2);
-		fhDAO.WriteFile("Hello", 2);
-		fhDAO.WriteFile("Man", 2);
-		boolean actual = fhDAO.Isexists("School", 2);
+		fhDAO.DeleteAll("Favorite");
+		fhDAO.InsertWord("Hello", "Favorite");
+		
+		fhDAO.InsertWord("Man", "Favorite");
+		boolean actual = fhDAO.IsExists("School", "Favorite");
 		boolean expected = false;
 		assertEquals(expected, actual);
 	}

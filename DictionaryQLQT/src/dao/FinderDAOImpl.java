@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class FinderDAOImpl implements IFinderDAO{
 	DatabaseHelperDAOImpl myDatabaseHelper;
 	FileHelperDAOImpl myFileHelper;
-	FavoriteHistoryDAO favoriteHistoryDao = new FavoriteHistoryDAO();
+
 	public FinderDAOImpl(DatabaseHelperDAOImpl databaseHelper,FileHelperDAOImpl fileHelper)
 	{
 		this.myDatabaseHelper = databaseHelper;

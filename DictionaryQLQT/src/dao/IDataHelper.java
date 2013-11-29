@@ -1,6 +1,8 @@
 package dao;
 
 
+import java.util.ArrayList;
+
 import android.database.Cursor;
 //Lop thao tac sqlite
 public interface IDataHelper {
@@ -19,4 +21,10 @@ public interface IDataHelper {
 	
 	//tim danh sach tu goi y
 	Cursor GetWords(String word, int type);
+	
+	void  Insert(String word , String nameTable);
+	Cursor GetAll(String nameTable);
+	Cursor getWordInTable(String word, String nameTable);
+	void DeleteItem(String word , String nametable);
+	void DelteAllItem (String nametable);
 }
