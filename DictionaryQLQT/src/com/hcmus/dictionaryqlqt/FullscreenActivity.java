@@ -80,6 +80,14 @@ public class FullscreenActivity extends TabActivity {
 
 		tabHost.setCurrentTab(0);
 	}
+	
+	public void setDictionaryTab(String word){
+		tabHost.setCurrentTab(0);
+		TabDictionaryActivity instance = TabDictionaryActivity.getInstance();
+		if (instance != null){
+			instance.Search(word);
+		}
+	}
 
 	public void hideTabs() {
 		Animation slideOut = AnimationUtils.loadAnimation(this,

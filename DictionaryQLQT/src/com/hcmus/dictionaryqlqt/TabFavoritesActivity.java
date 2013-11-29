@@ -6,24 +6,21 @@ import java.util.ArrayList;
 import dao.FavoriteHistoryDAO;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class TabFavoritesActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener{
+public class TabFavoritesActivity extends Activity implements OnClickListener, OnItemClickListener {
 
 	private ImageView btnEditFavorites, btnFavDelete, btnFavDeleteAll, btnFavCancel;
 	private ListView listFavorite;
 	
-	private  FavoriteHistoryDAO  favorite = new FavoriteHistoryDAO(); 
+	private FavoriteHistoryDAO  favorite = new FavoriteHistoryDAO(); 
 	private ArrayList<String> arrfavorite = null;
 	private ArrayAdapter<String> adapter = null;
 	private String wordisdeleted = "";
@@ -39,6 +36,25 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 		listFavorite = (ListView)findViewById(R.id.listFavorites);
 	
 		
+		btnFavDelete.setVisibility(-1);
+		btnFavDeleteAll.setVisibility(-1);
+		btnFavCancel.setVisibility(-1);
+		
+		btnEditFavorites.setOnClickListener(this);
+		btnFavDelete.setOnClickListener(this);
+		btnFavDeleteAll.setOnClickListener(this);
+		btnFavCancel.setOnClickListener(this);
+		
+		listFavorite.setOnItemClickListener(this);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		loadFavorite();
+	}
+	
+	private void loadFavorite(){
 		try {
 			arrfavorite  = favorite.ReadFile(2);
 		} catch (IOException e) {
@@ -53,20 +69,8 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 			listFavorite.setAdapter(adapter);
 			btnEditFavorites.setVisibility(0);
 		}
-		btnFavDelete.setVisibility(-1);
-		btnFavDeleteAll.setVisibility(-1);
-		btnFavCancel.setVisibility(-1);
-		
-		btnEditFavorites.setOnClickListener(this);
-		btnFavDelete.setOnClickListener(this);
-		btnFavDeleteAll.setOnClickListener(this);
-		btnFavCancel.setOnClickListener(this);
-		
-		listFavorite.setOnItemClickListener(this);
-		
-		listFavorite.setOnItemLongClickListener(this);
 	}
-	FavoriteHistoryDAO favoriteHistory = new FavoriteHistoryDAO();
+	
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
@@ -80,7 +84,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 		case R.id.btnFavDelete:
 			if(wordisdeleted != ""){
 				try {
-					favoriteHistory.DeleteItem(wordisdeleted, 2);
+					favorite.DeleteItem(wordisdeleted, 2);
 					arrfavorite.remove(wordisdeleted);
 					adapter.notifyDataSetChanged();
 				} catch (IOException e) {
@@ -91,7 +95,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 			}
 			break;
 		case R.id.btnFavDeleteAll:
-			favoriteHistory.DeleteAll(2);
+			favorite.DeleteAll(2);
 			arrfavorite.removeAll(arrfavorite);
 			adapter.notifyDataSetChanged();
 			break;
@@ -105,19 +109,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 	}
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		wordisdeleted = arrfavorite.get(arg2);
+		String word = arrfavorite.get(arg2);
+		FullscreenActivity.getInstance().setDictionaryTab(word);		
 	}
-	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		// TODO Auto-generated method stub
-		Intent myIntent =  new Intent(TabFavoritesActivity.this, TabDictionaryActivity.class);
-		Bundle mydata = new Bundle();
-		mydata.putString("word", arrfavorite.get(arg2));
-		myIntent.putExtras(mydata);
-		startActivity(myIntent);
-		return false;
-	}
-
 }
