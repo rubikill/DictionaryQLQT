@@ -1,6 +1,5 @@
 package com.hcmus.dictionaryqlqt;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -8,8 +7,6 @@ import dao.FavoriteHistoryImp;
 import dao.IFavoriteHistory;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.LauncherActivity.ListItem;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -29,7 +26,6 @@ public class TabRecentActivity extends Activity implements OnClickListener, OnIt
 	private ArrayList<String> arrHistory = null;
 	private ArrayAdapter<String> adapter = null;
 	private MyArrayAdapter myadapter = null;
-	private String wordisdeleted = "";
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,16 +38,6 @@ public class TabRecentActivity extends Activity implements OnClickListener, OnIt
 		listHistory = (ListView)findViewById(R.id.listRecentSearch);
 		
 		recent = new FavoriteHistoryImp(TabRecentActivity.this); 
-			arrHistory  = recent.ReadTable("Recent");
-		
-		if(arrHistory == null){
-			Toast.makeText(this,"IS EMPTY", Toast.LENGTH_SHORT).show();
-		}
-		else {
-			adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrHistory);
-			listHistory.setAdapter(adapter);
-			btnEditrecent.setVisibility(0);
-		}
 		
 		btnRecentDelete.setVisibility(-1);
 		btnRecentDeleteAll.setVisibility(-1);
@@ -64,6 +50,20 @@ public class TabRecentActivity extends Activity implements OnClickListener, OnIt
 		
 		listHistory.setOnItemClickListener(this);
 		
+	}
+	
+	@Override
+	protected void onResume() {		
+		super.onResume();
+		arrHistory  = recent.ReadTable("Recent");
+		if(arrHistory == null){
+			Toast.makeText(this,"IS EMPTY", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrHistory);
+			listHistory.setAdapter(adapter);
+			btnEditrecent.setVisibility(0);
+		}
 	}
 	
 	@Override
@@ -111,8 +111,8 @@ public class TabRecentActivity extends Activity implements OnClickListener, OnIt
 	}
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		wordisdeleted = arrHistory.get(arg2);
+		String word = arrHistory.get(arg2);
+		FullscreenActivity.getInstance().setDictionaryTab(word);
 	}
 
 }

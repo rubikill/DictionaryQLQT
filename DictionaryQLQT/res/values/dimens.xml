@@ -10,4 +10,8 @@
     <dimen name="edit_text_radius">15.0dip</dimen>
     <dimen name="dropDownVerticalOffset">2.0dip</dimen>
     <dimen name="logo_size">250.0dip</dimen>
+    
+    <dimen name="icon_more">50dip</dimen>
+    <dimen name="icon_more">50dip</dimen>
+    
 </resources>

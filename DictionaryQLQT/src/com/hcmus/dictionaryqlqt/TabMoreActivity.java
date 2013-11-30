@@ -30,8 +30,7 @@ public class TabMoreActivity extends ListActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.activity_tab_more);
-		setListAdapter(new CustomArrayAdapter(this, TAB_MORE));
+		setListAdapter(new MoreArrayAdapter(this, TAB_MORE));
 	}
 
 	@Override

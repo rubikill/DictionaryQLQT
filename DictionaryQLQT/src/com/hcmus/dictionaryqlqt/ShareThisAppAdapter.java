@@ -13,7 +13,7 @@ public class ShareThisAppAdapter extends ArrayAdapter<String> {
 	private final String[] values;
  
 	public ShareThisAppAdapter(Context context, String[] values) {
-		super(context, R.layout.activity_tab_more, values);
+		super(context, R.layout.item_more, values);
 		this.context = context;
 		this.values = values;
 	}
@@ -23,9 +23,9 @@ public class ShareThisAppAdapter extends ArrayAdapter<String> {
 		LayoutInflater inflater = (LayoutInflater) context
 			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
  
-		View rowView = inflater.inflate(R.layout.activity_tab_more, parent, false);
-		TextView textView = (TextView) rowView.findViewById(R.id.tvLabel);
-		ImageView imageView = (ImageView) rowView.findViewById(R.id.imgViewLogo);
+		View rowView = inflater.inflate(R.layout.item_more, parent, false);
+		TextView textView = (TextView) rowView.findViewById(R.id.item_more_text);
+		ImageView imageView = (ImageView) rowView.findViewById(R.id.item_more_icon);
 		textView.setText(values[position]);
  
 		// Change icon based on name
