@@ -43,7 +43,7 @@
             android:layout_width="fill_parent" 
             android:layout_height="wrap_content" 
             android:max="100" android:progress="0" 
-            android:progressDrawable="@drawable/progressbar_volume_type" 
+            android:progressDrawable="@drawable/custom_progressbar" 
             android:minHeight="60dip" 
             style="?android:attr/progressBarStyleHorizontal" />
         

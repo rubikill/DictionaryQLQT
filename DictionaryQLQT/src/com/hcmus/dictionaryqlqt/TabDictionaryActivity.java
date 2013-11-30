@@ -183,7 +183,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.new_activity_tab_dictionary);
+		setContentView(R.layout.activity_tab_dictionary);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		initComponents();
 		initData();

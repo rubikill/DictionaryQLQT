@@ -4,109 +4,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingRight="0dp"
     android:weightSum="10"
+    android:background="#FF0000" 
     tools:context=".DictionaryActivity" >
 
-    <LinearLayout
+    <include
+        android:id="@+id/searchbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="@drawable/bg_search_bar"
-        android:orientation="vertical"
-        android:weightSum="2" >
-
-        <ImageView
-            android:id="@+id/imgBranding"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.8"
-            android:scaleType="fitXY"
-            android:src="@drawable/branding"
-            android:visibility="visible" />
-
-        <LinearLayout
-            android:id="@+id/LinearLayout1"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.2"
-            android:orientation="horizontal"
-            android:weightSum="10" >
-
-            <ImageView
-                android:id="@+id/btnSearchbox"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_searchbox" />
-
-            <AutoCompleteTextView
-                android:id="@+id/mactSearchText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="6"
-                android:background="@drawable/searchbar1"
-                android:gravity="center"
-                android:imeOptions="actionSearch"
-                android:text="AutoCompleteTextView"
-                android:textColorHighlight="@android:color/transparent"
-                android:textColorLink="@android:color/transparent"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:id="@+id/btnResetsearch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_reset_search" />
-
-            <ImageView
-                android:id="@+id/btnCancelSearch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:src="@drawable/button_cancelsearch_normal" />
-
-            <ImageView
-                android:id="@+id/btnVoiceSearch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:src="@drawable/button_audio_normal" />
-
-        </LinearLayout>
-    </LinearLayout>
+        layout="@layout/search_bar" />
 
     <RelativeLayout
-        android:id="@+id/RelativeLayout1"
+        android:id="@+id/rlContent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_weight="8"
-        android:background="#FF0000" >
-
+        android:layout_height="match_parent" >      
+        
         <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="200dp"
-            android:layout_height="379dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/my_logo_larger" />
+            android:id="@+id/imgLogo"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
+            android:layout_centerInParent="true"
+            android:src="@drawable/my_logo_larger"
+            android:visibility="visible" />
 
+        <TextView 
+            android:textSize="14sp" 
+            android:textColor="#ffffffff" 
+            android:id="@+id/tab_copyleft" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:layout_marginLeft="5dip" 
+            android:layout_marginBottom="5dip" 
+            android:text="@string/copyright" 
+            android:layout_alignParentLeft="true" 
+            android:layout_alignParentBottom="true" />
+        
         <WebView
             android:id="@+id/wvMeaning"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="invisible" />     
+            
+        <ImageView
+            android:id="@+id/btnZoomDict"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="6dip"
+            android:layout_marginTop="6dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_zoom_in"
+            android:visibility="invisible" />
     </RelativeLayout>
 
 </LinearLayout>
