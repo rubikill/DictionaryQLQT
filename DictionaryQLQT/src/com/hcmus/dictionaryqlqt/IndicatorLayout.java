@@ -6,6 +6,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author Minh Khanh
+ * custom view cho Indicator tab
+ *
+ */
 public class IndicatorLayout extends LinearLayout{
 
 	public IndicatorLayout(Context context, String name, int icon) {

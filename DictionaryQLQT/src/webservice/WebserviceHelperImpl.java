@@ -1,6 +1,5 @@
 package webservice;
 
-import java.io.Console;
 import java.io.InputStream;
 
 import org.apache.http.HttpEntity;

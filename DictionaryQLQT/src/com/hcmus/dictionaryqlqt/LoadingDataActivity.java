@@ -48,7 +48,7 @@ public class LoadingDataActivity extends Activity {
 			if (strMessage.equals("DONE")) {
 
 				Intent intent = new Intent(LoadingDataActivity.this,
-						FullscreenActivity.class);
+						HomeActivity.class);
 				LoadingDataActivity.this.finish();
 				startActivity(intent);
 			}
@@ -63,7 +63,7 @@ public class LoadingDataActivity extends Activity {
 		// khoi tao datavase
 		db = this.openOrCreateDatabase("mydatafuzzy", MODE_PRIVATE, null);
 
-		// tao bang neu chau ton tai
+		// tao bang neu chua ton tai
 		String sql = "create table if not exists tbfuzzy ("
 				+ "id integer PRIMARY KEY autoincrement,"
 				+ "namedirectory text," + "arecreate integer);";

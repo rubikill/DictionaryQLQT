@@ -1,6 +1,5 @@
 package com.hcmus.dictionaryqlqt;
 
-import dao.FavoriteHistoryImp;
 import bridge.AndroidBridge;
 import bridge.AndroidBridgeListener;
 import manager.WebviewHelper;
@@ -53,7 +52,6 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 	private boolean isFullScreen = false;
 	
 	private AndroidBridge bridge;
-	private FavoriteHistoryImp favoriteHistory = new FavoriteHistoryImp(TabDailyActivity.this);
 	/**
 	 * xu ly cap nhat giao dien tu thread load du lieu
 	 */
@@ -94,6 +92,9 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 		}
 	};
 
+	/**
+	 * khoi tao cac thanh phan giao dien
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,6 +108,9 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 		
 	}
 	
+	/**
+	 * su kien man hinh hien thi tro lai
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -144,7 +148,7 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 		return false;
 	}
 	
-	/*
+	/**
 	 * hien thi dialog loading khi lay du lieu
 	 */
 	private void showLoadingDialog(){
@@ -153,7 +157,7 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 		pgbLoading.show();
 	}
 
-	/*
+	/**
 	 * show dialog kiem tra ket noi
 	 */
 	private void showDialogCheckNetwork() {
@@ -174,7 +178,7 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
         alertDialog.show();
 	}
 	
-	/*
+	/**
 	 * show wod day len webview
 	 */
 	private void showContent(WordOfDay wod) {
@@ -183,31 +187,32 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 		WebviewHelper.ShowWOD(wbvContent, wod, bridge);
 	}
 
+	/**
+	 * su kien searh tu webview
+	 */
 	@Override
 	public void lookup(final String word) {
 		if (isFullScreen){
 			btnZoom.setImageResource(R.drawable.ic_zoom_in);
-			FullscreenActivity.getInstance().showTabs();
+			HomeActivity.getInstance().showTabs();
 			isFullScreen = false;
 		}
-		FullscreenActivity.getInstance().setDictionaryTab(word);
+		// chuyen sang tab Dictionary
+		HomeActivity.getInstance().setDictionaryTab(word);
 	}
 	
 	@Override
-	public void speakOut(String text) {
-		
-	}
+	public void speakOut(String text) {}
 
 	@Override
-	public void setFavorite(String word) {
-		
-	}
+	public void setFavorite(String word) {}
 
 	@Override
-	public void removeFavorite(String word) {
-		
-	}
+	public void removeFavorite(String word) {}
 
+	/**
+	 * su kien load noi dung hoan tat
+	 */
 	@Override
 	public void onLoadComplete() {
 		if (pgbLoading.isShowing()){
@@ -215,16 +220,19 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 		}		
 	}
 
+	/**
+	 * xu ly su kien zoom man hinh
+	 */
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnZoom){
 			if (isFullScreen){
 				btnZoom.setImageResource(R.drawable.ic_zoom_in);
-				FullscreenActivity.getInstance().showTabs();
+				HomeActivity.getInstance().showTabs();
 			} 
 			else{
 				btnZoom.setImageResource(R.drawable.ic_zoom_out);
-				FullscreenActivity.getInstance().hideTabs();
+				HomeActivity.getInstance().hideTabs();
 			}
 			isFullScreen = !isFullScreen;
 		}

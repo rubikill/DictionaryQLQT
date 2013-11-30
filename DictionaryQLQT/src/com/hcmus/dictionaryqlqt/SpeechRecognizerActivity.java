@@ -21,49 +21,49 @@ import android.content.Intent;
  * 
  * @author Minh Khanh
  *
- * Actitvity nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+ * Actitvity nhan dien giong noi
  * 
  */
 
 public class SpeechRecognizerActivity extends Activity implements OnClickListener, RecognitionListener {
 
 	/*
-	 * enum caÌ�c traÌ£ng thaÌ�i
+	 * enum trang thai
 	 */
 	enum State{
 		/*
-		 * khÆ¡Ì‰i taÌ£o nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+		 * trang thai dang khoi tao bo nhan dien
 		 */
 		Preparing,
 		
 		/*
-		 * Ä‘ang ghi Ã¢m gioÌ£ng noÌ�i
+		 * trang thai san sang
 		 */		
 		Recording,
 		
 		/*
-		 * phÃ¢n tiÌ�ch gioÌ£ng noÌ�i
+		 * trang thai phan tich gion noi
 		 */
 		Analyzing,
 	}
 	
 	/*
-	 * triÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+	 * bo nhan dien giong noi
 	 */
 	private SpeechRecognizer recognizer;
 	
 	/*
-	 * textview traÌ£ng thaÌ�i
+	 * textview the hien trang thai
 	 */
 	private TextView tvTitle;
 	
 	/*
-	 * progressBar Ã¢m lÆ°Æ¡Ì£ng
+	 * progressBar hien thi am luong
 	 */
 	private ProgressBar pgbVolume;
 	
 	/*
-	 * button huÌ‰y 
+	 * button huy
 	 */
 	private Button btCancel;
 	
@@ -82,14 +82,15 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 		}
 	}
 	
-	/*
-	 * khoÌ‰i taÌ£o caÌ�c thaÌ€nh phÃ¢Ì€n giao diÃªÌ£n vaÌ€ triÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+	/**
+	 * khoi tao cac thanh phan
 	 */
 	private boolean initComponents(){
 		tvTitle = (TextView) findViewById(R.id.activity_speech_recognizer_title);
 		pgbVolume = (ProgressBar) findViewById(R.id.activity_speech_recognizer_progressbar);
 		btCancel = (Button) findViewById(R.id.activity_activity_speech_recognizer_button_cancel);		
 
+		// kiem tra bo nhan dien giong noi tren thiet bi
 		if (!SpeechRecognizer.isRecognitionAvailable(getApplicationContext())){		
 			return false;
 		}
@@ -101,11 +102,11 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 		return true;
 	}
 	
-	/*
-	 * khÆ¡Ì‰i Ä‘Ã´Ì£ng nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+	/**
+	 * khoi dong bo nhan dien giong noi
 	 */
 	private void startSpeechRecognizer(){
-		// set traÌ£ng thaÌ�i laÌ€ chuÃ¢Ì‰n biÌ£
+		// thiet lap trang thai chuan bi
 		setState(State.Preparing);
 		
 		Intent localIntent = new Intent(RecognizerIntent.ACTION_WEB_SEARCH);
@@ -115,8 +116,8 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 	    this.recognizer.startListening(localIntent);
 	}	
 
-	/*
-	 * bÄƒÌ�t sÆ°Ì£ sÆ°Ì£ kiÃªÌ£n bÃ¢Ì�m huÌ‰y
+	/**
+	 * lang nghe su kien nhan huy
 	 */
 	@Override
 	public void onClick(View v) {
@@ -126,8 +127,8 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 		}			
 	}
 	
-	/*
-	 * huÌ‰y vaÌ€ traÌ‰ vÃªÌ€ kÃªÌ�t quaÌ‰ RESULT_CANCELED
+	/**
+	 * xu ly su kien huy
 	 */
 	private void cancel(){
 		recognizer.cancel();
@@ -135,8 +136,8 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 		finish();
 	}
 	
-	/*
-	 * thiÃªÌ�t lÃ¢Ì£p traÌ£ng thaÌ�i
+	/**
+	 * thiet lap trang thai nhan dien giong noi
 	 */
 	private void setState(State state){
 		switch (state) {		
@@ -155,13 +156,15 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 		}
 	}
 	
+	/**
+	 * thong bao bo nhan dien giong noi khong duoc ho tro
+	 */
 	private void showDialogNotAvailable(){
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);		 
         alertDialog.setTitle(R.string.speechrecognizer_title_dialog);
         alertDialog.setMessage(getString(R.string.speechrecognizer_not_available));
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
-            	// khÆ¡Ì‰i Ä‘Ã´Ì£ng laÌ£i nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
             	SpeechRecognizerActivity.this.setResult(RESULT_CANCELED);
             	SpeechRecognizerActivity.this.finish();
             } 
@@ -169,8 +172,8 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
         alertDialog.show();
 	}
 
-	/*
-	 * hiÃªÌ‰n thiÌ£ dialog lÃ´Ìƒi
+	/**
+	 * hien thi loi khi nhan dien giong noi
 	 */
 	private void showDialog(String msg){
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);		 
@@ -178,40 +181,36 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
         alertDialog.setMessage(msg);
         alertDialog.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
-            	// khÆ¡Ì‰i Ä‘Ã´Ì£ng laÌ£i nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
             	startSpeechRecognizer();
             } 
         });
  
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-            	// huÌ‰y
             	cancel();
             }
         });
         alertDialog.show();
 	}
 	
-	/*
-	 * sÆ°Ì£ kiÃªÌ£n khi triÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i khoÌ‰i Ä‘Ã´Ì£ng xong
+	/**
+	 * lang nghe su kien bo nhan dien giong noi san sang
 	 */
 	@Override
 	public void onReadyForSpeech(Bundle params) {
-		// thay Ä‘Ã´Ì‰i traÌ£ng thaÌ�i laÌ€ ghi Ã¢m
 		setState(State.Recording);
 	}
 	
-	/*
-	 * sÆ°Ì£ kiÃªÌ£n ngÆ°Æ¡Ì€i duÌ€ng ngÆ°ng noÌ�i
+	/**
+	 * su kien ket thuc noi
 	 */
 	@Override
 	public void onEndOfSpeech() {
-		// chuyÃªÌ‰n sang traÌ£ng thaÌ�i phÃ¢n tiÌ�ch gioÌ£ng noÌ�i
 		setState(State.Analyzing);		
 	}	
 	
-	/*
-	 * sÆ°Ì£ kiÃªÌ£n coÌ� lÃ´Ìƒi xaÌ‰y ra
+	/**
+	 * su kien loi khi nhan dien giong noi
 	 */
 	@Override
 	public void onError(int error) {
@@ -228,32 +227,29 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 		showDialog(msg);
 	}
 	
-	/*
-	 * sÆ°Ì£ kiÃªÌ£n khi coÌ� kÃªÌ�t quaÌ‰ nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i
+	/**
+	 * su kien phan tich giong noi hoan tat
 	 */
 	@Override
 	public void onResults(Bundle results) {
-		// lÃ¢Ì�y danh saÌ�ch text nhÃ¢Ì£n Ä‘Æ°Æ¡Ì£c
 		ArrayList<String> listTexts = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 		Intent resultIntent = new Intent();
 		resultIntent.putExtra(RecognizerIntent.EXTRA_RESULTS, listTexts);
-		// set traÌ£ng thaÌ�i OK vaÌ€ traÌ‰ vÃªÌ€ kÃªÌ�t quaÌ‰
 		setResult(RESULT_OK, resultIntent);
 		finish();				
 	}
 	
-	/*
-	 * sÆ°Ì£ kiÃªÌ£n khi Ã¢m lÆ°Æ¡Ì£ng thay Ä‘Ã´Ì‰i
+	/**
+	 * su kien am luong thay doi
 	 */
 	@Override
 	public void onRmsChanged(float rmsdB) {
-		// thiÃªÌ�t lÃ¢Ì£p traÌ£ng thaÌ�i Ã¢m lÆ°Æ¡Ì£ng lÃªn progressbar
 		int value = (int)Math.max(0, 3 * rmsdB);
 		pgbVolume.setProgress(value);
 	}	
 	
-	/*
-	 * HuÌ‰y taÌ€i nguyÃªn
+	/**
+	 * giai phong tai nguyen khi dong man hinh 
 	 */
 	@Override
 	protected void onDestroy() {
@@ -263,9 +259,7 @@ public class SpeechRecognizerActivity extends Activity implements OnClickListene
 		}
 	}
 
-	/*
-	 * CaÌ�c sÆ°Ì£ kiÃªÌ£n cuÌ‰a triÌ€nh nhÃ¢Ì£n diÃªÌ£n gioÌ£ng noÌ�i khÃ´ng xÆ°Ì‰ lyÌ� 
-	 */
+	
 	@Override
 	public void onBeginningOfSpeech() {}
 

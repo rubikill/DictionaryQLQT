@@ -64,7 +64,7 @@ import dao.IOHelperDAOImpl;
 /**
  * 
  * @author Minh Khanh 
- *   
+ * Tab tra tu
  * 
  */
 
@@ -124,6 +124,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 */
 	private SpeakerImpl speaker;
 
+	/*
+	 * the hien cua TabDictionary
+	 */
 	private static TabDictionaryActivity Instance;
 	
 	///////////////////// CAC THANH PHAN GIAO DIEN /////////////////////
@@ -696,6 +699,10 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}
 	}
 	
+	/**
+	 * thay doi trang thai man hinh
+	 * @param screen trang thai moi
+	 */
 	private void changeScreen(Screen screen){
 		switch (screen) {
 		case Start:
@@ -720,20 +727,26 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		currentScreen = screen;
 	}
 	
+	/**
+	 * xu ly zoom man hinh
+	 */
 	private void zoomScreenHandle(){
 		if (isFullScreen){
 			btnZoom.setImageResource(R.drawable.ic_zoom_in);			
-			FullscreenActivity.getInstance().showTabs();
+			HomeActivity.getInstance().showTabs();
 			showSearchBar();
 		}
 		else{
 			btnZoom.setImageResource(R.drawable.ic_zoom_out);
-			FullscreenActivity.getInstance().hideTabs();
+			HomeActivity.getInstance().hideTabs();
 			hideSearchBar();
 		}
 		isFullScreen = !isFullScreen;
 	}
 	
+	/**
+	 * an search bar
+	 */
 	private void hideSearchBar(){
 		Animation slideOut = AnimationUtils.loadAnimation(this,
 				R.anim.slide_up_out);
@@ -741,6 +754,9 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		searchBar.startAnimation(slideOut);
 	}
 	
+	/**
+	 * hien thi lai search bar
+	 */
 	private void showSearchBar(){
 		LayoutParams params = (LayoutParams) searchBar.getLayoutParams();
 		params.height = LayoutParams.WRAP_CONTENT;
@@ -751,18 +767,20 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		searchBar.startAnimation(slideIn);
 	}
 	
+	/**
+	 * lang nghe su kien animation
+	 */
 	private AnimationListener barSlideOut = new AnimationListener() {
 
 		@Override
-		public void onAnimationStart(Animation animation) {
-
-		}
+		public void onAnimationStart(Animation animation) {}
 
 		@Override
-		public void onAnimationRepeat(Animation animation) {
+		public void onAnimationRepeat(Animation animation) {}
 
-		}
-
+		/*
+		 * thiet lap lai height khi ket thuc animation 
+		 */
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			LayoutParams params = (LayoutParams) searchBar.getLayoutParams();
@@ -772,11 +790,17 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}
 	};
 	
+	/**
+	 * an ban phim
+	 */
 	private void hideKeyboard(){
 		InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(etWord.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 	}
 
+	/**
+	 * su kien focus tren edittext nhap tu
+	 */
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
 		if (hasFocus){
@@ -784,6 +808,10 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 		}		
 	}
 	
+	/**
+	 * lay the hien TabDictionary
+	 * @return
+	 */
 	public static TabDictionaryActivity getInstance() {
 		return Instance;
 	}

@@ -22,7 +22,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:src="@drawable/button_editrecent_normal"
+            android:src="@drawable/button_editfavorite_normal"
             android:visibility="visible" />
 
         <RelativeLayout

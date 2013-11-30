@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ScreenDictionary</string>
+    <string name="app_name">N2Dictionary</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     
     <string name="title_activity_recording">RecordingActivity</string>
-	<string name="recording_status">Recording...</string>
-	<string name="preparing_status">Preparing...</string>
-	<string name="analyzing_status">Analyzing...</string>
+	<string name="recording_status">Recording&#8230;</string>
+	<string name="preparing_status">Preparing&#8230;</string>
+	<string name="analyzing_status">Analyzing&#8230;</string>
 	
 	<!-- word of day parser -->
 	<string name="wod_service_url">http://khanhminh.somee.com/WordOfDay</string>
@@ -28,7 +28,7 @@
 	<string name="wod_message_check_network_dialog">You need network access to view the Word of the Day.</string>
 	
 	<!-- tab dictonary -->
-	<string name="dict_message_loading_dialog">Loading definition...</string>
+	<string name="dict_message_loading_dialog">Loading definition&#8230;</string>
 	
 	<!-- speech recognizer -->
 	<string name="speechrecognizer_title_dialog">Voice search</string>

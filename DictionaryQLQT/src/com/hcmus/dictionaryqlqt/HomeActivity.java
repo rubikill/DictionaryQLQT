@@ -12,13 +12,34 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
-@SuppressWarnings("deprecation")
-public class FullscreenActivity extends TabActivity {
+/**
+ * 
+ * @author Minh Khanh
+ * Man hinh chinh cua ung dung
+ *
+ */
 
+@SuppressWarnings("deprecation")
+public class HomeActivity extends TabActivity {
+
+	/*
+	 * tabwiget
+	 */
 	private LinearLayout lnTabs;
-	private static FullscreenActivity Instance;
+	
+	/*
+	 * the hien cua class
+	 */
+	private static HomeActivity Instance;
+	
+	/*
+	 * tabhost 
+	 */
 	private TabHost tabHost;
 
+	/**
+	 * khoi tao cac tab
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,6 +51,7 @@ public class FullscreenActivity extends TabActivity {
 		tabHost = getTabHost();
 		tabHost.setup();
 
+		// khoi tao tab Dictionary
 		Intent intentDictionary = new Intent().setClass(this,
 				TabDictionaryActivity.class);
 		TabSpec tabSpecDictionary = tabHost
@@ -39,6 +61,7 @@ public class FullscreenActivity extends TabActivity {
 								R.drawable.tab_dictionary))
 				.setContent(intentDictionary);
 
+		// khoi tao tab Recent
 		Intent intentRecent = new Intent().setClass(this,
 				TabRecentActivity.class);
 		TabSpec tabSpecRecent = tabHost
@@ -48,6 +71,7 @@ public class FullscreenActivity extends TabActivity {
 								R.drawable.tab_recent))
 				.setContent(intentRecent);
 
+		// khoi tao tab Favorite
 		Intent intentFavorites = new Intent().setClass(this,
 				TabFavoritesActivity.class);
 		TabSpec tabSpecFavorites = tabHost
@@ -57,6 +81,7 @@ public class FullscreenActivity extends TabActivity {
 								R.drawable.tab_star))
 				.setContent(intentFavorites);
 
+		// khoi tao tab Daily
 		Intent intentDaily = new Intent()
 				.setClass(this, TabDailyActivity.class);
 		TabSpec tabSpecDaily = tabHost
@@ -65,6 +90,7 @@ public class FullscreenActivity extends TabActivity {
 						new IndicatorLayout(this, "Daily", R.drawable.tab_wotd))
 				.setContent(intentDaily);
 
+		// khoi tao tab More
 		Intent intentMore = new Intent().setClass(this, TabMoreActivity.class);
 		TabSpec tabSpecMore = tabHost
 				.newTabSpec("More")
@@ -81,6 +107,10 @@ public class FullscreenActivity extends TabActivity {
 		tabHost.setCurrentTab(0);
 	}
 	
+	/**
+	 * chuyen qua tab Dictionary
+	 * @param word tu can search
+	 */
 	public void setDictionaryTab(String word){
 		tabHost.setCurrentTab(0);
 		TabDictionaryActivity instance = TabDictionaryActivity.getInstance();
@@ -89,6 +119,9 @@ public class FullscreenActivity extends TabActivity {
 		}
 	}
 
+	/**
+	 * an tabwiget
+	 */
 	public void hideTabs() {
 		Animation slideOut = AnimationUtils.loadAnimation(this,
 				R.anim.slide_down_out);
@@ -96,6 +129,9 @@ public class FullscreenActivity extends TabActivity {
 		lnTabs.startAnimation(slideOut);
 	}
 
+	/**
+	 * hien thi tabwiget
+	 */
 	public void showTabs() {
 		
 		LayoutParams params = (LayoutParams) lnTabs.getLayoutParams();
@@ -109,22 +145,22 @@ public class FullscreenActivity extends TabActivity {
 		lnTabs.startAnimation(slideIn);
 	}
 
-	public static FullscreenActivity getInstance() {
+	/**
+	 * lay the hien cua class
+	 * @return instance hien tai
+	 */
+	public static HomeActivity getInstance() {
 		return Instance;
 	}
 
+	/**
+	 * AnimationListener lang nghe su kien animation an tabwiget
+	 */
 	private AnimationListener tabsSlideOut = new AnimationListener() {
 
-		@Override
-		public void onAnimationStart(Animation animation) {
-
-		}
-
-		@Override
-		public void onAnimationRepeat(Animation animation) {
-
-		}
-
+		/**
+		 * thay doi height khi animation ket thuc
+		 */
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			LayoutParams params = (LayoutParams) lnTabs.getLayoutParams();
@@ -132,5 +168,11 @@ public class FullscreenActivity extends TabActivity {
 
 			lnTabs.setLayoutParams(params);
 		}
+
+		@Override
+		public void onAnimationStart(Animation animation) {}
+
+		@Override
+		public void onAnimationRepeat(Animation animation) {}
 	};
 }

@@ -121,7 +121,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		String word = arrFavorite.get(arg2);
-		FullscreenActivity.getInstance().setDictionaryTab(word);
+		HomeActivity.getInstance().setDictionaryTab(word);
 	}
 
 	private void changeState(ScreenState newState) {

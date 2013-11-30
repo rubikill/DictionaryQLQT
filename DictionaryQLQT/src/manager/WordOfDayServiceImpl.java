@@ -21,7 +21,7 @@ import org.json.JSONObject;
  *	Class lay wod tu service http://khanhminh.somee.com/wordofday
  */
 
-public class WordOfDayService implements IWordOfDayService{
+public class WordOfDayServiceImpl implements IWordOfDayService{
 	
 	/***
 	 * lay wod tu service

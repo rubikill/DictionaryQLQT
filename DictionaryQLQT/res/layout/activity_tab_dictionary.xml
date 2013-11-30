@@ -101,7 +101,7 @@
             android:layout_height="379dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/img_logo" />
+            android:src="@drawable/my_logo_larger" />
 
         <WebView
             android:id="@+id/wvMeaning"

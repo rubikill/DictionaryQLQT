@@ -122,7 +122,7 @@ public class TabRecentActivity extends Activity implements OnClickListener,
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		String word = arrHistory.get(arg2);
-		FullscreenActivity.getInstance().setDictionaryTab(word);
+		HomeActivity.getInstance().setDictionaryTab(word);
 	}
 
 	private void changeState(ScreenState newState) {
