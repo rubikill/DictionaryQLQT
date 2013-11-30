@@ -2,6 +2,7 @@ package dao;
 
 import java.util.ArrayList;
 
+import android.R.bool;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -29,6 +30,12 @@ public class FavoriteHistoryImp implements IFavoriteHistory{
 			arrResult.add(temp);
 		}
 		return arrResult;
+	}
+	
+	@Override	
+	public boolean IsEmpty(String nametable){
+		Cursor cur = dataHelper.GetAll(nametable);
+		return !cur.moveToNext();
 	}
 
 	@Override

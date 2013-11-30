@@ -27,7 +27,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 
 	private ArrayList<String> arrfavorite = null;
 	private ArrayAdapter<String> adapter = null;
-	private MyArrayAdapter myadapter = null;
+	private RecentArrayAdapter myadapter = null;
 	private String wordisdeleted = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 		int id = v.getId();
 		switch (id) {
 		case R.id.btnEditFavorites:
-			myadapter = new MyArrayAdapter( this, R.layout.my_item_layout,arrfavorite);
+			myadapter = new RecentArrayAdapter( this, R.layout.item_recent_favorite,arrfavorite, true);
 			listFavorite.setAdapter(myadapter);
 			btnEditFavorites.setVisibility(-1);
 			btnFavDelete.setVisibility(0);
@@ -81,7 +81,7 @@ public class TabFavoritesActivity extends Activity implements OnClickListener, O
 			int size = listFavorite.getChildCount();
 			for(int i = size -1 ; i >=0 ; i--){
 				View view = listFavorite.getChildAt(i);
-				CheckBox checkbox = (CheckBox)view.findViewById(R.id.chkbitem);
+				CheckBox checkbox = (CheckBox)view.findViewById(R.id.recent_item_chkbox);
 				if(checkbox.isChecked()){
 					arrfavorite.remove(i);
 					isDelted = true;

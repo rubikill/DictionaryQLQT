@@ -14,4 +14,6 @@
     <dimen name="icon_more">50dip</dimen>
     <dimen name="icon_more">50dip</dimen>
     
+    <dimen name="size_button_recent">90dip</dimen>
+    
 </resources>

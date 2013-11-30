@@ -9,4 +9,5 @@ public interface IFavoriteHistory {
 	void DeleteItem(String word , String nametable);
 	void DeleteAll(String nametable);
 	Boolean IsExists(String word , String nametable);
+	boolean IsEmpty(String nametable);
 }
