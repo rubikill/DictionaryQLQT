@@ -8,57 +8,78 @@
     tools:context=".TabRecentActivity" >
 
     <RelativeLayout
-        android:id="@+id/RelativeLayout1"
-        android:layout_width="match_parent"
+        android:id="@+id/tool_bar"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/bg_recent_bar"
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/btnEditFavorites"
+            android:id="@+id/btnFavEdit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:src="@drawable/button_editfavorite_normal" />
+            android:src="@drawable/button_editrecent_normal"
+            android:visibility="visible" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:id="@+id/delete_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
             android:weightSum="3" >
 
             <ImageView
                 android:id="@+id/btnFavDelete"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
+                android:layout_width="@dimen/size_button_recent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
                 android:src="@drawable/button_delete_normal" />
 
             <ImageView
                 android:id="@+id/btnFavDeleteAll"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
+                android:layout_width="@dimen/size_button_recent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/btnFavDelete"
                 android:src="@drawable/button_deleteall_normal" />
 
             <ImageView
                 android:id="@+id/btnFavCancel"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
+                android:layout_width="@dimen/size_button_recent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
                 android:src="@drawable/button_cancel_normal" />
-
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/listFavorites"
-        android:layout_width="wrap_content"
+    <LinearLayout
         android:layout_height="0dp"
-        android:layout_weight="9" >
+        android:layout_width="fill_parent"
+        android:layout_weight="9"
+        android:orientation="vertical" >
 
-    </ListView>
+        <ListView
+            android:id="@+id/listWord"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/tvempty"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:paddingLeft="50dip"
+            android:paddingRight="50dip"
+            android:text="@string/empty_favorite"
+            android:textSize="25sp" />
+    </LinearLayout>
 
 </LinearLayout>
