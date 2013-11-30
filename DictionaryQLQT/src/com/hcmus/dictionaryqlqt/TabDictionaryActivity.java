@@ -54,7 +54,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.Toast;
 import dao.DatabaseHelperDAOImpl;
 import dao.FavoriteHistoryImp;
 import dao.FileHelperDAOImpl;
@@ -392,6 +391,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			saveHistory(new Vocabulary(word, meaning));
 		} else {
 			meaning = "";
+			currentWord = null;
 		}
 		showMeaning(meaning);
 	}
@@ -622,6 +622,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 				{
 					etWord.setText("");
 					String meaning = "";
+					currentWord = null;
 					showMeaning(meaning);
 				}
 			} catch (IOException e) {

@@ -95,7 +95,7 @@ function setFavorite(isFavorite) {
         $('#favorite').addClass('starred');
         $('#favorite').attr('data-starred', true);
     } else {
-        $(this).removeClass('starred');
+        $('#favorite').removeClass('starred');
         $('#favorite').attr('data-starred', false);
     }
 }
@@ -103,6 +103,7 @@ function setFavorite(isFavorite) {
 function favoriteClick() {
     var word = $('.word').text();
     var starred = $(this).attr('data-starred') == 'true' ? true : false;
+    $(this).attr('data-starred', !starred);
     if (starred) {
         $(this).removeClass('starred');
         window.android.removeFavorite(word);
@@ -110,7 +111,6 @@ function favoriteClick() {
         $(this).addClass('starred');
         window.android.setFavorite(word);
     }
-    $(this).attr('data-starred', !starred);
 }
 
 function createHeader(text) {

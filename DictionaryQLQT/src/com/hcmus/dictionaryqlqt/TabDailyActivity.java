@@ -1,8 +1,5 @@
 package com.hcmus.dictionaryqlqt;
 
-import java.io.IOException;
-
-
 import dao.FavoriteHistoryImp;
 import bridge.AndroidBridge;
 import bridge.AndroidBridgeListener;
@@ -19,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -125,7 +121,7 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 	 */
 	private void loadData() {
 		if (isOnline()) {
-			// neu mang kha dun thi load du lieu
+			// neu mang kha dung thi load du lieu
 			showLoadingDialog();
 			Thread thrLoadData = new Thread(getWod);
 			thrLoadData.start();
@@ -189,11 +185,14 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 
 	@Override
 	public void lookup(final String word) {
+		if (isFullScreen){
+			btnZoom.setImageResource(R.drawable.ic_zoom_in);
+			FullscreenActivity.getInstance().showTabs();
+			isFullScreen = false;
+		}
 		FullscreenActivity.getInstance().setDictionaryTab(word);
 	}
 	
-	
-
 	@Override
 	public void speakOut(String text) {
 		
@@ -201,16 +200,12 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 
 	@Override
 	public void setFavorite(String word) {
-		if (favoriteHistory.IsExists(word, "Favorite")) {
-			favoriteHistory.DeleteItem(word, "Favorite");
-		} 
-		favoriteHistory.InsertWord(word, "Favorite");
-	
+		
 	}
 
 	@Override
 	public void removeFavorite(String word) {
-		favoriteHistory.DeleteItem(word, "Favorite");
+		
 	}
 
 	@Override
