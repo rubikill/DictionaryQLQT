@@ -190,7 +190,17 @@ public class TabMoreActivity extends ListActivity implements OnClickListener {
 		switch (arg0.getId()) {
 		//rate
 		case R.id.btnRateOk:
-
+			AlertDialog ad=new AlertDialog.Builder(this)
+	        .setMessage("Thanks you!")
+	        .setPositiveButton("OK", new DialogInterface.OnClickListener() 
+	        {                   
+	            @Override
+	            public void onClick(DialogInterface arg0, int arg1) 
+	            {
+	                ratePopup.dismiss();
+	            }//end onClick()
+	        }).create();     
+			ad.show();
 			break;
 		case R.id.btnRateCancel:
 			ratePopup.dismiss();
