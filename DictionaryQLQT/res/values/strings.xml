@@ -45,4 +45,6 @@
 	
 	<string name="empty_recent">Recent searches are empty</string>
 	<string name="empty_favorite">Favorites list is empty</string>
+	<string name="username">Your name</string>
+	<string name="feedback_message">Your feedback</string>
 </resources>

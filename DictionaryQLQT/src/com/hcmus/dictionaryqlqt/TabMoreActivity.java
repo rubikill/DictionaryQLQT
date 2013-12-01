@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import webservice.WebserviceHelperImpl;
-
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -18,9 +19,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 public class TabMoreActivity extends ListActivity implements OnClickListener {
 
@@ -45,8 +48,7 @@ public class TabMoreActivity extends ListActivity implements OnClickListener {
 		String selectedValue = (String) getListAdapter().getItem(position);
 		// Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
 		if (selectedValue.equals("Feedback")) {
-			WebserviceHelperImpl web = new WebserviceHelperImpl();
-			web.feedbeak("asda", "adasdadad");
+			initFeedbackPopup();
 		} else if (selectedValue.equals("Rate This App")) {
 			initRatePopup();
 		} else if (selectedValue.equals("Share This App")) {
@@ -64,7 +66,67 @@ public class TabMoreActivity extends ListActivity implements OnClickListener {
 		}
 
 	}
-
+	
+	/***
+	 * Feedback popup
+	 */
+	private PopupWindow feedbackPopup;
+	private Button feedbackSend;
+	private Button feedbackClose;
+	private EditText feedbackUsername;
+	private EditText feedbackMessage;
+	private void initFeedbackPopup() {
+		// TODO Auto-generated method stub
+		LayoutInflater inflater = (LayoutInflater) TabMoreActivity.this
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.popup_feedback,
+				(ViewGroup) findViewById(R.id.feedback_element));
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = (int) (size.x * 0.8);
+		int height = (int) (size.y * 0.6);
+		feedbackPopup = new PopupWindow(layout, width, height, true);
+		feedbackPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
+		//khoi tao controll
+		feedbackSend = (Button)layout.findViewById(R.id.btn_feedback_send);
+		feedbackClose = (Button)layout.findViewById(R.id.btn_feedback_close);
+		feedbackUsername = (EditText)layout.findViewById(R.id.feedback_username);
+		feedbackMessage= (EditText)layout.findViewById(R.id.feedback_message);
+		//khai bao su kien
+		feedbackSend.setOnClickListener(this);
+		feedbackClose.setOnClickListener(this);
+	}
+	/***
+	 * Gui feedback
+	 */
+	private void sendFeedback() {
+		// TODO Auto-generated method stub
+		String username = feedbackUsername.getText().toString();
+		String message = feedbackMessage.getText().toString();
+		
+		WebserviceHelperImpl web = new WebserviceHelperImpl();
+		String result;
+		if(web.feedbeak(username, message))
+		{
+			result ="Thanks for your feedback!";
+		}
+		else
+		{
+			result ="Error when send feedback. Please check your network connection!";
+		}
+		AlertDialog ad=new AlertDialog.Builder(this)
+        .setMessage(result)
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() 
+        {                   
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) 
+            {
+                feedbackPopup.dismiss();
+            }//end onClick()
+        }).create();     
+		ad.show();
+	}
 	/***
 	 * rate popup variable scores: list images 1->10
 	 * currentScore rate hien tai tren may nguoi dung
@@ -126,6 +188,7 @@ public class TabMoreActivity extends ListActivity implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
+		//rate
 		case R.id.btnRateOk:
 
 			break;
@@ -147,10 +210,19 @@ public class TabMoreActivity extends ListActivity implements OnClickListener {
 		case R.id.score5:
 			changeScore(5);
 			break;
+		//feedback
+		case R.id.btn_feedback_send:
+			sendFeedback();
+			break;
+		case R.id.btn_feedback_close:
+			feedbackPopup.dismiss();
+			break;
 		default:
 			break;
 		}
 		
 	}
+
+	
 	
 }

@@ -3,7 +3,7 @@
     android:id="@+id/rate_element"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#98000000"
+    android:background="#444444"
     android:orientation="vertical"
     android:weightSum="10" >
 
