@@ -103,6 +103,7 @@ public class DatabaseHelperDAOImpl extends SQLiteOpenHelper  implements IDataHel
 	}
 	@Override
 	public Cursor GetWords(String word, int type) {
+		word = word.toLowerCase();
 		String tableName;
 		if (word.length() > 0) {
 			String fc = word.substring(0, 1).toUpperCase();
