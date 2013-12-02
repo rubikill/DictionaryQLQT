@@ -692,6 +692,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			btnVoiceSearch.setVisibility(View.VISIBLE);
 			btnCancelSearch.setVisibility(View.GONE);
 			etWord.setText("");
+			imgLogo.requestFocus();
 
 		} else if (status == 1) {
 			btnVoiceSearch.setVisibility(View.VISIBLE);
@@ -712,6 +713,7 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 					getColor(R.color.bg_content_start));
 			btnZoom.setVisibility(View.INVISIBLE);
 			btnZoom.setFocusable(false);
+			imgLogo.requestFocus();
 			etWord.setText("");
 			imgLogo.requestFocus();
 			break;
@@ -814,5 +816,11 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 	 */
 	public static TabDictionaryActivity getInstance() {
 		return Instance;
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		etWord.setText("");
+		super.onSaveInstanceState(outState);
 	}
 }
