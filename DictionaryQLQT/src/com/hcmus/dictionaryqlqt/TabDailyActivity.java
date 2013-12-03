@@ -83,7 +83,13 @@ public class TabDailyActivity extends Activity implements AndroidBridgeListener,
 				WordOfDayHandler wodHandler = new WordOfDayHandler(TabDailyActivity.this);
 				WordOfDay wod = wodHandler.getWod();
 				
-				Message msg = handler.obtainMessage(WOD, wod);
+				Message msg;
+				if (wod != null){
+					msg = handler.obtainMessage(WOD, wod);
+				}
+				else{
+					msg = handler.obtainMessage(ERROR, null);
+				}
 				handler.sendMessage(msg);
 
 			} catch (Exception e) {
