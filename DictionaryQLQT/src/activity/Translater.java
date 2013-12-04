@@ -8,8 +8,8 @@ import com.memetix.mst.translate.Translate;
 public class Translater {
 
 	public Translater() {
-		Translate.setClientId(Constant.ClientID);
-		Translate.setClientSecret(Constant.ClientSecret);
+		Translate.setClientId(Constant.CLIENTID);
+		Translate.setClientSecret(Constant.CLIENT_SECRET);
 	}
 
 	public String Translate(String word, Language from, Language to) {

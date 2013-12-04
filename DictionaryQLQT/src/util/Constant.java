@@ -22,9 +22,10 @@ public class Constant {
 
 	public static final String SDCARD_PATH = Environment
 			.getExternalStorageDirectory().getPath() + "/data/";
-	public static final String ClientID = "SimpleDictionary";
-	public static final String ClientSecret = "OJLhnQ/jODwNZ6nEvYIEdqTC71S88SeXb/Rkd/rpwuI=";
-	
+	public static final String CLIENTID = "SimpleDictionary";
+	public static final String CLIENT_SECRET = "OJLhnQ/jODwNZ6nEvYIEdqTC71S88SeXb/Rkd/rpwuI=";
+	public static final String APP_PNAME ="com.hcmus.dictionaryqlqt";
+	public final static String APP_TITLE = "N2 Dictionary";
 	/*
 	 * ma Code de nhan ket qua tra ve tu voice search
 	 */

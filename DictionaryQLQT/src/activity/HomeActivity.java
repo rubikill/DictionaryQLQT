@@ -48,27 +48,56 @@ public class HomeActivity extends TabActivity {
 		setContentView(R.layout.activity_fullscreen);
 		Instance = this;
 		lnTabs = (LinearLayout) findViewById(R.id.tab_widget);
+
 		tabHost = getTabHost();
 		tabHost.setup();
 
-		initTab();
-	}
-
-	private void initTab() {
 		// khoi tao tab Dictionary
-		TabSpec tabSpecDictionary = initTabByName("Dictionary", R.drawable.tab_dictionary);
+		Intent intentDictionary = new Intent().setClass(this,
+				TabDictionaryActivity.class);
+		TabSpec tabSpecDictionary = tabHost
+				.newTabSpec("Dictionary")
+				.setIndicator(
+						new IndicatorLayout(this, "Dictionary",
+								R.drawable.tab_dictionary))
+				.setContent(intentDictionary);
 
 		// khoi tao tab Recent
-		TabSpec tabSpecRecent = initTabByName("Recent", R.drawable.tab_recent);
+		Intent intentRecent = new Intent().setClass(this,
+				TabRecentActivity.class);
+		TabSpec tabSpecRecent = tabHost
+				.newTabSpec("Recent")
+				.setIndicator(
+						new IndicatorLayout(this, "Recent",
+								R.drawable.tab_recent))
+				.setContent(intentRecent);
 
 		// khoi tao tab Favorite
-		TabSpec tabSpecFavorites = initTabByName("Favorites", R.drawable.tab_star);
+		Intent intentFavorites = new Intent().setClass(this,
+				TabFavoritesActivity.class);
+		TabSpec tabSpecFavorites = tabHost
+				.newTabSpec("Favorites")
+				.setIndicator(
+						new IndicatorLayout(this, "Favorites",
+								R.drawable.tab_star))
+				.setContent(intentFavorites);
 
 		// khoi tao tab Daily
-		TabSpec tabSpecDaily = initTabByName("Daily", R.drawable.tab_wotd);
+		Intent intentDaily = new Intent()
+				.setClass(this, TabDailyActivity.class);
+		TabSpec tabSpecDaily = tabHost
+				.newTabSpec("Daily")
+				.setIndicator(
+						new IndicatorLayout(this, "Daily", R.drawable.tab_wotd))
+				.setContent(intentDaily);
 
 		// khoi tao tab More
-		TabSpec tabSpecMore = initTabByName("More", R.drawable.tab_more);
+		Intent intentMore = new Intent().setClass(this, TabMoreActivity.class);
+		TabSpec tabSpecMore = tabHost
+				.newTabSpec("More")
+				.setIndicator(
+						new IndicatorLayout(this, "More", R.drawable.tab_more))
+				.setContent(intentMore);
 
 		tabHost.addTab(tabSpecDictionary);
 		tabHost.addTab(tabSpecRecent);
@@ -77,16 +106,8 @@ public class HomeActivity extends TabActivity {
 		tabHost.addTab(tabSpecMore);
 
 		tabHost.setCurrentTab(0);
-	}
 
-	private TabSpec initTabByName(String name, int tabId) {
-		Intent intentDictionary = new Intent().setClass(this,
-				TabDictionaryActivity.class);
-		TabSpec tabSpecDictionary = tabHost.newTabSpec(name)
-				.setIndicator(new IndicatorLayout(this, name, tabId))
-				.setContent(intentDictionary);
-		return tabSpecDictionary;
-	}
+	}	
 
 	/**
 	 * chuyen qua tab Dictionary
