@@ -8,6 +8,8 @@ import java.io.OutputStream;
 
 import util.Constant;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.os.Environment;
 
 public class IOHelperImpl implements IIOHelper {
 	
@@ -25,6 +27,33 @@ public class IOHelperImpl implements IIOHelper {
 	public boolean checkDataFileExists(String FileName) {
 		File f = new File(Constant.SDCARD_PATH + "/" + FileName);
 		return f.exists();
+	}
+	
+	public void coypyFolder(Context context, String path) {
+		try {
+			AssetManager assetManager = context.getAssets();
+			String[] files = null;
+			files = assetManager.list(path);
+			if (files != null) {
+				File folderdata = new File(Environment
+						.getExternalStorageDirectory().getPath()
+						+ "/data/");
+				if (!folderdata.exists()){
+					folderdata.mkdir();
+				}
+				File folder = new File(Environment
+						.getExternalStorageDirectory().getPath()
+						+ "/data/" + path);
+				if (!folder.exists()){
+					folder.mkdir();
+				}
+				for (String file : files) {
+					coppyDataFile(context, path + "/" + file);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

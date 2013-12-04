@@ -8,4 +8,6 @@ public interface IIOHelper {
 	boolean checkDataFileExists(String FileName);
 
 	void coppyDataFile(Context context, String FileName);
+	
+	void coypyFolder(Context context,String path);
 }

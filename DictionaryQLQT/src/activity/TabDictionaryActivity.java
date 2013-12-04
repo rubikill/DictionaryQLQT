@@ -8,9 +8,6 @@ import helper.IFavoriteHistory;
 import helper.IFileHelper;
 import helper.IIOHelper;
 import helper.IOHelperImpl;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
@@ -21,18 +18,6 @@ import manager.SpeakerImpl;
 import manager.WebviewHelper;
 import model.Vocabulary;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.FuzzyQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Searcher;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
-
 import util.Constant;
 import util.ScreenState;
 import android.app.Activity;
@@ -41,11 +26,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -71,7 +53,9 @@ import bridge.AndroidBridgeListener;
 import com.hcmus.dictionaryqlqt.R;
 
 import dao.FinderDAOImpl;
+import dao.FuzzyDAO;
 import dao.IFinderDAO;
+import dao.IFuzzyDAO;
 
 /**
  * 
@@ -80,7 +64,6 @@ import dao.IFinderDAO;
  * 
  */
 
-@SuppressWarnings("deprecation")
 public class TabDictionaryActivity extends Activity implements OnClickListener,
 		TextWatcher, OnItemClickListener, AndroidBridgeListener, OnFocusChangeListener {
 	////////////////////////// CAC BIEN /////////////////////////////
@@ -578,57 +561,21 @@ public class TabDictionaryActivity extends Activity implements OnClickListener,
 			showMeaning(mean);
 		} else // tien hanh fuzzy search
 		{
-			// tien hanh tach chuoi
 			String[] listTemp = word.split("---");
 			String strText = listTemp[0];
-			
-			SQLiteDatabase db = this.openOrCreateDatabase("mydatafuzzy", MODE_PRIVATE, null);
-			String sqlselect = "select * from tbfuzzy";
-			Cursor c1 = db.rawQuery(sqlselect, null);
-			c1.moveToPosition(0);
-			String strdirectory = c1.getString(1);
-			File file = new File(Environment.getExternalStorageDirectory()
-					.getPath() + "/" + strdirectory);
-			Directory fsDirectory;
-			c1.close();
-			db.close();
-			try {
-				fsDirectory = FSDirectory.open(file);
-				IndexReader indexReader = IndexReader.open(fsDirectory);
-				@SuppressWarnings("resource")
-				Searcher indexSearcher = new IndexSearcher(indexReader);
 
-				// tao query
-				Query query = new FuzzyQuery(new Term("word", strText));
-				
-				// tien hanh truy van
-				TopDocs topDocs = indexSearcher.search(query, 5);
-				ScoreDoc[] scoreDosArray = topDocs.scoreDocs;
-				
-				//kiem tra xem ket qua tim duoc
-				if (scoreDosArray.length != 0) {
-					ArrayList<String> listText = new ArrayList<String>();
-					// lay word
-					for (ScoreDoc scoredoc : scoreDosArray) {
-						Document doc = indexSearcher.doc(scoredoc.doc);
-						String strWord = doc.getField("word").stringValue();
-						listText.add(strWord);
-					}
-					
-					String[] arrText = convertArrayListToArray(listText);
-					showResultDialog(arrText);
-				}
-				else
-				{
-					etWord.setText("");
-					String meaning = "";
-					currentWord = null;
-					showMeaning(meaning);
-				}
-			} catch (IOException e) {
-				Log.e("Dictonary - Search", e.getMessage());
+			IFuzzyDAO fuzzy = new FuzzyDAO();
+			ArrayList<String> listText = fuzzy.search(strText);
+
+			if (listText.size() > 0) {
+				String[] arrText = convertArrayListToArray(listText);
+				showResultDialog(arrText);
+			} else {
+				etWord.setText("");
+				String meaning = "";
+				currentWord = null;
+				showMeaning(meaning);
 			}
-
 		}
 	}
 
