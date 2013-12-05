@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import model.Vocabulary;
 
 public interface IFinderDAO {
-	//tim tu
+	// tim tu
 	Vocabulary find(String keyWord);
-	
-	//lay danh sach tu goi y
+
+	// lay danh sach tu goi y
 	ArrayList<Vocabulary> getRecommendWord(String keyWord);
-	
-	//Lay nghia cu tu
+
+	// Lay nghia cu tu
 	String getMean(Vocabulary vocabulary);
-	String getMean(String index,String length);
+
+	String getMean(String index, String length);
 }
