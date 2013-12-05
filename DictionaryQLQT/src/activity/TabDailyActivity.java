@@ -84,8 +84,15 @@ public class TabDailyActivity extends Activity implements
 				WordOfDayHandler wodHandler = new WordOfDayHandler(
 						TabDailyActivity.this);
 				WordOfDay wod = wodHandler.getWod();
-
-				Message msg = handler.obtainMessage(Constant.WOD, wod);
+				
+				Message msg;
+				if (wod != null){
+					msg = handler.obtainMessage(Constant.WOD, wod);
+				}
+				else{
+					msg = handler.obtainMessage(Constant.ERROR, null);
+				}
+				
 				handler.sendMessage(msg);
 
 			} catch (Exception e) {
