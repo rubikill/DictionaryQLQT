@@ -1,15 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LinearLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
     tools:context=".TabRecentActivity" >
 
     <RelativeLayout
-        android:id="@+id/RelativeLayout1"
-        android:layout_width="match_parent"
+        android:id="@+id/tool_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/bg_recent_bar"
         android:orientation="vertical" >
@@ -17,43 +18,68 @@
         <ImageView
             android:id="@+id/btnEditrecent"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:src="@drawable/button_editrecent_normal" />
+            android:src="@drawable/button_editrecent_normal"
+            android:visibility="visible" />
 
-        <LinearLayout
-            android:id="@+id/LinearLayout2"
+        <RelativeLayout
+            android:id="@+id/delete_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:visibility="gone"
             android:weightSum="3" >
 
             <ImageView
                 android:id="@+id/btnRecentDelete"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
+                android:layout_width="@dimen/size_button_recent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
                 android:src="@drawable/button_delete_normal" />
 
             <ImageView
                 android:id="@+id/btnRecentDeleteAll"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
+                android:layout_width="@dimen/size_button_recent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/btnRecentDelete"
                 android:src="@drawable/button_deleteall_normal" />
 
             <ImageView
                 android:id="@+id/btnRecentCancel"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
+                android:layout_width="@dimen/size_button_recent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
                 android:src="@drawable/button_cancel_normal" />
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/listRecentSearch"
-        android:layout_width="match_parent"
-        android:layout_weight="9" >
-    </ListView>
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="fill_parent"
+        android:layout_weight="9"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/listWord"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/tvempty"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:paddingLeft="50dip"
+            android:paddingRight="50dip"
+            android:text="@string/empty_recent"
+            android:textSize="25sp" />
+    </LinearLayout>
 
 </LinearLayout>

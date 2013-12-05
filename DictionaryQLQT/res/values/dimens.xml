@@ -6,4 +6,14 @@
     
     <dimen name="prb_volume_radius_corner">7dip</dimen>
     <dimen name="voice_search_layout_margin">20dip</dimen>
+    
+    <dimen name="edit_text_radius">15.0dip</dimen>
+    <dimen name="dropDownVerticalOffset">2.0dip</dimen>
+    <dimen name="logo_size">250.0dip</dimen>
+    
+    <dimen name="icon_more">50dip</dimen>
+    <dimen name="icon_more">50dip</dimen>
+    
+    <dimen name="size_button_recent">90dip</dimen>
+    
 </resources>

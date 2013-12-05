@@ -8,12 +8,12 @@ import android.util.Log;
  * 
  * @author Minh Khanh
  * 
- * Class xử lý việc lấy Word of day
+ * Class xu ly lay Word of day
  *
  */
 public class WordOfDayHandler {
 	/*
-	 * context của Activity cha
+	 * context cua ung dung
 	 */
 	private Context context;
 
@@ -21,26 +21,26 @@ public class WordOfDayHandler {
 		this.context = context;
 	}
 
-	/*
-	 * hàm trả về wod
+	/**
+	 * lay wod
 	 */
 	public WordOfDay getWod() {
-		// thử lấy từ service trước
+		// uu tien lay tu service
 		WordOfDay wod = getFromService();		
 		if (wod == null) {
-			// nếu không thành công sẽ lấy trực tiếp từ web
+			// lay truc tiep tu website
 			wod = getFromWeb();
 		}
 		
 		return wod;
 	}
 
-	/*
-	 * lấy wod từ service
+	/**
+	 * lau wod tu service
 	 */
 	private WordOfDay getFromService() {
 		String url = context.getString(R.string.wod_service_url);
-		WordOfDayService service = new WordOfDayService();
+		WordOfDayServiceImpl service = new WordOfDayServiceImpl();
 		WordOfDay wod = null;
 		try {
 			wod = service.getWod(url);
@@ -52,7 +52,7 @@ public class WordOfDayHandler {
 	}
 
 	/*
-	 * lấy wod từ web
+	 * lay wod tu web
 	 */
 	private WordOfDay getFromWeb() {
 		WordOfDay wod = null;

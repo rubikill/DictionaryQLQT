@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 
 /**
  * Model Class WordOfDay
@@ -11,37 +10,37 @@ import java.util.ArrayList;
 public class WordOfDay {
 	
 	/**
-	 * Từ của ngày
+	 * tu
 	 */
 	private String word;
 	
 	/**
-	 * Phiên âm
+	 * phien am
 	 */
 	private String phonetic;
 	
 	/**
-	 * Loại từ
+	 * loai tu
 	 */
 	private String wordFunction;
 	
 	/**
-	 * Nghĩa của từ
+	 * nghia cua tu
 	 */
 	private String mean;
 	
 	/**
-	 * Các đoan ví dụ
+	 * cac vi du
 	 */
 	private String examples;
 	
 	/**
-	 * Các đoạn do you know?
+	 * phan do you know?
 	 */
 	private String didYouKnow;
 	
 	/**
-	 * Ngay
+	 * ngay
 	 */
 	private String date;
 		

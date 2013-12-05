@@ -12,43 +12,50 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <instrumentation android:targetPackage="com.hcmus.dictionaryqlqt" android:name="android.test.InstrumentationTestRunner"></instrumentation>
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon_app"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.hcmus.dictionaryqlqt.FullscreenActivity"
-            android:label="@string/app_name" >
+            android:name="activity.LoadingDataActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustNothing" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.hcmus.dictionaryqlqt.CopyrightsActivity" >
+         <activity android:name="activity.HomeActivity"
+			android:windowSoftInputMode="adjustNothing"	>
         </activity>
-        <activity android:name="com.hcmus.dictionaryqlqt.AboutActivity" >
+        <activity android:name="activity.CopyrightsActivity" >
         </activity>
-        <activity android:name="com.hcmus.dictionaryqlqt.RecommendedActivity" >
+        <activity android:name="activity.AboutActivity" >
         </activity>
-        <activity android:name="com.hcmus.dictionaryqlqt.ShareThisAppActivity" >
+        <activity android:name="activity.RecommendedActivity" >
         </activity>
-        <activity android:name="com.hcmus.dictionaryqlqt.TabDailyActivity" >
+        <activity android:name="activity.ShareThisAppActivity" >
         </activity>
-        <activity android:name="com.hcmus.dictionaryqlqt.TabDictionaryActivity" >
+        <activity android:name="activity.TabDailyActivity" >
         </activity>
-        <activity android:name="com.hcmus.dictionaryqlqt.TabFavoritesActivity" >
+        <activity android:name="activity.TabDictionaryActivity" >
         </activity>
-        <activity android:name="com.hcmus.dictionaryqlqt.TabMoreActivity" >
+        <activity android:name="activity.TabFavoritesActivity" >
         </activity>
-        <activity android:name="com.hcmus.dictionaryqlqt.TabRecentActivity" >
+        <activity android:name="activity.TabMoreActivity" >
+        </activity>
+        <activity android:name="activity.TabRecentActivity" >
         </activity>
         <activity
-            android:name="com.hcmus.dictionaryqlqt.SpeechRecognizerActivity"
+            android:name="activity.SpeechRecognizerActivity"
             android:theme="@android:style/Theme.Dialog">
         </activity>
+        <uses-library android:name="android.test.runner"/>
+        <meta-data android:value="@string/app_id" android:name="com.facebook.sdk.ApplicationId"/>
+        <activity android:name="com.facebook.LoginActivity"></activity>
     </application>
 
 </manifest>

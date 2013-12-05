@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_element"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#444444" >
+
+     <com.facebook.widget.ProfilePictureView 
+         android:id="@+id/selection_profile_pic"
+         android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:layout_gravity="center"
+          android:gravity="center_horizontal"
+          
+         />
+
+    <com.facebook.widget.LoginButton
+        android:id="@+id/authButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp" />
+
+	<Button
+	    android:id="@+id/btnShare"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="20dp"
+	    android:text="@string/btnShare" />
+
+	<Button
+	    android:id="@+id/btn_face_close"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="@string/close" />
+	
+</LinearLayout>
